@@ -19,7 +19,7 @@ public class ExpresionesMatematicas {
             char token = postfija.charAt(cadaToken);
             // 2. Si es operando, meter a pila
             if(esOperando("" + token)){
-                if(pila.poner("" + token)){
+                if(!pila.poner("" + token)){
                     return null;
                 }
             } else {
@@ -30,7 +30,7 @@ public class ExpresionesMatematicas {
                 if(operando2 == null || operando1 == null){
                     return null;
                 } else {
-                    Double resultadoParcial = operacicon(Double.parseDouble(operando1), Double.parseDouble(operando2), token);
+                    Double resultadoParcial = operacion(Double.parseDouble(operando1), Double.parseDouble(operando2), token);
                     if (resultadoParcial == null) {
                         return null;
                     } else {
@@ -41,11 +41,55 @@ public class ExpresionesMatematicas {
                     }
                 }
             }
-            // Aplicar operaciones con ellos
-            // Meter el resultado en la pila
         }
-        // 4. El resultado final esta en la pila
+        // Aplicar operaciones con ellos
+        // Meter el resultado en la pila
+        String resultado = (String) pila.quitar();
+        if(resultado!=null){
+            return Double.parseDouble(resultado);
+        }
         return null;
+        // 4. El resultado final esta en la pila
+    }
+
+    public static Double evaluarPrefija(String prefija){
+        PilaEstatica pila = new PilaEstatica(prefija.length());
+        // 1. Tokenizar izq-der
+        for(int cadaToken = prefija.length()-1; cadaToken >= 0; cadaToken--) {
+            char token = prefija.charAt(cadaToken);
+            // 2. Si es operando, meter a pila
+            if(esOperando("" + token)){
+                if(!pila.poner("" + token)){
+                    return null;
+                }
+            } else {
+                // 3. Si es operador, saca dos operaciones (el primero es op2)
+                String operando1 = (String) pila.quitar();
+                String operando2 = (String) pila.quitar();
+
+                if(operando2 == null || operando1 == null){
+                    return null;
+                } else {
+                    Double resultadoParcial = operacion(Double.parseDouble(operando1), Double.parseDouble(operando2), token);
+                    if (resultadoParcial == null) {
+                        return null;
+                    } else {
+                        boolean resultadoPila = pila.poner("" + resultadoParcial);
+                        if(!resultadoPila){
+                            return null;
+                        }
+                    }
+                }
+            }
+        }
+        // Aplicar operaciones con ellos
+        // Meter el resultado en la pila
+        String resultado = (String) pila.quitar();
+        if(resultado!=null){
+            return Double.parseDouble(resultado);
+        }
+        return null;
+        // 4. El resultado final esta en la pila
     }
     
     public static boolean esOperando(String token){
@@ -69,7 +113,7 @@ public class ExpresionesMatematicas {
         return true;
     }
 
-    public static Double operacicon(double operando1, double operando2, char operador){
+    public static Double operacion(double operando1, double operando2, char operador){
         if(operador=='+'){
             return operando1 + operando2;
         } else if (operador=='-') {
