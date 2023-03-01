@@ -111,7 +111,7 @@ public class Matriz2 {
      * @param limiteSup Es el límite superior en el cual debe de estar el índice.
      * @return Regresa <b>true</b> si se encuentra en el rango y <b>false</b> si no se encuentra.
      */
-    private boolean validarRango(int indice, int limiteSup){
+    public boolean validarRango(int indice, int limiteSup){
         return indice >= 0 && indice < limiteSup;
     }
 
