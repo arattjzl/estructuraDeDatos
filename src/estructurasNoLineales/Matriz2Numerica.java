@@ -220,7 +220,7 @@ public class Matriz2Numerica extends Matriz2 {
                         cambiar(cadaRenglon, cadaColumna, Math.log10(info));
                     } else if(tipoLogaritmo == TipoLogaritmo.NATURAL){
                         cambiar(cadaRenglon, cadaColumna, Math.log(info));
-                    } else {
+                    } else if(tipoLogaritmo == TipoLogaritmo.BASE2){
                         cambiar(cadaRenglon, cadaColumna, (Math.log(info) / Math.log(2)));
                     }
                 }
