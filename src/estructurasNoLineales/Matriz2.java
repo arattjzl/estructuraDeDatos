@@ -99,7 +99,7 @@ public class Matriz2 {
      * @return Regresa el objeto si se encontró o null si no.
      */
     public Object obtener(int renglon, int columna){
-        if(validarRango(renglon, getColumnas()) && validarRango(columna, getColumnas())){
+        if(validarRango(renglon, getRenglones()) && validarRango(columna, getColumnas())){
             return informacion[renglon][columna];
         }
         return null;

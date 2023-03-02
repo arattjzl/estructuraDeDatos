@@ -1,15 +1,17 @@
 package estructurasNoLineales;
 
-import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaEstaticaNumerica;
 import utils.commons.Comparador;
 import utils.commons.TipoLogaritmo;
 
+/**
+ * @author Aratt
+ * @version 1.0
+ */
 public class Matriz2Numerica extends Matriz2 {
 
     /**
      * Crea un objeto de matriz bidimensional numérica y rellena los valores en 0.
-     *
      * @param renglones Número de renglones.
      * @param columnas  Número de columnas.
      */
@@ -28,6 +30,24 @@ public class Matriz2Numerica extends Matriz2 {
     public Matriz2Numerica(int renglones, int columnas, Object info) {
         super(renglones, columnas);
         rellenar(info);
+    }
+
+    /**
+     * Redefine la matriz actual con la matriz que se pasa como parámtero.
+     * @param matriz2 Es la matriz con los nuevos valores.
+     * @return Regresa true cuando se realiza el cambio.
+     */
+    public  boolean redefinir(Matriz2Numerica matriz2){
+
+        columnas = matriz2.getColumnas();
+        renglones = matriz2.getRenglones();
+        informacion = new Object[renglones][columnas];
+        for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
+            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
+                informacion[cadaRenglon][cadaColumna] = matriz2.obtener(cadaRenglon, cadaColumna);
+            }
+        }
+        return true;
     }
 
     public Matriz2Numerica clonar(){
@@ -83,10 +103,11 @@ public class Matriz2Numerica extends Matriz2 {
      * @return Regresa <b>true</b> cuando termina de multiplicar.
      */
     public boolean porEscalar(Number escalar) {
-        for (int cadaRenglon = 0; cadaRenglon <= getRenglones(); cadaRenglon++) {
-            for (int cadaColumna = 0; cadaColumna <= getColumnas(); cadaColumna++) {
+        for (int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++) {
+            for (int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++) {
                 if (obtener(cadaRenglon, cadaColumna) != null) {
-                    cambiar(cadaRenglon, cadaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue() * escalar.doubleValue());
+                    cambiar(cadaRenglon, cadaColumna,
+                            ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue() * escalar.doubleValue());
                 }
             }
         }
@@ -99,7 +120,7 @@ public class Matriz2Numerica extends Matriz2 {
      * @return Regresa <b>true</b> cuando multiplica todos y <b>false</b> si el rango no es válido.
      */
     public boolean porEscalar(ListaEstaticaNumerica escalares) {
-        if (validarRango(getColumnas(), escalares.getMAXIMO())) {
+        if (validarRango(getColumnas(), escalares.getMAXIMO()+1)) {
             for (int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++) {
                 for (int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++) {
                     if (obtener(cadaRenglon, cadaColumna) != null) {
@@ -121,7 +142,8 @@ public class Matriz2Numerica extends Matriz2 {
     public boolean sumarEscalar(Number escalar){
         for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
             for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
-                cambiar(cadaRenglon, cadaColumna, ((Number)obtener(cadaRenglon,cadaColumna)).doubleValue() + escalar.doubleValue());
+                cambiar(cadaRenglon, cadaColumna,
+                        ((Number)obtener(cadaRenglon,cadaColumna)).doubleValue() + escalar.doubleValue());
             }
         }
         return true;
@@ -133,7 +155,7 @@ public class Matriz2Numerica extends Matriz2 {
      * @return Regresa <b>true</b> cuando suma todos y <b>false</b> si el rango no es válido.
      */
     public boolean sumarEscalares(ListaEstaticaNumerica escalares){
-        if (validarRango(getColumnas(), escalares.getMAXIMO())) {
+        if (validarRango(getColumnas(), escalares.getMAXIMO()+1)) {
             for (int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++) {
                 for (int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++) {
                     if (obtener(cadaRenglon, cadaColumna) != null) {
@@ -152,22 +174,24 @@ public class Matriz2Numerica extends Matriz2 {
      * @param matriz Es la matriz por la cual se multiplicará la actual.
      * @return Regresa <b>true</b> si se pudo multiplicar y <b>false</b> si no.
      */
-    public Matriz2 multiplicar(Matriz2Numerica matriz){
+    public boolean multiplicar(Matriz2Numerica matriz){
         double sumaMultiplicaciones = 0;
-        Matriz2 matrizMultiplicada = new Matriz2(getRenglones(), matriz.getColumnas());
+        Matriz2Numerica matrizMultiplicada = new Matriz2Numerica(getRenglones(), matriz.getColumnas());
         if((int)Comparador.comparar(getColumnas(),matriz.getRenglones())==0){
             for (int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
                 for (int cadaOtraColumna = 0; cadaOtraColumna < matriz.getColumnas(); cadaOtraColumna++){
                     for (int cadaRenglonColumna = 0; cadaRenglonColumna < getColumnas(); cadaRenglonColumna++){
-                        sumaMultiplicaciones += ((Number)obtener(cadaRenglon,cadaRenglonColumna)).doubleValue() * ((Number) matriz.obtener(cadaRenglonColumna,cadaOtraColumna)).doubleValue();
+                        sumaMultiplicaciones += ((Number)obtener(cadaRenglon,cadaRenglonColumna)).doubleValue()
+                                * ((Number) matriz.obtener(cadaRenglonColumna,cadaOtraColumna)).doubleValue();
                     }
                     matrizMultiplicada.cambiar(cadaRenglon,cadaOtraColumna,sumaMultiplicaciones);
                     sumaMultiplicaciones=0;
                 }
             }
-            return matrizMultiplicada;
+            redefinir(matrizMultiplicada);
+            return true;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -180,7 +204,8 @@ public class Matriz2Numerica extends Matriz2 {
             for(int cadaRenglon = 0; cadaRenglon < matriz.getRenglones(); cadaRenglon++){
                 for(int cadaColumna = 0; cadaColumna < matriz.getColumnas(); cadaColumna++){
                     if(obtener(cadaRenglon,cadaColumna) != null) {
-                        cambiar(cadaRenglon, cadaColumna, (((Number) obtener(cadaRenglon, cadaColumna)).doubleValue() + ((Number) matriz.obtener(cadaRenglon, cadaColumna)).doubleValue()));
+                        cambiar(cadaRenglon, cadaColumna, (((Number) obtener(cadaRenglon, cadaColumna)).doubleValue()
+                                + ((Number) matriz.obtener(cadaRenglon, cadaColumna)).doubleValue()));
                     }
                 }
             }
@@ -199,13 +224,13 @@ public class Matriz2Numerica extends Matriz2 {
         for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
             for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
                 if(obtener(cadaRenglon,cadaColumna) != null) {
-                    cambiar(cadaRenglon, cadaColumna, Math.pow((double) obtener(cadaRenglon, cadaColumna), escalar.doubleValue()));
+                    cambiar(cadaRenglon, cadaColumna,
+                            Math.pow(((Number) obtener(cadaRenglon, cadaColumna)).doubleValue(), escalar.doubleValue()));
                 }
             }
         }
         return true;
     }
-
     /**
      * Aplica el logaritmo que seleccione a la matriz.
      * @param tipoLogaritmo Tipo de logaritmo que utilizará la matriz.
@@ -294,13 +319,12 @@ public class Matriz2Numerica extends Matriz2 {
     }
 
     /**
-     *
-     * @param exponente
-     * @return
+     * Elevará la matriz a la potencia que se indique.
+     * @param exponente Potencia a la cual se quiere elevar la matriz.
+     * @return Regresa <b>true</b> si se realizó la potencia y <b>false</b> si no se realizó.
      */
     public boolean potencia(int exponente){
         Matriz2Numerica matrizAuxiliar = clonar();
-        matrizAuxiliar.imprimirPorColumna();
         if(getRenglones() == getColumnas()){
             for(int cadaExponente = 1; cadaExponente < exponente; cadaExponente++){
                 multiplicar(matrizAuxiliar);
@@ -310,4 +334,95 @@ public class Matriz2Numerica extends Matriz2 {
         return false;
     }
 
+    /**
+     * Dobla las columnas a la mitad y suma los pares de columnas que estén juntos y el del centro los pasa tal cual.
+     * @return Regresa verdadero cuando lo hace
+     */
+    public boolean doblarColumnas() {
+        int mitad = Math.ceilDiv(getColumnas(), 2);
+        Matriz2Numerica matrizAuxiliar = new Matriz2Numerica(getRenglones(), mitad);
+        int nuevaColumna = 0;
+        if(mitad%2 == 0){
+            for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
+                for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna = cadaColumna+2){
+                    matrizAuxiliar.cambiar(cadaRenglon, nuevaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue()
+                            + ((Number) obtener(cadaRenglon, cadaColumna+1)).doubleValue());
+                    nuevaColumna++;
+                }
+                nuevaColumna = 0;
+            }
+        } else {
+            for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
+                for(int cadaColumna = 0; cadaColumna < mitad-1; cadaColumna = cadaColumna+2){
+                    matrizAuxiliar.cambiar(cadaRenglon, nuevaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue()
+                            + ((Number) obtener(cadaRenglon, cadaColumna+1)).doubleValue());
+                    nuevaColumna++;
+                }
+                nuevaColumna = 0;
+            }
+            // agrega la columna del medio
+            for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
+                for(int cadaColumna = mitad-1; cadaColumna < mitad; cadaColumna++){
+                    matrizAuxiliar.cambiar(cadaRenglon, Math.ceilDiv(mitad-1, 2), ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue());
+                }
+            }
+            // agrega las sumas de las columnas despues del medio
+            int otraColumna = Math.ceilDiv(mitad,2);
+            for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
+                for(int cadaColumna = mitad; cadaColumna < getColumnas(); cadaColumna = cadaColumna+2){
+                    matrizAuxiliar.cambiar(cadaRenglon, otraColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue() +
+                            ((Number) obtener(cadaRenglon, cadaColumna+1)).doubleValue());
+                    otraColumna++;
+                }
+                otraColumna = Math.ceilDiv(mitad, 2);
+            }
+        }
+        redefinir(matrizAuxiliar);
+        return true;
+    }
+
+    /**
+     * Dobla los renglones a la mitad y suma los pares de renglones que estén juntos y el del centro los pasa tal cual.
+     * @return Regresa verdadero cuando se hace.
+     */
+    public boolean doblarRenglones() {
+        int mitad = Math.ceilDiv(getRenglones(), 2);
+        Matriz2Numerica matrizAuxiliar = new Matriz2Numerica(mitad, getColumnas());
+        int nuevoRenglon = 0;
+        if (mitad % 2 == 0) {
+            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
+                for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon=cadaRenglon+2){
+                    matrizAuxiliar.cambiar(nuevoRenglon, cadaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue()
+                            + ((Number) obtener(cadaRenglon+1, cadaColumna)).doubleValue());
+                    nuevoRenglon++;
+                }
+                nuevoRenglon = 0;
+            }
+        } else {
+            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
+                for(int cadaRenglon = 0; cadaRenglon < mitad-1; cadaRenglon=cadaRenglon+2){
+                    matrizAuxiliar.cambiar(nuevoRenglon, cadaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue()
+                            + ((Number) obtener(cadaRenglon+1, cadaColumna)).doubleValue());
+                    nuevoRenglon++;
+                }
+                nuevoRenglon = 0;
+            }
+            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
+                for(int cadaRenglon = mitad-1; cadaRenglon < mitad; cadaRenglon++){
+                    matrizAuxiliar.cambiar(Math.ceilDiv(mitad-1, 2), cadaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue());
+                }
+            }
+            int otroRenglon = Math.ceilDiv(mitad,2);
+            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
+                for(int cadaRenglon = mitad; cadaRenglon < getRenglones(); cadaRenglon=cadaRenglon+2){
+                    matrizAuxiliar.cambiar(otroRenglon, cadaColumna, ((Number) obtener(cadaRenglon, cadaColumna)).doubleValue()
+                            + ((Number) obtener(cadaRenglon+1, cadaColumna)).doubleValue());
+                    otroRenglon++;
+                }
+                otroRenglon = Math.ceilDiv(mitad, 2);
+            }
+        }
+        redefinir(matrizAuxiliar);
+        return false;
+    }
 }
