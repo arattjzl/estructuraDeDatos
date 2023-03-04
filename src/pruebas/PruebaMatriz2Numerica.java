@@ -33,7 +33,7 @@ public class PruebaMatriz2Numerica {
 
         matriz.imprimirPorColumna();
         SalidaPorDefecto.terminal("\n");
-        matriz.doblarRenglones();
+        matriz.transpuesta();
         matriz.imprimirPorColumna();
     }
 }

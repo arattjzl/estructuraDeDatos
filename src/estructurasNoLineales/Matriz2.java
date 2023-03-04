@@ -148,14 +148,10 @@ public class Matriz2 {
         Matriz2 matrizAuxiliar = new Matriz2(getRenglones(), getColumnas());
         for(int nuevoRenglon = 0; nuevoRenglon < getRenglones(); nuevoRenglon++){
             for(int nuevaColumna = 0; nuevaColumna < getColumnas(); nuevaColumna++){
-                matrizAuxiliar.cambiar(nuevoRenglon, nuevaColumna, informacion[nuevaColumna][nuevoRenglon]);
+                matrizAuxiliar.cambiar(nuevaColumna, nuevoRenglon, obtener(nuevoRenglon, nuevaColumna));
             }
         }
-        for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
-            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
-                cambiar(cadaRenglon, cadaColumna, matrizAuxiliar.informacion[cadaRenglon][cadaColumna]);
-            }
-        }
+        redefinir(matrizAuxiliar);
     }
 
     /**
@@ -227,10 +223,12 @@ public class Matriz2 {
      * @return Regresa <b>true</b> si se realizo algo y <b>false</b> si no.
      */
     public boolean redefinir(Matriz2 matriz2){
-        new Matriz2(matriz2.getRenglones(), matriz2.getColumnas());
-        for(int cadaRenglon = 0; cadaRenglon < matriz2.getRenglones(); cadaRenglon++){
-            for(int cadaColumna = 0; cadaColumna < matriz2.getColumnas(); cadaColumna++){
-                cambiar(cadaRenglon, cadaColumna, matriz2.obtener(cadaRenglon, cadaColumna));
+        columnas = matriz2.getColumnas();
+        renglones = matriz2.getRenglones();
+        informacion = new Object[renglones][columnas];
+        for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
+            for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
+                informacion[cadaRenglon][cadaColumna] = matriz2.obtener(cadaRenglon, cadaColumna);
             }
         }
         return true;

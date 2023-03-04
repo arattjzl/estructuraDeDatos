@@ -15,19 +15,8 @@ public class PruebaMatriz2 {
         matriz.cambiar(1,2,999);
         matriz.cambiar(2,2,777);
 
-        matriz2.cambiar(0,1,"hola");
-        matriz2.cambiar(1,1,"adios");
-        matriz2.cambiar(2,1,"oOo");
-
-        matriz.imprimirPorRenglon();
-        matriz.redefinir(matriz2);
-        SalidaPorDefecto.terminal("\n");
-        matriz.imprimirPorRenglon();
-        //matriz.aMatriz3(lista).imprimirPorRenglon();
-
-
-
-
-
+        matriz.imprimirPorColumna();
+        matriz.transpuesta();
+        matriz.imprimirPorColumna();
     }
 }

@@ -50,6 +50,15 @@ public class Matriz2Numerica extends Matriz2 {
         return true;
     }
 
+    public void transpuesta(){
+        Matriz2Numerica matrizAuxiliar = new Matriz2Numerica(getColumnas(), getRenglones());
+        for(int nuevoRenglon = 0; nuevoRenglon < getRenglones(); nuevoRenglon++){
+            for(int nuevaColumna = 0; nuevaColumna < getColumnas(); nuevaColumna++){
+                matrizAuxiliar.cambiar(nuevaColumna, nuevoRenglon, obtener(nuevoRenglon, nuevaColumna));
+            }
+        }
+        redefinir(matrizAuxiliar);
+    }
     public Matriz2Numerica clonar(){
         Matriz2Numerica nuevaMatriz = new Matriz2Numerica(getRenglones(), getColumnas());
         for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){

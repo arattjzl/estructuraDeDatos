@@ -1,6 +1,7 @@
 arreglosUnidimensionales
 entradasalida
 estructurasLineales
+estructurasLineales.auxiliares
 estructurasNoLineales
 pruebas
 registros.competenciasAtleticas
@@ -10,4 +11,5 @@ repasoDePOO.interfaces
 utils.commons
 utils.commons.archivosAudio
 utils.commons.archivosAudio.wavfile
+utils.imagen
 utils.matematicas
