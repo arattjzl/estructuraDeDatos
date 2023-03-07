@@ -1,5 +1,6 @@
 package pruebas;
 
+import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 
 public class PruebaListaDinamica {
@@ -11,6 +12,12 @@ public class PruebaListaDinamica {
         lista.agregar("z");
         lista.agregarPrincipio("s");
 
+        lista.imprimir();
+        lista.eliminar();
+        SalidaPorDefecto.terminal("\n");
+        lista.imprimir();
+        lista.eliminarInicio();
+        SalidaPorDefecto.terminal("\n");
         lista.imprimir();
     }
 }

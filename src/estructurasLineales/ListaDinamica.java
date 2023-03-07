@@ -6,10 +6,11 @@ import estructurasLineales.auxiliares.Nodo;
 public class ListaDinamica implements Lista{
     protected Nodo primero;
     protected Nodo ultimo;
-
+    protected Nodo nodoActual;
     public ListaDinamica(){
         primero = null;
         ultimo = null;
+        nodoActual = null;
     }
 
     /**
@@ -62,7 +63,7 @@ public class ListaDinamica implements Lista{
     @Override
     public void imprimir() {
         Nodo temporal = primero;
-        while(temporal.getApuntadorOtroNodo() != null){
+        while(temporal != null){
             SalidaPorDefecto.terminal(temporal.getInfo() + " -> ");
             temporal = temporal.getApuntadorOtroNodo();
         }
@@ -141,6 +142,36 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Object eliminar() {
+        if(!vacia()){
+            Object respaldo = ultimo.getInfo();
+            if(primero == ultimo){
+                primero = null;
+                ultimo = null;
+            } else {
+                Nodo penultimo = primero;
+                while (penultimo.getApuntadorOtroNodo() != ultimo){
+                    penultimo = penultimo.getApuntadorOtroNodo();
+                }
+                penultimo.setApuntadorOtroNodo(null);
+                ultimo = penultimo;
+            }
+            return respaldo;
+        }
+        return null;
+    }
+
+    @Override
+    public Object eliminarInicio(){
+        if(!vacia()){
+            Object respaldo = primero.getInfo();
+            if(primero == ultimo){
+                primero = null;
+                ultimo = null;
+            } else {
+                primero = primero.getApuntadorOtroNodo();
+            }
+            return respaldo;
+        }
         return null;
     }
 
@@ -246,5 +277,22 @@ public class ListaDinamica implements Lista{
     @Override
     public boolean recibeBuffer(Object[] info) {
         return false;
+    }
+
+    public void inicializarIterador(){
+        nodoActual = primero;
+    }
+
+    public boolean hayNodo(){
+        return nodoActual == null;
+    }
+
+    public Object obtenerNodo(){
+        if(hayNodo()){
+            Object respaldo = nodoActual.getInfo();
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+            return respaldo;
+        }
+        return null;
     }
 }

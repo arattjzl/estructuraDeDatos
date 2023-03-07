@@ -177,6 +177,11 @@ public class ListaEstatica implements VectorLista {
         return false;
     }
 
+    @Override
+    public Object eliminarInicio() {
+        return null;
+    }
+
 
     @Override
     public boolean esIgual(Object lista2) {
