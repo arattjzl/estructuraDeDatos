@@ -86,6 +86,13 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Object buscar(Object info) {
+        Nodo nodoBuscar = primero;
+        while (nodoBuscar != null && !(info.toString().equalsIgnoreCase(nodoBuscar.getInfo().toString()))){
+            nodoBuscar = nodoBuscar.getApuntadorOtroNodo();
+        }
+        if (nodoBuscar != null){
+            return nodoBuscar.getInfo();
+        }
         return null;
     }
 
@@ -97,6 +104,27 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Object eliminarObjeto(Object info) {
+        if(!vacia()){
+            Nodo nodoAnterior = (Nodo)buscarAnterior(info).obtener(0);
+            Nodo nodoBuscado = (Nodo)buscarAnterior(info).obtener(1);
+            if(nodoBuscado == null){
+                return null;
+            } else {
+                Object respaldo = nodoBuscado.getInfo();
+                if(primero == ultimo){
+                    primero = null;
+                    ultimo = null;
+                } else if(nodoBuscado == primero){
+                    primero = primero.getApuntadorOtroNodo();
+                } else if(nodoBuscado == ultimo){
+                    nodoAnterior.setApuntadorOtroNodo(null);
+                    ultimo = nodoAnterior;
+                } else {
+                    nodoAnterior.setApuntadorOtroNodo(nodoBuscado.getApuntadorOtroNodo());
+                }
+                return respaldo;
+            }
+        }
         return null;
     }
 
@@ -284,7 +312,7 @@ public class ListaDinamica implements Lista{
     }
 
     public boolean hayNodo(){
-        return nodoActual == null;
+        return nodoActual != null;
     }
 
     public Object obtenerNodo(){
@@ -294,5 +322,28 @@ public class ListaDinamica implements Lista{
             return respaldo;
         }
         return null;
+    }
+
+    /**
+     * Busca el nodo anterior al nodo que se quiere buscar.
+     * @param info Información que se quiere buscar en el nodo.
+     * @return Regresa una lista con el nodo anterior y el nodo con la información que se busca.
+     */
+    private ListaEstatica buscarAnterior(Object info){
+        ListaEstatica lista = new ListaEstatica(2);
+        Nodo nodoAnterior = primero;
+        Nodo nodoBuscar = primero;
+        while (nodoBuscar != null && !(info.toString().equalsIgnoreCase(nodoBuscar.getInfo().toString()))){
+            nodoAnterior = nodoBuscar;
+            nodoBuscar = nodoBuscar.getApuntadorOtroNodo();
+        }
+        if (nodoBuscar != null){
+            lista.agregar(nodoAnterior);
+            lista.agregar(nodoBuscar);
+        } else {
+            lista.agregar(null);
+            lista.agregar(null);
+        }
+        return lista;
     }
 }

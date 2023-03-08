@@ -1,15 +1,75 @@
 package utils.matematicas;
 
+import entradasalida.EntradaPorDefecto;
+import entradasalida.SalidaPorDefecto;
+import estructurasLineales.ListaEstatica;
 import estructurasLineales.PilaEstatica;
 
 public class ExpresionesMatematicas {
     
     public static String infijaAPostfija(String infija){
-        return "";
+        infija = tokenizador(infija);
+        SalidaPorDefecto.terminal(infija);
+        PilaEstatica pila = new PilaEstatica(infija.length());
+        String postfija = "";
+        for (int cadaToken = 0; cadaToken < infija.length(); cadaToken++) {
+            char token = infija.charAt(cadaToken);
+            if (esOperando("" + token)) {
+                postfija += token;
+            }
+            else if (token == '(') {
+                pila.poner(token);
+            }
+            else if (token == ')') {
+                while (!pila.vacia() && (char)pila.verTope() != '(') {
+                    postfija += pila.quitar();
+                }
+                pila.quitar();
+            }
+            else {
+                while (!pila.vacia() && (char)pila.verTope() != '(' && prioridadOperadores((char)pila.verTope()) >= prioridadOperadores(token)) {
+                    postfija += pila.quitar();
+                }
+                pila.poner(token);
+            }
+        }
+        while (!pila.vacia()) {
+            postfija += pila.quitar();
+        }
+        return postfija;
     }
     
     public static String infijaAPrefija(String infija){
-        return "";
+        infija = tokenizador(infija);
+        SalidaPorDefecto.terminal(infija);
+        PilaEstatica pila = new PilaEstatica(infija.length());
+        String postfija = "";
+        for (int cadaToken = infija.length() - 1; cadaToken >= 0; cadaToken--) {
+            char token = infija.charAt(cadaToken);
+            if (esOperando("" + token)) {
+                postfija = token + postfija ;
+            }
+            else if (token == ')') {
+                pila.poner(token);
+            }
+            else if (token == '(') {
+                while (!pila.vacia() && (char)pila.verTope() != ')') {
+                    postfija = pila.quitar() + postfija;
+                }
+                pila.quitar();
+            }
+            else {
+                while (!pila.vacia() && (char)pila.verTope() != '(' && prioridadOperadores((char)pila.verTope()) > prioridadOperadores(token)) {
+                    postfija = pila.quitar() + postfija;
+                }
+                pila.poner(token);
+            }
+        }
+        while (!pila.vacia()) {
+            postfija = pila.quitar() + postfija;
+        }
+        SalidaPorDefecto.terminal("\n" + postfija + "\n");
+        return postfija;
     }
     
     public static Double evaluarPostfija(String postfija){
@@ -91,7 +151,7 @@ public class ExpresionesMatematicas {
         return null;
         // 4. El resultado final esta en la pila
     }
-    
+
     public static boolean esOperando(String token){
         if(token.equalsIgnoreCase("+")){
             return false;
@@ -108,6 +168,35 @@ public class ExpresionesMatematicas {
         } else if(token.equalsIgnoreCase("(")){
             return false;
         } else if(token.equalsIgnoreCase(")")){
+            return false;
+        } else if(token.equalsIgnoreCase("[")){
+            return false;
+        } else if(token.equalsIgnoreCase("]")){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean noEsNumero(String token){
+        if(token.equalsIgnoreCase("1")){
+            return false;
+        } else if(token.equalsIgnoreCase("2")){
+            return false;
+        } else if(token.equalsIgnoreCase("3")){
+            return false;
+        } else if(token.equalsIgnoreCase("4")){
+            return false;
+        } else if(token.equalsIgnoreCase("5")){
+            return false;
+        } else if(token.equalsIgnoreCase("6")){
+            return false;
+        } else if(token.equalsIgnoreCase("7")){
+            return false;
+        } else if(token.equalsIgnoreCase("8")){
+            return false;
+        } else if(token.equalsIgnoreCase("9")){
+            return false;
+        } else if(token.equalsIgnoreCase("0")){
             return false;
         }
         return true;
@@ -126,10 +215,48 @@ public class ExpresionesMatematicas {
         } else if(operador=='*'){
             return operando1*operando2;
         } else if(operador=='^'){
-            return Math.pow(operando2, operando1);
+            return Math.pow(operando1, operando2);
         } else if (operador=='%') {
             return operando1%operando2;
         }
         return null;
+    }
+
+    private static int prioridadOperadores(char operador) {
+        if(operador == '+' || operador == '-'){
+            return 1;
+        } else if(operador == '*' || operador == '/'){
+            return 2;
+        } else if(operador == '^'){
+            return 3;
+        } else return -1;
+    }
+
+    public static String tokenizador(String infija){
+        ListaEstatica lista = new ListaEstatica(infija.length());
+        int cadaToken = 0;
+        while(cadaToken < infija.length()){
+            String nuevaVariable = "";
+            if(!noEsNumero(infija.charAt(cadaToken) + "")) {
+                lista.agregar(infija.charAt(cadaToken));
+            } else if(!esOperando(infija.charAt(cadaToken) + "")){
+                lista.agregar(infija.charAt(cadaToken));
+            } else if(esOperando(infija.charAt(cadaToken) + "") && infija.charAt(cadaToken) != ' '){
+                while(esOperando(infija.charAt(cadaToken) + "")) {
+                    nuevaVariable += infija.charAt(cadaToken);
+                    cadaToken++;
+                }
+                SalidaPorDefecto.terminal("Que valor tiene la variable " + nuevaVariable + "\n");
+                nuevaVariable = EntradaPorDefecto.consolaCadenas();
+                lista.agregar(nuevaVariable);
+                lista.agregar(infija.charAt(cadaToken));
+            }
+            cadaToken++;
+        }
+        String nuevaInfija = "";
+        for(int nuevoToken = 0; nuevoToken <= lista.getTope(); nuevoToken++){
+            nuevaInfija += lista.obtener(nuevoToken);
+        }
+        return nuevaInfija;
     }
 }

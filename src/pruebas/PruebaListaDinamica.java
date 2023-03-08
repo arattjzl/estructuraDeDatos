@@ -13,10 +13,7 @@ public class PruebaListaDinamica {
         lista.agregarPrincipio("s");
 
         lista.imprimir();
-        lista.eliminar();
-        SalidaPorDefecto.terminal("\n");
-        lista.imprimir();
-        lista.eliminarInicio();
+        lista.eliminarObjeto("s");
         SalidaPorDefecto.terminal("\n");
         lista.imprimir();
     }
