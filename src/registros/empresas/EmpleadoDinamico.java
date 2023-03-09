@@ -4,7 +4,7 @@ import estructurasLineales.ListaDinamica;
 
 /**
  * @version 1.0
- * @autor:Clase ED
+ * @author Aratt
  */
 public class EmpleadoDinamico {
     protected int numeroEmpleado;

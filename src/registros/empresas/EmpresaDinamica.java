@@ -6,8 +6,8 @@ import estructurasLineales.ListaEstatica;
 import registros.empresas.EmpleadoDinamico;
 
 /**
- * @version1.0
- * @autor:Clase ED
+ * @author  Aratt
+ * @version 1.0
  */
 public class EmpresaDinamica {
     protected String nombre;
