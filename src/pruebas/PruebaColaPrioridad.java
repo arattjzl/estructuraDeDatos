@@ -1,5 +1,6 @@
 package pruebas;
 
+import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ColaEstaticaPrioridad;
 import utils.commons.TipoPrioridad;
 
@@ -13,6 +14,11 @@ public class PruebaColaPrioridad {
         cola.agregar("!", 6);
 
         cola.imprimir();
-
+        cola.quitar();
+        SalidaPorDefecto.terminal("\n");
+        cola.imprimir();
+        cola.quitar();
+        SalidaPorDefecto.terminal("\n");
+        cola.imprimir();
     }
 }
