@@ -2,11 +2,23 @@ package estructurasLineales;
 
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.auxiliares.Nodo;
+import estructurasNoLineales.Matriz2;
+import utils.commons.Comparador;
+import utils.commons.TipoTabla;
 
+/**
+ * Esta clase contiene los métodos para una Lista Dinámica.
+ * @author Aratt
+ * @version 1.0
+ */
 public class ListaDinamica implements Lista{
     protected Nodo primero;
     protected Nodo ultimo;
     protected Nodo nodoActual;
+
+    /**
+     * Crea una lista dinámica.
+     */
     public ListaDinamica(){
         primero = null;
         ultimo = null;
@@ -43,6 +55,30 @@ public class ListaDinamica implements Lista{
         return -1;
     }
 
+    /**
+     * Obtiene el objeto en el índice indicado.
+     * @param indice Índice en el cual se buscará el valor.
+     * @return Regresa el objeto del índice indicado.
+     */
+    public Object obtener(int indice){
+        int cadaIndice = 0;
+        inicializarIterador();
+        while (nodoActual != null){
+            if(cadaIndice == indice){
+                return nodoActual;
+            }
+            cadaIndice++;
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return null;
+
+    }
+
+    /**
+     * Agrega información al principio de la lista.
+     * @param info Información por agregar.
+     * @return Regresa 1 si se agregó o -1 si no se agregó.
+     */
     public int agregarPrincipio(Object info){
         Nodo nuevoNodo = new Nodo(info);
         if(nuevoNodo != null){
@@ -75,7 +111,16 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public void imprimirOI() {
-
+        PilaDinamica pila = new PilaDinamica();
+        inicializarIterador();
+        while (nodoActual != null){
+            pila.poner(nodoActual.getInfo());
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        SalidaPorDefecto.terminal("null");
+        while (!pila.vacia()){
+            SalidaPorDefecto.terminal(" <- " + pila.quitar());
+        }
     }
 
     /**
@@ -94,6 +139,31 @@ public class ListaDinamica implements Lista{
             return nodoBuscar.getInfo();
         }
         return null;
+    }
+
+    /**
+     * Elimina el objeto de la lista en el índice que se indica.
+     * @param indice Índice por borrar.
+     * @return Regresa el valor que se borrará.
+     */
+    public Object eliminar(int indice){
+        ListaEstatica listaDeNodos;
+        int cadaIndice = 0;
+        inicializarIterador();
+        Object respaldo = null;
+        while (nodoActual != null){
+            if(cadaIndice == indice){
+                respaldo = nodoActual;
+                Object info = nodoActual;
+                listaDeNodos = buscarAnterior(info);
+                Nodo anterior = (Nodo) listaDeNodos.obtener(0);
+                nodoActual = nodoActual.getApuntadorOtroNodo();
+                anterior.setApuntadorOtroNodo(nodoActual);
+            }
+            cadaIndice++;
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return respaldo;
     }
 
     /**
@@ -130,13 +200,60 @@ public class ListaDinamica implements Lista{
 
     /**
      * Indica si la lista actual es igual a la lista que mandamos como parámetro.
-     *
      * @param lista2 Lista que verificaremos si es igual a la actual.
      * @return Regresa <b>true</b> si son iguales o <b>false</b> si no lo son.
      */
     @Override
     public boolean esIgual(Object lista2) {
+        if(lista2 instanceof ListaDinamica){
+            if(contarValores() == ((ListaDinamica) lista2).contarValores()){
+                inicializarIterador();
+                ((ListaDinamica) lista2).inicializarIterador();
+                Nodo otroNodoActual = ((ListaDinamica) lista2).nodoActual;
+                while (nodoActual != null){
+                    if((int)Comparador.comparar(nodoActual, otroNodoActual) == 0){
+                        nodoActual = nodoActual.getApuntadorOtroNodo();
+                        otroNodoActual = otroNodoActual.getApuntadorOtroNodo();
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
+            } else{
+                return false;
+            }
+        } else if( lista2 instanceof ListaEstatica){
+            if(contarValores() == ((ListaEstatica) lista2).getTope()+1){
+                int cadaIndice = 0;
+                inicializarIterador();
+                while (nodoActual != null){
+                    if((int)Comparador.comparar(nodoActual, ((ListaEstatica) lista2).obtener(cadaIndice)) == 0){
+                        nodoActual = nodoActual.getApuntadorOtroNodo();
+                        cadaIndice++;
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
         return false;
+    }
+
+    /**
+     * Cuenta los valores que existe en la lista.
+     * @return Regresa el valor de números que existe en la lista.
+     */
+    public int contarValores(){
+        int contador = 0;
+        inicializarIterador();
+        while (nodoActual != null){
+            contador++;
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return contador;
     }
 
     /**
@@ -149,18 +266,56 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public boolean cambiar(Object infoViejo, Object infoNuevo, int numVeces) {
+        int veces = 0;
+        inicializarIterador();
+        while (nodoActual != null && veces < numVeces){
+            if((int) Comparador.comparar(nodoActual.getInfo(), infoViejo) == 0){
+                nodoActual.setInfo(infoNuevo);
+                veces++;
+            }
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return true;
+    }
+
+    /**
+     * Cambia la información en la posición que se indique.
+     * @param indice Posición en la que se debe de cambiar la info.
+     * @param info Información por cambiar.
+     * @return Regresa <b>true</b> si se cambió o <b>false</b> si no se cambio nada.
+     */
+    public boolean cambiar(int indice, Object info){
+        int cadaIndice = 0;
+        inicializarIterador();
+        while (nodoActual != null){
+            if(cadaIndice == indice){
+                nodoActual.setInfo(info);
+                return true;
+            }
+            cadaIndice++;
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
         return false;
     }
 
     /**
      * Busca dentro de un arreglo los elementos dados por info.
-     *
      * @param info Es el valor que se buscara en la lista actual.
      * @return Regresa una lista con las posiciones en las que se encuentra la información que estamos buscando.
      */
     @Override
     public ListaEstatica buscarValores(Object info) {
-        return null;
+        ListaEstatica lista = new ListaEstatica(contarValores());
+        int cadaValor = 0;
+        inicializarIterador();
+        while (nodoActual != null){
+            if((int) Comparador.comparar(info, nodoActual.getInfo()) == 0){
+                lista.agregar(cadaValor);
+            }
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+            cadaValor++;
+        }
+        return lista;
     }
 
     /**
@@ -188,6 +343,10 @@ public class ListaDinamica implements Lista{
         return null;
     }
 
+    /**
+     * Elimina el objeto que se encuentre en inicio.
+     * @return Regresa el objeto eliminado.
+     */
     @Override
     public Object eliminarInicio(){
         if(!vacia()){
@@ -208,17 +367,32 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public void vaciar() {
-
+        primero = null;
+        ultimo = null;
+        nodoActual = null;
     }
 
     /**
      * Añade la lista 2 a la lista actual al final de esta.
      *
-     * @param lista2 Es la lista de la cual añadiremos a la lista actual.
+     * @param listaDatos Es la lista de la cual añadiremos a la lista actual.
      * @return Regresa <b>true</b> si se añadió la lista o <b>false</b> si no se añadió.
      */
     @Override
-    public boolean agregarLista(Object lista2) {
+    public boolean agregarLista(Object listaDatos) {
+        if(listaDatos instanceof ListaEstatica){
+            for(int cadaIndice = 0; cadaIndice <= ((ListaEstatica) listaDatos).getTope(); cadaIndice++){
+                agregar(((ListaEstatica) listaDatos).obtener(cadaIndice));
+            }
+            return true;
+        } else if(listaDatos instanceof ListaDinamica){
+            ((ListaDinamica) listaDatos).inicializarIterador();
+            while (((ListaDinamica) listaDatos).nodoActual != null){
+                agregar(((ListaDinamica) listaDatos).nodoActual);
+                ((ListaDinamica) listaDatos).nodoActual = ((ListaDinamica) listaDatos).nodoActual.getApuntadorOtroNodo();
+            }
+            return true;
+        }
         return false;
     }
 
@@ -227,7 +401,11 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public void invertir() {
-
+        ListaDinamica auxiliar = (ListaDinamica) clonar();
+        vaciar();
+        while (auxiliar.primero != null){
+            agregar(auxiliar.eliminar());
+        }
     }
 
     /**
@@ -238,7 +416,15 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public int contar(Object info) {
-        return 0;
+        int contador = 0;
+        inicializarIterador();
+        while (nodoActual != null){
+            if(nodoActual.getInfo() == info){
+                contador++;
+            }
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return contador;
     }
 
     /**
@@ -259,7 +445,9 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public void rellenar(Object info, int cantidad) {
-
+        for(int cadaCantidad = 0; cadaCantidad < cantidad; cadaCantidad++){
+            agregar(info);
+        }
     }
 
     /**
@@ -269,7 +457,13 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Lista clonar() {
-        return null;
+        ListaDinamica lista = new ListaDinamica();
+        inicializarIterador();
+        while(nodoActual != null){
+            lista.agregar(nodoActual.getInfo());
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return lista;
     }
 
     /**
@@ -281,6 +475,7 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Lista subLista(int indiceInicial, int indiceFinal) {
+
         return null;
     }
 
@@ -294,27 +489,49 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public ListaEstatica subLista(ListaEstaticaNumerica listaIndices) {
-        return null;
+        ListaEstatica lista = new ListaEstatica(listaIndices.getMAXIMO());
+        int indice = 0;
+        for(int cadaIndice = 0; cadaIndice <= listaIndices.getTope(); cadaIndice++){
+            inicializarIterador();
+            while(nodoActual != null){
+                if((int)Comparador.comparar(obtener(cadaIndice), indice) == 0){
+                    lista.agregar(nodoActual.getInfo());
+                }
+                indice++;
+                nodoActual = nodoActual.getApuntadorOtroNodo();
+            }
+        }
+        return lista;
     }
 
+    /**
+     * Obtiene la información del último nodo.
+     * @return Regresa la información del último nodo.
+     */
     @Override
     public Object verUltimo() {
-        return null;
+        return ultimo.getInfo();
     }
 
-    @Override
-    public boolean recibeBuffer(Object[] info) {
-        return false;
-    }
-
+    /**
+     * Inicializa el nodo actual para poder hacer ciclos.
+     */
     public void inicializarIterador(){
         nodoActual = primero;
     }
 
+    /**
+     * Ayuda a saber si hay algún nodo.
+     * @return Regresa true si hay nodo o false si no lo hay.
+     */
     public boolean hayNodo(){
         return nodoActual != null;
     }
 
+    /**
+     * Obtiene el nodo.
+     * @return Regresa el nodo.
+     */
     public Object obtenerNodo(){
         if(hayNodo()){
             Object respaldo = nodoActual.getInfo();
@@ -345,5 +562,102 @@ public class ListaDinamica implements Lista{
             lista.agregar(null);
         }
         return lista;
+    }
+
+    /**
+     * Convierte la lista dinámica en una estática y regresa la lista estática.
+     * @return Son los valores de la lista actual pero en una lista estática.
+     */
+    public ListaEstatica aListaEstatica(){
+        inicializarIterador();
+        ListaEstatica lista = new ListaEstatica(1);
+        int contador = 0;
+        while (nodoActual != null){
+            contador++;
+            lista.redimensionar(contador);
+            lista.agregar(nodoActual.getInfo());
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+        }
+        return lista;
+    }
+
+    /**
+     * Convierte la lista dinámica en una estática y borra los valores que estén en la lista parámetro.
+     * @param elementosADescartar Lista con elementos a descartar.
+     * @return Regresa la lista estática.
+     */
+    public ListaEstatica aListaEstatica(ListaEstatica elementosADescartar){
+        ListaEstatica valores = aListaEstatica();
+        valores.eliminarLista(elementosADescartar);
+        return valores;
+    }
+
+    /**
+     * Crea una matriz bidimensional con los valores que tiene la lista actual y los demás espacios los rellena con null.
+     * @param filas Número de filas de la matriz.
+     * @param columnas Número de columnas de la matriz.
+     * @return Regresa la matriz con los valores de la lista actual.
+     */
+    public Matriz2 aMatriz2(int filas, int columnas){
+        Matriz2 matriz = new Matriz2(filas, columnas, null);
+        int cadaCol = 0;
+        int cadaFila = 0;
+        inicializarIterador();
+        while (nodoActual != null){
+            if(cadaFila == filas){
+                cadaFila = 0;
+                cadaCol++;
+                matriz.cambiar(cadaFila, cadaCol, nodoActual.getInfo());
+            } else {
+                matriz.cambiar(cadaFila, cadaCol, nodoActual.getInfo());
+            }
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+            cadaFila++;
+        }
+        return matriz;
+    }
+
+    /**
+     * Agrega los elementos de matriz bidimensional a la lista.
+     * @param tabla Es la matriz bidimensional la cual se agregará a la lista.
+     * @param enumTipoTabla Tipo de tabla de como se agregará a la lista.
+     * @return Regresa true si se agregaron o false si no se agregaron.
+     */
+    public boolean agrgarMatriz2D(Matriz2 tabla, TipoTabla enumTipoTabla){
+        if (enumTipoTabla==TipoTabla.COLUMNA){
+            for (int cadaColumna=0;cadaColumna<tabla.getColumnas();cadaColumna++){
+                for (int cadaRenglon=0;cadaRenglon<tabla.getRenglones();cadaRenglon++){
+                    agregar(tabla.obtener(cadaRenglon,cadaColumna));
+                }
+            }
+            return true;
+        }else if(enumTipoTabla==TipoTabla.RENGLON){
+            for (int cadaRenglon=0;cadaRenglon<tabla.getRenglones();cadaRenglon++){
+                for (int cadaColumna=0;cadaColumna<tabla.getRenglones();cadaColumna++){
+                    agregar(tabla.obtener(cadaRenglon,cadaColumna));
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Redimensiona la lista, si es un valor menor, dejará los valores de la lista hasta que
+     * lleguen a máximo, si es un valor mayor, agregará la lista los valores que faltan con null.
+     * @param maximo Valor con el cual se redimensionará la lista.
+     */
+    public void redimensionar(int maximo){
+        if(contarValores() < maximo){
+            int cuantosNull = maximo - contarValores();
+            for(int cadaValor = 0; cadaValor < cuantosNull; cadaValor++){
+                agregar(null);
+            }
+        } else if(contarValores() > maximo){
+            int cuantosBorrar = contarValores() - maximo;
+            for(int cadaValor = 0; cadaValor < cuantosBorrar; cadaValor++){
+                eliminar();
+            }
+        }
     }
 }

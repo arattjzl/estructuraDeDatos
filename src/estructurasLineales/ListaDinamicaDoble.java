@@ -3,6 +3,11 @@ package estructurasLineales;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.auxiliares.NodoDoble;
 
+/**
+ * Esta clase contiene los métodos de la Lista Dinámica Doble.
+ * @author Aratt
+ * @version 1.0
+ */
 public class ListaDinamicaDoble implements Lista{
 
     protected NodoDoble primero;
@@ -142,11 +147,6 @@ public class ListaDinamicaDoble implements Lista{
     @Override
     public Object verUltimo() {
         return null;
-    }
-
-    @Override
-    public boolean recibeBuffer(Object[] info) {
-        return false;
     }
 
     @Override

@@ -2,6 +2,11 @@ package estructurasLineales;
 
 import entradasalida.SalidaPorDefecto;
 
+/**
+ * Esta clase contiene los métodos de la Cola Estática.
+ * @author Aratt
+ * @version 1.0
+ */
 public class ColaEstatica implements Lote{
 
     protected Object informacion[];

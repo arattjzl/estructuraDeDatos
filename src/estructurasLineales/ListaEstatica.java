@@ -1,7 +1,13 @@
 package estructurasLineales;
 
 import entradasalida.SalidaPorDefecto;
+import utils.commons.Comparador;
 
+/**
+ * Esta clase contiene los métodos de la Lista Estática.
+ * @author Aratt
+ * @version 1.0
+ */
 public class ListaEstatica implements VectorLista {
     protected int tope;
     protected int MAXIMO;
@@ -157,16 +163,15 @@ public class ListaEstatica implements VectorLista {
 
     @Override
     public boolean redimensionar(int maximo) {
-        if(getMAXIMO() <= maximo){
-            setMAXIMO(maximo);
-        }else{
-            setMAXIMO(maximo);
-            setTope(maximo-1);
+        ListaEstatica auxiliar = (ListaEstatica) clonar();
+        MAXIMO = maximo;
+        informacion = new Object[getMAXIMO()];
+        for(int cadaIndice = 0; cadaIndice <= getTope(); cadaIndice++){
+            informacion[cadaIndice] = auxiliar.obtener(cadaIndice);
         }
         return true;
     }
 
-    @Override
     public boolean recibeBuffer(Object[] buffer) {
         if(!vacia()) {
             for(int indiceArreglo = 0; indiceArreglo <= getTope(); indiceArreglo++){
@@ -277,13 +282,11 @@ public class ListaEstatica implements VectorLista {
 
     @Override
     public void eliminarLista(Object lista2) {
-        if(lista2 instanceof ListaEstatica){
-            for(int indice = 0; indice <= getTope(); indice++){
-                for(int nuevoIndice = 0; nuevoIndice <=  ((ListaEstatica)lista2).getTope(); nuevoIndice++) {
-                    for(int otroIndice = 0; otroIndice <= ((ListaEstatica)lista2).getTope(); otroIndice++){
-                        if(informacion[indice].toString().equalsIgnoreCase(((ListaEstatica) lista2).informacion[nuevoIndice].toString())){
-                            ((ListaEstatica) lista2).eliminar(nuevoIndice);
-                        }
+        if (lista2 instanceof ListaEstatica lista2estatica) {
+            for(int contador = 0;contador <= lista2estatica.getTope(); contador ++) {
+                for (int cadaIndice = 0; cadaIndice <= getTope(); cadaIndice++) {
+                    if ((int) Comparador.comparar(lista2estatica.obtener(contador), obtener(cadaIndice)) == 0) {
+                        eliminar(cadaIndice);
                     }
                 }
             }

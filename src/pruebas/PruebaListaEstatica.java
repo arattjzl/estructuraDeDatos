@@ -14,18 +14,15 @@ public class PruebaListaEstatica {
         lista.agregar("Barcelona");
         lista.agregar("Shanghai");
         lista.agregar("Ontario");
-
-        lista2.agregar("Tokio");
-        lista2.agregar("Tokio");
-        lista2.agregar("Rio de Janeiro");
-        lista2.agregar("Buenos Aires");
-        lista2.agregar("Zacatecas");
+        lista.imprimir();
 
 
-        lista.imprimirOI();
-        System.out.println("\n");
-        lista.invertir();
-        lista.imprimirOI();
+        lista2.agregar("Barcelona");
+        lista2.agregar("Shanghai");
+        lista2.agregar("Ontario");
 
+        lista.eliminarLista(lista2);
+        SalidaPorDefecto.terminal("\n");
+        lista.imprimir();
     }
 }

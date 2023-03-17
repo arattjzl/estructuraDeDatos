@@ -134,6 +134,5 @@ public interface Lista {
 
     public Object verUltimo();
 
-    public boolean recibeBuffer(Object[] info);
     public Object eliminarInicio();
 }

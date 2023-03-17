@@ -1,5 +1,10 @@
 package estructurasLineales;
 
+/**
+ * Esta clase contiene los métodos de la Pila Estática.
+ * @author Aratt
+ * @version 1.0
+ */
 public class PilaEstatica implements Lote {
     protected ListaEstatica pila;
 
