@@ -131,12 +131,12 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Object buscar(Object info) {
-        Nodo nodoBuscar = primero;
-        while (nodoBuscar != null && !(info.toString().equalsIgnoreCase(nodoBuscar.getInfo().toString()))){
-            nodoBuscar = nodoBuscar.getApuntadorOtroNodo();
+        inicializarIterador();
+        while (nodoActual != null && !(info.toString().equalsIgnoreCase(nodoActual.getInfo().toString()))){
+            nodoActual = nodoActual.getApuntadorOtroNodo();
         }
-        if (nodoBuscar != null){
-            return nodoBuscar.getInfo();
+        if (nodoActual != null){
+            return nodoActual.getInfo();
         }
         return null;
     }
@@ -434,7 +434,18 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public void eliminarLista(Object lista2) {
-
+        if (lista2 instanceof ListaDinamica) {
+            ListaDinamica listaDinamica = (ListaDinamica) lista2;
+            listaDinamica.inicializarIterador();
+            while (listaDinamica.nodoActual != null) {
+                eliminarObjeto(listaDinamica.nodoActual.getInfo());
+                listaDinamica.nodoActual = listaDinamica.nodoActual.getApuntadorOtroNodo();
+            }
+        } else if (lista2 instanceof ListaEstatica) {
+            for (int cadaPos = 0; cadaPos <= ((ListaEstatica) lista2).getTope(); cadaPos++) {
+                eliminarObjeto(((ListaEstatica) lista2).obtener(cadaPos));
+            }
+        }
     }
 
     /**
@@ -475,8 +486,19 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public Lista subLista(int indiceInicial, int indiceFinal) {
-
-        return null;
+        ListaDinamica lista = new ListaDinamica();
+        inicializarIterador();
+        int cadaPos = 0;
+        while (nodoActual != null && cadaPos < indiceInicial){
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+            cadaPos++;
+        }
+        while (nodoActual != null && cadaPos <= indiceFinal){
+            lista.agregar(nodoActual.getInfo());
+            nodoActual = nodoActual.getApuntadorOtroNodo();
+            cadaPos++;
+        }
+        return lista;
     }
 
     /**
@@ -490,12 +512,12 @@ public class ListaDinamica implements Lista{
     @Override
     public ListaEstatica subLista(ListaEstaticaNumerica listaIndices) {
         ListaEstatica lista = new ListaEstatica(listaIndices.getMAXIMO());
-        int indice = 0;
         for(int cadaIndice = 0; cadaIndice <= listaIndices.getTope(); cadaIndice++){
             inicializarIterador();
+            int indice = 0;
             while(nodoActual != null){
-                if((int)Comparador.comparar(obtener(cadaIndice), indice) == 0){
-                    lista.agregar(nodoActual.getInfo());
+                if((int) Comparador.comparar(listaIndices.obtener(cadaIndice), indice) == 0){
+                    lista.agregar(obtener(indice));
                 }
                 indice++;
                 nodoActual = nodoActual.getApuntadorOtroNodo();
@@ -546,7 +568,7 @@ public class ListaDinamica implements Lista{
      * @param info Información que se quiere buscar en el nodo.
      * @return Regresa una lista con el nodo anterior y el nodo con la información que se busca.
      */
-    private ListaEstatica buscarAnterior(Object info){
+    public ListaEstatica buscarAnterior(Object info){
         ListaEstatica lista = new ListaEstatica(2);
         Nodo nodoAnterior = primero;
         Nodo nodoBuscar = primero;
@@ -620,18 +642,18 @@ public class ListaDinamica implements Lista{
     /**
      * Agrega los elementos de matriz bidimensional a la lista.
      * @param tabla Es la matriz bidimensional la cual se agregará a la lista.
-     * @param enumTipoTabla Tipo de tabla de como se agregará a la lista.
+     * @param tipoTabla Tipo de tabla de como se agregará a la lista.
      * @return Regresa true si se agregaron o false si no se agregaron.
      */
-    public boolean agrgarMatriz2D(Matriz2 tabla, TipoTabla enumTipoTabla){
-        if (enumTipoTabla==TipoTabla.COLUMNA){
+    public boolean agrgarMatriz2D(Matriz2 tabla, TipoTabla tipoTabla){
+        if (tipoTabla==TipoTabla.COLUMNA){
             for (int cadaColumna=0;cadaColumna<tabla.getColumnas();cadaColumna++){
                 for (int cadaRenglon=0;cadaRenglon<tabla.getRenglones();cadaRenglon++){
                     agregar(tabla.obtener(cadaRenglon,cadaColumna));
                 }
             }
             return true;
-        }else if(enumTipoTabla==TipoTabla.RENGLON){
+        }else if(tipoTabla==TipoTabla.RENGLON){
             for (int cadaRenglon=0;cadaRenglon<tabla.getRenglones();cadaRenglon++){
                 for (int cadaColumna=0;cadaColumna<tabla.getRenglones();cadaColumna++){
                     agregar(tabla.obtener(cadaRenglon,cadaColumna));

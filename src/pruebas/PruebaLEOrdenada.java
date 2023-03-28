@@ -13,14 +13,12 @@ public class PruebaLEOrdenada {
         lista.agregar(2);
         lista.agregar(3);
         lista.agregar(1);
-        lista.agregar(4);
+        lista.agregar(1);
 
         lista2.agregar(1);
         lista2.agregar(3);
         lista2.agregar(5);
 
-
-        lista.retenerLista(lista2);
-        lista.imprimirOI();
+        lista.imprimir();
     }
 }

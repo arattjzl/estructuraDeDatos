@@ -4,26 +4,25 @@ import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 import estructurasLineales.ListaEstatica;
 import estructurasLineales.ListaEstaticaNumerica;
+import estructurasNoLineales.Matriz2;
+import utils.commons.TipoTabla;
 
 public class PruebaListaDinamica {
     public static void main(String[] args) {
         ListaDinamica lista = new ListaDinamica();
-        ListaEstaticaNumerica listaNum = new ListaEstaticaNumerica(4);
-
-        listaNum.agregar(1);
-        listaNum.agregar(3);
-        listaNum.agregar(0);
 
         lista.agregar("a");
         lista.agregar("b");
         lista.agregar("z");
-        lista.agregar("h");
-        lista.agregar("i");
+        lista.agregar("o");
+        lista.agregar("p");
         lista.agregar("r");
-        lista.agregar("z");
+        lista.agregar("q");
+
 
         lista.imprimir();
         SalidaPorDefecto.terminal("\n");
-        lista.subLista(listaNum).imprimir();
+        SalidaPorDefecto.terminal("\n");
+        lista.subLista(1, 4).imprimir();
     }
 }
