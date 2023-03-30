@@ -380,16 +380,16 @@ public class ListaDinamica implements Lista{
      */
     @Override
     public boolean agregarLista(Object listaDatos) {
-        if(listaDatos instanceof ListaEstatica){
-            for(int cadaIndice = 0; cadaIndice <= ((ListaEstatica) listaDatos).getTope(); cadaIndice++){
-                agregar(((ListaEstatica) listaDatos).obtener(cadaIndice));
+        if(listaDatos instanceof ListaEstatica lista2){
+            for(int cadaIndice = 0; cadaIndice <= lista2.getTope(); cadaIndice++){
+                agregar(lista2.obtener(cadaIndice));
             }
             return true;
-        } else if(listaDatos instanceof ListaDinamica){
-            ((ListaDinamica) listaDatos).inicializarIterador();
-            while (((ListaDinamica) listaDatos).nodoActual != null){
-                agregar(((ListaDinamica) listaDatos).nodoActual);
-                ((ListaDinamica) listaDatos).nodoActual = ((ListaDinamica) listaDatos).nodoActual.getApuntadorOtroNodo();
+        } else if(listaDatos instanceof ListaDinamica lista2){
+            lista2.inicializarIterador();
+            while (lista2.nodoActual != null){
+                agregar(lista2.nodoActual.getInfo());
+                lista2.nodoActual = lista2.nodoActual.getApuntadorOtroNodo();
             }
             return true;
         }
@@ -645,7 +645,7 @@ public class ListaDinamica implements Lista{
      * @param tipoTabla Tipo de tabla de como se agregará a la lista.
      * @return Regresa true si se agregaron o false si no se agregaron.
      */
-    public boolean agrgarMatriz2D(Matriz2 tabla, TipoTabla tipoTabla){
+    public boolean agregarMatriz2D(Matriz2 tabla, TipoTabla tipoTabla){
         if (tipoTabla==TipoTabla.COLUMNA){
             for (int cadaColumna=0;cadaColumna<tabla.getColumnas();cadaColumna++){
                 for (int cadaRenglon=0;cadaRenglon<tabla.getRenglones();cadaRenglon++){
