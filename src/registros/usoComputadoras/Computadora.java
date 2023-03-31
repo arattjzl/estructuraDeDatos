@@ -105,16 +105,24 @@ public class Computadora {
      */
     public void imprimirDatosComputadora(){
         SalidaPorDefecto.terminal("Numero de computadora: " + numComputadora +
-                ", Centro Computo perteneciente: " + CCperteneciente +
+                ", \nCentro Computo perteneciente: " + CCperteneciente +
                 ", RAM: " + ram +
                 ", Diso Duro: " + tamanioDiscoDuro +
                 ", Procesador: " + procesador +
                 ", Marca: " + marca);
-        SalidaPorDefecto.terminal(", Con las apliaciones: ");
-        getUsuarioQueUtilizaron().inicializarIterador();
-        while (getUsuarioQueUtilizaron().hayNodo()){
+    }
+
+    /**
+     * Imprime las aplicaciones instaladas.
+     */
+    public void imprimirDatosAppsInstaladas(){
+        SalidaPorDefecto.terminal(", \nCon las apliaciones: ");
+        getAppsInstaladas().inicializarIterador();
+        while (getAppsInstaladas().hayNodo()){
             App cadaApp = (App) getAppsInstaladas().obtenerNodo();
-            SalidaPorDefecto.terminal(cadaApp.getNombre() + " ");
+            if(cadaApp != null){
+                SalidaPorDefecto.terminal(cadaApp.getNombre() + " ");
+            }
         }
     }
 

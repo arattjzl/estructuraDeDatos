@@ -62,8 +62,16 @@ public class PruebasControlCentroComputo {
         comp1.agregarApp(app2);
         comp1.agregarApp(app1);
         comp1.agregarApp(app4);
+        comp2.agregarApp(app5);
+        comp2.agregarApp(app4);
         comp3.agregarApp(app2);
+        comp4.agregarApp(app1);
         comp4.agregarApp(app2);
+        comp5.agregarApp(app3);
+
+        comp2.iniciarUsoComputadora(usoComputadora1);
+        comp2.iniciarUsoComputadora(usoComputadora3);
+        comp2.iniciarUsoComputadora(usoComputadora5);
 
         controlCentroComputo.agregarComputadora(comp1);
         controlCentroComputo.agregarComputadora(comp2);
@@ -73,10 +81,6 @@ public class PruebasControlCentroComputo {
 
         SalidaPorDefecto.terminal("\n");
 
-        comp2.iniciarUsoComputadora(usoComputadora1);
-        comp2.iniciarUsoComputadora(usoComputadora3);
-        comp2.iniciarUsoComputadora(usoComputadora5);
-
-        controlCentroComputo.imprimirUsuariosSinUsoCC();
+        controlCentroComputo.imprimirCaracteristicaComputadora(2);
     }
 }

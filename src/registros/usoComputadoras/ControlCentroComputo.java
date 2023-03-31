@@ -48,7 +48,7 @@ public class ControlCentroComputo {
         while (getListaComputadoras().hayNodo()){
             Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
             cadaComputadora.imprimirDatosComputadora();
-            SalidaPorDefecto.terminal("\n");
+            SalidaPorDefecto.terminal("\n\n");
         }
     }
 
@@ -62,6 +62,7 @@ public class ControlCentroComputo {
             Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
             if((int) Comparador.comparar(numComputadora, cadaComputadora.getNumComputadora()) == 0){
                 cadaComputadora.imprimirDatosComputadora();
+                cadaComputadora.imprimirDatosAppsInstaladas();
             }
         }
     }
