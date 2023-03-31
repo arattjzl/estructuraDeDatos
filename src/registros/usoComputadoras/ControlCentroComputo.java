@@ -2,14 +2,32 @@ package registros.usoComputadoras;
 
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
-import estructurasLineales.auxiliares.Nodo;
 import utils.commons.Comparador;
+
 
 public class ControlCentroComputo {
     protected ListaDinamica listaComputadoras;
+    protected ListaDinamica todosUsuarios;
 
     public ControlCentroComputo(){
         listaComputadoras = new ListaDinamica();
+        todosUsuarios = new ListaDinamica();
+    }
+
+    public ListaDinamica getListaComputadoras() {
+        return listaComputadoras;
+    }
+
+    public void setListaComputadoras(ListaDinamica listaComputadoras) {
+        this.listaComputadoras = listaComputadoras;
+    }
+
+    public ListaDinamica getTodosUsuarios() {
+        return todosUsuarios;
+    }
+
+    public void setTodosUsuarios(ListaDinamica todosUsuarios) {
+        this.todosUsuarios = todosUsuarios;
     }
 
     /**
@@ -18,7 +36,7 @@ public class ControlCentroComputo {
      * @return Regresa verdadero si se agrego o falso si no.
      */
     public boolean agregarComputadora(Computadora computadora){
-        int agregado = listaComputadoras.agregar(computadora);
+        int agregado = getListaComputadoras().agregar(computadora);
         return agregado > 0;
     }
 
@@ -26,9 +44,10 @@ public class ControlCentroComputo {
      * Imprime los detalles de todas las computadoras.
      */
     public void imprimirDetallesComputadoras(){
-        listaComputadoras.inicializarIterador();
-        while (listaComputadoras.hayNodo()){
-            ((Computadora)listaComputadoras.obtenerNodo()).imprimirDatosComputadora();
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            cadaComputadora.imprimirDatosComputadora();
             SalidaPorDefecto.terminal("\n");
         }
     }
@@ -38,11 +57,11 @@ public class ControlCentroComputo {
      * @param numComputadora Es el número de la computadora.
      */
     public void imprimirCaracteristicaComputadora(int numComputadora){
-        listaComputadoras.inicializarIterador();
-        while(listaComputadoras.hayNodo()){
-            Computadora computadora = ((Computadora) listaComputadoras.obtenerNodo());
-            if((int) Comparador.comparar(numComputadora, computadora.numComputadora) == 0){
-                computadora.imprimirDatosComputadora();
+        getListaComputadoras().inicializarIterador();
+        while(getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            if((int) Comparador.comparar(numComputadora, cadaComputadora.getNumComputadora()) == 0){
+                cadaComputadora.imprimirDatosComputadora();
             }
         }
     }
@@ -54,12 +73,12 @@ public class ControlCentroComputo {
      * @return Regresa verdadero si se agrego o falso si no.
      */
     public boolean agregarAppsAComputadora(int numComputadora, App app){
-        listaComputadoras.inicializarIterador();
-        while (listaComputadoras.hayNodo()){
-            Computadora computadora = ((Computadora) listaComputadoras.obtenerNodo());
-            if((int) Comparador.comparar(numComputadora, computadora.numComputadora) == 0
-                    && (int) Comparador.comparar(computadora.getRam(), app.getRamMinimaCorrerse()) >= 0){
-                computadora.agregarApp(app);
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            if((int) Comparador.comparar(numComputadora, cadaComputadora.getNumComputadora()) == 0
+                    && (int) Comparador.comparar(cadaComputadora.getRam(), app.getRamMinimaCorrerse()) >= 0){
+                cadaComputadora.agregarApp(app);
                 return true;
             }
         }
@@ -73,12 +92,11 @@ public class ControlCentroComputo {
      * @return Regresa verdadero si se eliminó o falso si no.
      */
     public boolean eliminarAppAComputadora(int numComputadora, App app){
-        listaComputadoras.inicializarIterador();
-        while (listaComputadoras.hayNodo()){
-            Computadora computadora = ((Computadora) listaComputadoras.obtenerNodo());
-            if((int) Comparador.comparar(numComputadora, computadora.numComputadora) == 0
-                    && (int) Comparador.comparar(computadora.getRam(), app.getRamMinimaCorrerse()) >= 0){
-                computadora.eliminarApp(app);
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            if((int) Comparador.comparar(numComputadora, cadaComputadora.getNumComputadora()) == 0){
+                cadaComputadora.eliminarApp(app);
                 return true;
             }
         }
@@ -91,7 +109,7 @@ public class ControlCentroComputo {
      * @return Regresa verdadero si se dio de alta o falso si no.
      */
     public boolean darAltaComputadora(Computadora computadora){
-        return listaComputadoras.agregar(computadora) >= 0;
+        return getListaComputadoras().agregar(computadora) >= 0;
     }
 
     /**
@@ -100,7 +118,7 @@ public class ControlCentroComputo {
      * @return Regresa el objeto que se dio de baja o null si no se dio de baja nada.
      */
     public Object darBajaComputadora(Computadora computadora){
-        return listaComputadoras.eliminarObjeto(computadora);
+        return getListaComputadoras().eliminarObjeto(computadora);
     }
 
     /**
@@ -109,11 +127,11 @@ public class ControlCentroComputo {
      */
     public ListaDinamica computadorasConChrome(){
         ListaDinamica computadorasChrome = new ListaDinamica();
-        listaComputadoras.inicializarIterador();
-        while (listaComputadoras.hayNodo()){
-            Computadora computadora = (Computadora) listaComputadoras.obtenerNodo();
-            if(computadora.tieneApp("Chrome")){
-                computadorasChrome.agregar(computadora);
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = (Computadora) getListaComputadoras().obtenerNodo();
+            if(cadaComputadora.tieneApp("Chrome")){
+                computadorasChrome.agregar(cadaComputadora);
             }
         }
         return computadorasChrome;
@@ -126,13 +144,93 @@ public class ControlCentroComputo {
      */
     public ListaDinamica computadorasQuePuedenCorrerApp(App app){
         ListaDinamica computadorasCorrenApp = new ListaDinamica();
-        listaComputadoras.inicializarIterador();
-        while (listaComputadoras.hayNodo()){
-            Computadora computadora = (Computadora) listaComputadoras.obtenerNodo();
-            if((int) Comparador.comparar(computadora.getRam() ,app.getRamMinimaCorrerse()) >= 0){
-                computadorasCorrenApp.agregar(computadora);
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = (Computadora) getListaComputadoras().obtenerNodo();
+            if((int) Comparador.comparar(cadaComputadora.getRam() ,app.getRamMinimaCorrerse()) >= 0){
+                computadorasCorrenApp.agregar(cadaComputadora);
             }
         }
         return computadorasCorrenApp;
+    }
+
+    /**
+     * Imprime los usuarios que han utilizado cierta computadora.
+     * @param numComputadora Es la computadora de la que se quieren sacar los usuarios que la utilizaron.
+     */
+    public void imprimirUsuariosComputadora(int numComputadora){
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = (Computadora) getListaComputadoras().obtenerNodo();
+            if((int) Comparador.comparar(cadaComputadora.getNumComputadora(), numComputadora) == 0){
+                cadaComputadora.imprimirUsuariosUtilizaronComputadora().imprimir();
+            }
+        }
+    }
+
+    /**
+     * Imprime los detalles del uso de la computadora para un usuario dado y una computadora dada.
+     * @param nombreUsuario Es el usuario que queremos obtener los detalles de uso.
+     * @param numComputadora Es la computadora que queremos obtener los detalles de uso.
+     */
+    public void imprimirDetallesUsuarioComputadora(String nombreUsuario, int numComputadora){
+        SalidaPorDefecto.terminal("Detalles de uso de la computadora con número de computadora " + numComputadora + " para el usuario " + nombreUsuario + "\n");
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            if((int) Comparador.comparar(cadaComputadora.getNumComputadora(), numComputadora) == 0){
+                cadaComputadora.getUsuarioQueUtilizaron().inicializarIterador();
+                while (cadaComputadora.getUsuarioQueUtilizaron().hayNodo()){
+                    UsoComputadora usoComputadora = ((UsoComputadora) cadaComputadora.getUsuarioQueUtilizaron().obtenerNodo());
+                    if((int) Comparador.comparar(usoComputadora.getUsuario().getNombre(), nombreUsuario) == 0){
+                        usoComputadora.imprimirDatos();
+                        SalidaPorDefecto.terminal(" La computadora se encuentra en el CC: " + cadaComputadora.getCCperteneciente() + "\n");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Imprime las aplicaciones utilizadas por un usuario dado en una fecha específica.
+     * @param nombreUsuario Es el usuario que se quiere ver las aplicaciones utilizadas.
+     * @param fecha Es la fecha en la que queremos ver las aplicaciones utilizadas.
+     */
+    public void imprimirAppsUtilizadasPorUsuarioEnFecha(String nombreUsuario, String fecha){
+        SalidaPorDefecto.terminal("Apps abiertas por usuario " + nombreUsuario + " en la fecha " + fecha + "\n");
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            cadaComputadora.getUsuarioQueUtilizaron().inicializarIterador();
+            while (cadaComputadora.getUsuarioQueUtilizaron().hayNodo()){
+                UsoComputadora usoComputadora = ((UsoComputadora) cadaComputadora.getUsuarioQueUtilizaron().obtenerNodo());
+                if((int) Comparador.comparar(usoComputadora.getUsuario().getNombre(), nombreUsuario) == 0 && (int) Comparador.comparar(usoComputadora.getFechaInicio(), fecha) == 0){
+                    usoComputadora.imprimirAppsUtilizadas();
+                }
+            }
+        }
+    }
+
+    /**
+     * Imprime los usuarios que no hacen uso de los centros de cómputo.
+     */
+    public void imprimirUsuariosSinUsoCC(){
+        ListaDinamica usuariosSinUtilizarCC = (ListaDinamica) getTodosUsuarios().clonar();
+        getListaComputadoras().inicializarIterador();
+        while (getListaComputadoras().hayNodo()){
+            Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
+            cadaComputadora.getUsuarioQueUtilizaron().inicializarIterador();
+            while (cadaComputadora.getUsuarioQueUtilizaron().hayNodo()){
+                UsoComputadora usoComputadora = ((UsoComputadora) cadaComputadora.getUsuarioQueUtilizaron().obtenerNodo());
+                Usuario cadaUsuarioSiUtilizado = usoComputadora.getUsuario();
+                usuariosSinUtilizarCC.eliminarObjeto(cadaUsuarioSiUtilizado);
+            }
+        }
+        usuariosSinUtilizarCC.inicializarIterador();
+        SalidaPorDefecto.terminal("Usuarios que no han utilizado ningún centro de cómputo: ");
+        while (usuariosSinUtilizarCC.hayNodo()){
+            String cadaUsuarioSinUtilizarCC = ((Usuario) usuariosSinUtilizarCC.obtenerNodo()).getNombre();
+            SalidaPorDefecto.terminal(cadaUsuarioSinUtilizarCC + " ");
+        }
     }
 }

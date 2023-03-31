@@ -1,5 +1,6 @@
 package registros.usoComputadoras;
 
+
 public class App {
     protected String nombre;
     protected char logo;

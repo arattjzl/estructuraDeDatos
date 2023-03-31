@@ -2,7 +2,6 @@ package registros.usoComputadoras;
 
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
-import estructurasLineales.auxiliares.Nodo;
 import utils.commons.Comparador;
 
 public class Computadora {
@@ -23,6 +22,7 @@ public class Computadora {
         this.procesador = procesador;
         this.marca = marca;
         this.appsInstaladas = appsInstaladas;
+        usuarioQueUtilizaron = new ListaDinamica();
     }
 
     public Computadora(int numComputadora, int CCperteneciente, int ram, int tamanioDiscoDuro, String procesador, String  marca){
@@ -32,7 +32,8 @@ public class Computadora {
         this.tamanioDiscoDuro = tamanioDiscoDuro;
         this.procesador = procesador;
         this.marca = marca;
-        this.appsInstaladas = new ListaDinamica();
+        appsInstaladas = new ListaDinamica();
+        usuarioQueUtilizaron = new ListaDinamica();
     }
 
     public int getNumComputadora() {
@@ -103,9 +104,18 @@ public class Computadora {
      * Imprime los datos de la computadora.
      */
     public void imprimirDatosComputadora(){
-        SalidaPorDefecto.terminal(toString());
+        SalidaPorDefecto.terminal("Numero de computadora: " + numComputadora +
+                ", Centro Computo perteneciente: " + CCperteneciente +
+                ", RAM: " + ram +
+                ", Diso Duro: " + tamanioDiscoDuro +
+                ", Procesador: " + procesador +
+                ", Marca: " + marca);
         SalidaPorDefecto.terminal(", Con las apliaciones: ");
-        appsInstaladas.imprimir();
+        getUsuarioQueUtilizaron().inicializarIterador();
+        while (getUsuarioQueUtilizaron().hayNodo()){
+            App cadaApp = (App) getAppsInstaladas().obtenerNodo();
+            SalidaPorDefecto.terminal(cadaApp.getNombre() + " ");
+        }
     }
 
     /**
@@ -133,26 +143,45 @@ public class Computadora {
 //            }
 //        }
 //        return null;
-        return appsInstaladas.eliminarObjeto(app);
+        return getUsuarioQueUtilizaron().eliminarObjeto(app);
     }
 
+    /**
+     * Regresa un booleano dependiendo si la computadora tiene la app indicada.
+     * @param app La app que se quiere verificar si se encuentra instalada.
+     * @return Regresa true si se encuentra instalada y false si no.
+     */
     public boolean tieneApp(String app){
-        appsInstaladas.inicializarIterador();
-        while (appsInstaladas.hayNodo()){
-            String queAppEs = ((App) appsInstaladas.obtenerNodo()).getNombre();
+        getUsuarioQueUtilizaron().inicializarIterador();
+        while (getUsuarioQueUtilizaron().hayNodo()){
+            String queAppEs = ((App) getUsuarioQueUtilizaron().obtenerNodo()).getNombre();
             if((int) Comparador.comparar(app, queAppEs) == 0){
                 return true;
             }
         }
         return false;
     }
-    @Override
-    public String toString() {
-        return "Numero de computadora: " + numComputadora +
-                ", Centro Computo perteneciente: " + CCperteneciente +
-                ", RAM: " + ram +
-                ", Diso Duro: " + tamanioDiscoDuro +
-                ", Procesador: " + procesador +
-                ", Marca: " + marca;
+
+    /**
+     * Se agrega el uso de la computadora con el usuario y los datos de a que hora empezó y a que hora termino.
+     * @param usoComputadora Es el uso que se le dio a la computadora, con información como el usuario,
+     *                       fechas de inicio y fin y apps utilizadas.
+     * @return Regresa la información de las veces que se utilizó la computadora.
+     */
+    public boolean iniciarUsoComputadora(UsoComputadora usoComputadora){
+        return getUsuarioQueUtilizaron().agregar(usoComputadora) >= 0;
+    }
+
+    /**
+     * Imprime los usuarios que utilizaron las computadoras.
+     */
+    public ListaDinamica imprimirUsuariosUtilizaronComputadora(){
+        ListaDinamica usuarios = new ListaDinamica();
+        getUsuarioQueUtilizaron().inicializarIterador();
+        while (getUsuarioQueUtilizaron().hayNodo()){
+            String nombre = ((UsoComputadora) getUsuarioQueUtilizaron().obtenerNodo()).getUsuario().getNombre();
+            usuarios.agregar(nombre);
+        }
+        return usuarios;
     }
 }
