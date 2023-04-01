@@ -1,5 +1,11 @@
 package registros.usoComputadoras;
 
+/**
+ * Clase con los métodos para usuario.
+ * @author Aratt
+ * @version 1.0
+ */
+
 public class Usuario {
 
     protected String nombre;

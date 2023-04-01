@@ -3,6 +3,12 @@ package registros.usoComputadoras;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 
+/**
+ * Clase con los métodos para tener control del uso de computadoras.
+ * @author Aratt
+ * @version 1.0
+ */
+
 public class UsoComputadora {
     protected Usuario usuario;
     protected String fechaInicio;

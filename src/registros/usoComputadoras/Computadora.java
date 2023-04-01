@@ -4,6 +4,12 @@ import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 import utils.commons.Comparador;
 
+/**
+ * Clase con los métodos para tener control de las computadoras.
+ * @author Aratt
+ * @version 1.0
+ */
+
 public class Computadora {
     protected int numComputadora;
     protected int CCperteneciente;
@@ -132,7 +138,7 @@ public class Computadora {
      * @return Regresa <b>true</b> si se agregó la aplicación o <b>false</b> si no.
      */
     public boolean agregarApp(App app){
-        return appsInstaladas.agregar(app) >= 0;
+        return getAppsInstaladas().agregar(app) >= 0;
     }
 
     /**
@@ -141,17 +147,7 @@ public class Computadora {
      * @return
      */
     public Object eliminarApp(App app){
-//        appsInstaladas.inicializarIterador();
-//        while (appsInstaladas.hayNodo()){
-//            String nombre = ((App) appsInstaladas.obtenerNodo()).getNombre();
-//            App app = (App) appsInstaladas.obtenerNodo();
-//            if((int) Comparador.comparar(nombre, nombreApp) == 0){
-//                appsInstaladas.eliminarObjeto(app);
-//                return true;
-//            }
-//        }
-//        return null;
-        return getUsuarioQueUtilizaron().eliminarObjeto(app);
+        return getAppsInstaladas().eliminarObjeto(app);
     }
 
     /**
@@ -160,9 +156,9 @@ public class Computadora {
      * @return Regresa true si se encuentra instalada y false si no.
      */
     public boolean tieneApp(String app){
-        getUsuarioQueUtilizaron().inicializarIterador();
-        while (getUsuarioQueUtilizaron().hayNodo()){
-            String queAppEs = ((App) getUsuarioQueUtilizaron().obtenerNodo()).getNombre();
+        getAppsInstaladas().inicializarIterador();
+        while (getAppsInstaladas().hayNodo()){
+            String queAppEs = ((App) getAppsInstaladas().obtenerNodo()).getNombre();
             if((int) Comparador.comparar(app, queAppEs) == 0){
                 return true;
             }

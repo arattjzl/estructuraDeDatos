@@ -5,6 +5,12 @@ import estructurasLineales.ListaDinamica;
 import utils.commons.Comparador;
 
 
+/**
+ * Clase con los métodos para tener control de un centro de computo.
+ * @author Aratt
+ * @version 1.0
+ */
+
 public class ControlCentroComputo {
     protected ListaDinamica listaComputadoras;
     protected ListaDinamica todosUsuarios;
@@ -77,8 +83,7 @@ public class ControlCentroComputo {
         getListaComputadoras().inicializarIterador();
         while (getListaComputadoras().hayNodo()){
             Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
-            if((int) Comparador.comparar(numComputadora, cadaComputadora.getNumComputadora()) == 0
-                    && (int) Comparador.comparar(cadaComputadora.getRam(), app.getRamMinimaCorrerse()) >= 0){
+            if((int) Comparador.comparar(numComputadora, cadaComputadora.getNumComputadora()) == 0){
                 cadaComputadora.agregarApp(app);
                 return true;
             }
@@ -124,9 +129,8 @@ public class ControlCentroComputo {
 
     /**
      * Genera una lista con las computadoras que tiene la app Chrome instalada.
-     * @return Regresa la lista de las computadoras que tiene Chrome instalado.
      */
-    public ListaDinamica computadorasConChrome(){
+    public void computadorasConChrome(){
         ListaDinamica computadorasChrome = new ListaDinamica();
         getListaComputadoras().inicializarIterador();
         while (getListaComputadoras().hayNodo()){
@@ -135,15 +139,25 @@ public class ControlCentroComputo {
                 computadorasChrome.agregar(cadaComputadora);
             }
         }
-        return computadorasChrome;
+        computadorasChrome.inicializarIterador();
+        while (computadorasChrome.hayNodo()){
+            Computadora cadaComputadoraConChrome = ((Computadora) computadorasChrome.obtenerNodo());
+            cadaComputadoraConChrome.imprimirDatosComputadora();
+            cadaComputadoraConChrome.imprimirDatosAppsInstaladas();
+            SalidaPorDefecto.terminal("\n\n");
+        }
+
     }
 
     /**
      * Genera una lista con las computadoras que pueden correr la app.
      * @param app App que se quiere ver que computadora si la corre.
-     * @return Regresa la lista de las computadoras que si corren la app.
      */
-    public ListaDinamica computadorasQuePuedenCorrerApp(App app){
+    public void computadorasQuePuedenCorrerApp(App app){
+        SalidaPorDefecto.terminal("Datos de la aplicación\n");
+        app.imprimirDatos();
+        SalidaPorDefecto.terminal("\n\n");
+        SalidaPorDefecto.terminal("Computadoras que pueden correr la aplicación\n");
         ListaDinamica computadorasCorrenApp = new ListaDinamica();
         getListaComputadoras().inicializarIterador();
         while (getListaComputadoras().hayNodo()){
@@ -152,7 +166,12 @@ public class ControlCentroComputo {
                 computadorasCorrenApp.agregar(cadaComputadora);
             }
         }
-        return computadorasCorrenApp;
+        computadorasCorrenApp.inicializarIterador();
+        while (computadorasCorrenApp.hayNodo()){
+            Computadora cadaComputadora = (Computadora) computadorasCorrenApp.obtenerNodo();
+            cadaComputadora.imprimirDatosComputadora();
+            SalidaPorDefecto.terminal("\n\n");
+        }
     }
 
     /**
@@ -164,6 +183,9 @@ public class ControlCentroComputo {
         while (getListaComputadoras().hayNodo()){
             Computadora cadaComputadora = (Computadora) getListaComputadoras().obtenerNodo();
             if((int) Comparador.comparar(cadaComputadora.getNumComputadora(), numComputadora) == 0){
+                SalidaPorDefecto.terminal("La computadora\n");
+                cadaComputadora.imprimirDatosComputadora();
+                SalidaPorDefecto.terminal("\n\nFue utilizada por\n");
                 cadaComputadora.imprimirUsuariosUtilizaronComputadora().imprimir();
             }
         }
@@ -175,7 +197,8 @@ public class ControlCentroComputo {
      * @param numComputadora Es la computadora que queremos obtener los detalles de uso.
      */
     public void imprimirDetallesUsuarioComputadora(String nombreUsuario, int numComputadora){
-        SalidaPorDefecto.terminal("Detalles de uso de la computadora con número de computadora " + numComputadora + " para el usuario " + nombreUsuario + "\n");
+        SalidaPorDefecto.terminal("Detalles de uso de la computadora con número de computadora "
+                + numComputadora + " para el usuario " + nombreUsuario + "\n");
         getListaComputadoras().inicializarIterador();
         while (getListaComputadoras().hayNodo()){
             Computadora cadaComputadora = ((Computadora) getListaComputadoras().obtenerNodo());
@@ -185,7 +208,8 @@ public class ControlCentroComputo {
                     UsoComputadora usoComputadora = ((UsoComputadora) cadaComputadora.getUsuarioQueUtilizaron().obtenerNodo());
                     if((int) Comparador.comparar(usoComputadora.getUsuario().getNombre(), nombreUsuario) == 0){
                         usoComputadora.imprimirDatos();
-                        SalidaPorDefecto.terminal(" La computadora se encuentra en el CC: " + cadaComputadora.getCCperteneciente() + "\n");
+                        SalidaPorDefecto.terminal(" La computadora se encuentra en el CC: "
+                                + cadaComputadora.getCCperteneciente() + "\n");
                     }
                 }
             }
@@ -205,7 +229,8 @@ public class ControlCentroComputo {
             cadaComputadora.getUsuarioQueUtilizaron().inicializarIterador();
             while (cadaComputadora.getUsuarioQueUtilizaron().hayNodo()){
                 UsoComputadora usoComputadora = ((UsoComputadora) cadaComputadora.getUsuarioQueUtilizaron().obtenerNodo());
-                if((int) Comparador.comparar(usoComputadora.getUsuario().getNombre(), nombreUsuario) == 0 && (int) Comparador.comparar(usoComputadora.getFechaInicio(), fecha) == 0){
+                if((int) Comparador.comparar(usoComputadora.getUsuario().getNombre(), nombreUsuario) == 0
+                        && (int) Comparador.comparar(usoComputadora.getFechaInicio(), fecha) == 0){
                     usoComputadora.imprimirAppsUtilizadas();
                 }
             }
@@ -228,7 +253,7 @@ public class ControlCentroComputo {
             }
         }
         usuariosSinUtilizarCC.inicializarIterador();
-        SalidaPorDefecto.terminal("Usuarios que no han utilizado ningún centro de cómputo: ");
+        SalidaPorDefecto.terminal("Usuarios que no han utilizado ningún centro de cómputo: \n");
         while (usuariosSinUtilizarCC.hayNodo()){
             String cadaUsuarioSinUtilizarCC = ((Usuario) usuariosSinUtilizarCC.obtenerNodo()).getNombre();
             SalidaPorDefecto.terminal(cadaUsuarioSinUtilizarCC + " ");

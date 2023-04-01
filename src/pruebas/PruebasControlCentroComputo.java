@@ -4,6 +4,7 @@ import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 import registros.usoComputadoras.*;
 
+import javax.security.sasl.Sasl;
 import java.time.LocalDateTime;
 
 public class PruebasControlCentroComputo {
@@ -13,7 +14,7 @@ public class PruebasControlCentroComputo {
 
         // COMPUTADORAS
         Computadora comp1 = new Computadora(1, 1, 16, 512, "i511th", "MSI");
-        Computadora comp2 = new Computadora(2, 1, 16, 256, "r5", "Huawei");
+        Computadora comp2 = new Computadora(2, 1, 12, 256, "r5", "Huawei");
         Computadora comp3 = new Computadora(3, 2, 8, 512, "M1", "Apple");
         Computadora comp4 = new Computadora(4, 2, 4, 1000, "i37th", "Toshiba");
         Computadora comp5 = new Computadora(5, 5, 8, 256, "r3", "Xiaomi");
@@ -34,7 +35,7 @@ public class PruebasControlCentroComputo {
 
         // UsoComputadora
         UsoComputadora usoComputadora1 = new UsoComputadora(usuario1, "3/4/2022", "12:45");
-        UsoComputadora usoComputadora2 = new UsoComputadora(usuario2, "4/8/2022", "1:12");
+        UsoComputadora usoComputadora2 = new UsoComputadora(usuario1, "4/8/2022", "1:12");
         UsoComputadora usoComputadora3 = new UsoComputadora(usuario3, "12/9/2022", "2:00");
         UsoComputadora usoComputadora4 = new UsoComputadora(usuario4, "1/10/2022", "3:45");
         UsoComputadora usoComputadora5 = new UsoComputadora(usuario5, "30/10/2022", "4:00");
@@ -52,7 +53,6 @@ public class PruebasControlCentroComputo {
         usoComputadora1.agregarAppUtilizada(app1);
         usoComputadora1.agregarAppUtilizada(app3);
         usoComputadora1.agregarAppUtilizada(app4);
-        usoComputadora1.agregarAppUtilizada(app5);
 
         ListaDinamica listaApps = new ListaDinamica();
         listaApps.agregar(app1);
@@ -69,7 +69,12 @@ public class PruebasControlCentroComputo {
         comp4.agregarApp(app2);
         comp5.agregarApp(app3);
 
+        usoComputadora1.setFechaFin("3/4/2022");
+        usoComputadora1.setHoraFin("2:45");
+        usoComputadora2.setFechaFin("4/8/2022");
+        usoComputadora2.setHoraFin("3:50");
         comp2.iniciarUsoComputadora(usoComputadora1);
+        comp2.iniciarUsoComputadora(usoComputadora2);
         comp2.iniciarUsoComputadora(usoComputadora3);
         comp2.iniciarUsoComputadora(usoComputadora5);
 
@@ -79,8 +84,7 @@ public class PruebasControlCentroComputo {
         controlCentroComputo.agregarComputadora(comp4);
         controlCentroComputo.agregarComputadora(comp5);
 
-        SalidaPorDefecto.terminal("\n");
 
-        controlCentroComputo.imprimirCaracteristicaComputadora(2);
+        controlCentroComputo.imprimirUsuariosSinUsoCC();
     }
 }

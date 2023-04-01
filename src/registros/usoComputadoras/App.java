@@ -1,5 +1,12 @@
 package registros.usoComputadoras;
 
+import entradasalida.SalidaPorDefecto;
+
+/**
+ * Clase con los métodos para tener control de las aplicaciones.
+ * @author Aratt
+ * @version 1.0
+ */
 
 public class App {
     protected String nombre;
@@ -55,4 +62,16 @@ public class App {
     public void setRamMinimaCorrerse(int ramMinimaCorrerse) {
         this.ramMinimaCorrerse = ramMinimaCorrerse;
     }
+
+    /**
+     * Imprime los datos de la aplicación.
+     */
+    public void imprimirDatos(){
+        SalidaPorDefecto.terminal("Nombre: '" + nombre + '\'' +
+                ", Logo: " + logo +
+                ", Autores: '" + autores + '\'' +
+                ", Version: '" + version + '\'' +
+                ", Ram Minima Para Correrse: " + ramMinimaCorrerse);
+    }
+
 }
