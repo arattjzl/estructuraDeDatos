@@ -17,25 +17,71 @@ public class ArbolBinario {
         NodoDoble nuevoNodo = new NodoDoble(info);
         if (nuevoNodo != null){
             raiz = nuevoNodo;
-            return crearArbol(raiz);
+            crearArbol(raiz);
+            return true;
         } else {
             return false;
         }
     }
 
-    private boolean crearArbol(NodoDoble subraiz){
-        SalidaPorDefecto.terminal("El nodo " + subraiz.getInfo() + " tiene hijo izquierdo? [S/N] ");
-        String respuesta = EntradaPorDefecto.consolaCadenas();
-        if (respuesta.equalsIgnoreCase("s")){
-            SalidaPorDefecto.terminal("Dame su contenido: ");
-            String infoIzq = EntradaPorDefecto.consolaCadenas();
-            NodoDoble nuevoNodoIzq = new NodoDoble(infoIzq);
-            if(nuevoNodoIzq != null){
+    private void crearArbol(NodoDoble subraiz){
+        SalidaPorDefecto.terminal("¿ El nodo " + subraiz.getInfo() + " tiene hijo izquierdo ?  \n");
+        String respuestaIzq = entradasalida.EntradaPorDefecto.consolaCadenas();
+        if (respuestaIzq.equalsIgnoreCase("si")) {
+            SalidaPorDefecto.terminal("Dame el contenido del hijo izquierdo de " + subraiz.getInfo() + "\n");
+            String info = entradasalida.EntradaPorDefecto.consolaCadenas();
+            NodoDoble nuevoNodoIzq = new NodoDoble(info);
+            if (nuevoNodoIzq != null) {
                 subraiz.setApuntadorAIzquierda(nuevoNodoIzq);
-                return crearArbol(nuevoNodoIzq);
-            } else {
-                return false;
+                crearArbol(nuevoNodoIzq);
             }
+        }
+        SalidaPorDefecto.terminal("¿ El nodo " + subraiz.getInfo() + " tiene hijo derecho ?  \n");
+        String respuestaDer = entradasalida.EntradaPorDefecto.consolaCadenas();
+        if (respuestaDer.equalsIgnoreCase("si")) {
+            SalidaPorDefecto.terminal("Dame el contenido del hijo derecho de " + subraiz.getInfo() + "\n");
+            String info = entradasalida.EntradaPorDefecto.consolaCadenas();
+            NodoDoble nuevoNodoDer = new NodoDoble(info);
+            if (nuevoNodoDer != null) {
+                subraiz.setApuntadorADerecha(nuevoNodoDer);
+                crearArbol(nuevoNodoDer);
+            }
+        }
+    }
+
+    public void innorden(){
+        innorden(raiz);
+    }
+
+    private void innorden(NodoDoble subraiz){
+        if (subraiz != null){
+            innorden(subraiz.getApuntadorAIzquierda());
+            SalidaPorDefecto.terminal(subraiz.getInfo() + " ");
+            innorden(subraiz.getApuntadorADerecha());
+        }
+    }
+
+    public void preorden(){
+        preorden(raiz);
+    }
+
+    private void preorden(NodoDoble subraiz){
+        if (subraiz != null){
+            SalidaPorDefecto.terminal(subraiz.getInfo() + " ");
+            preorden(subraiz.getApuntadorAIzquierda());
+            preorden(subraiz.getApuntadorADerecha());
+        }
+    }
+
+    public void posorden(){
+        posorden(raiz);
+    }
+
+    private void posorden(NodoDoble subraiz){
+        if (subraiz != null){
+            posorden(subraiz.getApuntadorAIzquierda());
+            posorden(subraiz.getApuntadorADerecha());
+            SalidaPorDefecto.terminal(subraiz.getInfo() + " ");
         }
     }
 }
