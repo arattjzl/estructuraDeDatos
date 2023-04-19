@@ -5,6 +5,12 @@ import estructurasLineales.auxiliares.NodoClave;
 import estructurasNoLineales.Matriz2;
 import utils.commons.Comparador;
 
+/**
+ * Clase que contiene los métodos para la creación de una lista dinámica clave.
+ * @author Aratt
+ * @version 1.0
+ */
+
 public class ListaDinamicaClave {
     public NodoClave primero;
     public NodoClave ultimo;
@@ -197,7 +203,8 @@ public class ListaDinamicaClave {
     public void imprimir(){
         inicializarIterado();
         while (hayNodo()){
-            SalidaPorDefecto.terminal("[ " + nodoActual.getClave() + " ]-[ " + nodoActual.getValor() + " ] -> ");
+            SalidaPorDefecto.terminal("[ " + nodoActual.getClave() +
+                    " ]-[ " + nodoActual.getValor() + " ] -> ");
             nodoActual = nodoActual.getLigaDer();
         }
         SalidaPorDefecto.terminal(null);
@@ -221,7 +228,8 @@ public class ListaDinamicaClave {
     public void imprimirValores(){
         inicializarIterado();
         while (hayNodo()){
-            SalidaPorDefecto.terminal("[ " + nodoActual.getValor() + " ] -> ");
+            SalidaPorDefecto.terminal("[ "
+                    + nodoActual.getValor() + " ] -> ");
             nodoActual = nodoActual.getLigaDer();
         }
         SalidaPorDefecto.terminal(null);
@@ -351,9 +359,9 @@ public class ListaDinamicaClave {
      * @return Regresa <b>true</b> si se agregaron o <b>false</b> si no.
      */
     public boolean agregarListasEstaticas(ListaEstatica arregloClaves, ListaEstatica arregloValores){
-        if((int) Comparador.comparar(arregloClaves.getMAXIMO(), arregloValores.getMAXIMO()) == 0){
+        if((int) Comparador.comparar(arregloClaves.getTope(), arregloValores.getTope()) == 0){
             if(!arregloClaves.vacia() && !arregloValores.vacia()){
-                for(int cadaClaveValor = 0; cadaClaveValor < arregloClaves.getMAXIMO(); cadaClaveValor++){
+                for(int cadaClaveValor = 0; cadaClaveValor <= arregloClaves.getTope(); cadaClaveValor++){
                     Object clave = arregloClaves.obtener(cadaClaveValor);
                     Object valor = arregloValores.obtener(cadaClaveValor);
                     agregar(clave, valor);
