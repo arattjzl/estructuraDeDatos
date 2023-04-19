@@ -1,7 +1,6 @@
 package estructurasLineales;
 
 import entradasalida.SalidaPorDefecto;
-import estructurasLineales.auxiliares.Nodo;
 import estructurasLineales.auxiliares.NodoClave;
 import estructurasNoLineales.Matriz2;
 import utils.commons.Comparador;
@@ -69,6 +68,7 @@ public class ListaDinamicaClave {
             inicializarIterado();
             while(hayNodo()){
                 if((int)Comparador.comparar(clave, nodoActual.getClave()) == 0){
+                    Object eliminado = nodoActual.getValor();
                     if(nodoActual == primero){
                         primero = primero.getLigaDer();
                     } else if(nodoActual == ultimo){
@@ -77,8 +77,8 @@ public class ListaDinamicaClave {
                     } else{
                         NodoClave nodoAnterior = (NodoClave) buscarAnterior(nodoActual.getValor()).obtener(0);
                         nodoAnterior.setLigaDer(nodoActual.getLigaDer());
-                        return nodoActual.getValor();
                     }
+                    return eliminado;
                 }
                 nodoActual = nodoActual.getLigaDer();
             }
@@ -97,6 +97,7 @@ public class ListaDinamicaClave {
             inicializarIterado();
             while(hayNodo()){
                 if((int)Comparador.comparar(info, nodoActual.getValor()) == 0){
+                    Object eliminado = nodoActual.getValor();
                     if(nodoActual == primero){
                         primero = primero.getLigaDer();
                     } else if(nodoActual == ultimo){
@@ -105,8 +106,8 @@ public class ListaDinamicaClave {
                     } else {
                         NodoClave nodoAnterior = (NodoClave) buscarAnterior(nodoActual.getValor()).obtener(0);
                         nodoAnterior.setLigaDer(nodoActual.getLigaDer());
-                        return nodoActual.getValor();
                     }
+                    return eliminado;
                 }
                 nodoActual = nodoActual.getLigaDer();
             }

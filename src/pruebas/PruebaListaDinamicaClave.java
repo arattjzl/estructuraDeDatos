@@ -16,6 +16,11 @@ public class PruebaListaDinamicaClave {
         ldc.agregar(2, "adios");
         ldc.agregar(3, "como estas");
 
+        ldc.imprimir();
+        ldc.cambiarValor("hola", "3005");
+        SalidaPorDefecto.terminal("\n");
+        ldc.imprimir();
+
         //ldc.agregar(2, "000");
 
         //((ListaEstatica) ldc.aListasEstaticas().obtener(1)).imprimir();
@@ -24,16 +29,13 @@ public class PruebaListaDinamicaClave {
         //ListaDinamica listaD = (ListaDinamica) listaLista1.getInfo();
         //listaD.imprimir();
 
-        Matriz2 matriz = new Matriz2(3, 2);
-
-        matriz.cambiar(0,0, 4);
-        matriz.cambiar(0,1, "sisisi");
-        matriz.cambiar(1,0, 5);
-        matriz.cambiar(1,1, "nonono");
-        matriz.cambiar(2,0, 2);
-        matriz.cambiar(2,1, "jajajaj");
-
-        ldc.agregarMatriz2(matriz);
-        ldc.imprimir();
+//        Matriz2 matriz = new Matriz2(3, 2);
+//
+//        matriz.cambiar(0,0, 4);
+//        matriz.cambiar(0,1, "sisisi");
+//        matriz.cambiar(1,0, 5);
+//        matriz.cambiar(1,1, "nonono");
+//        matriz.cambiar(2,0, 2);
+//        matriz.cambiar(2,1, "jajajaj");
     }
 }
