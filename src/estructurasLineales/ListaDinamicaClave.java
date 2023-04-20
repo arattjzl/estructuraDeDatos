@@ -282,9 +282,8 @@ public class ListaDinamicaClave {
      * @return Regresa la matriz bidimensional.
      */
     public Matriz2 aMatriz2(){
-        int conteo = numElementos();
         int cadaReng = 0;
-        Matriz2 matriz = new Matriz2(conteo, 2);
+        Matriz2 matriz = new Matriz2(numElementos(), 2);
         inicializarIterado();
         while (hayNodo()){
             matriz.cambiar(cadaReng, 0, nodoActual.getClave());

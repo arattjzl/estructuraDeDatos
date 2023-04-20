@@ -15,20 +15,8 @@ public class PruebaListaDinamicaClave {
         ldc.agregar(1, "hola");
         ldc.agregar(2, "adios");
         ldc.agregar(3, "como estas");
+        ldc.agregar(4, "999");
 
-
-        Matriz2 matriz = new Matriz2(3, 2);
-
-        matriz.cambiar(0,0, 4);
-        matriz.cambiar(0,1, "sisisi");
-        matriz.cambiar(1,0, 5);
-        matriz.cambiar(1,1, "nonono");
-        matriz.cambiar(2,0, 2);
-        matriz.cambiar(2,1, "jajajaj");
-
-        matriz.imprimirPorColumna();
-        SalidaPorDefecto.terminal("\n");
-        ldc.agregarMatriz2(matriz);
-        ldc.imprimir();
+        ldc.aMatriz2().imprimirPorColumna();
     }
 }
