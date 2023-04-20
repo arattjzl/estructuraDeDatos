@@ -24,7 +24,7 @@ public class ArbolBinario {
         }
     }
 
-    private void crearArbol(NodoDoble subraiz){
+    protected void crearArbol(NodoDoble subraiz){
         SalidaPorDefecto.terminal("¿ El nodo " + subraiz.getInfo() + " tiene hijo izquierdo ?  \n");
         String respuestaIzq = entradasalida.EntradaPorDefecto.consolaCadenas();
         if (respuestaIzq.equalsIgnoreCase("si")) {
