@@ -318,4 +318,107 @@ public class ExpresionesMatematicas {
         }
         return nuevaInfija;
     }
+
+    /**
+     * Sirve para saber si un número es primo o no.
+     * @param numero Número.
+     * @return Regresa <b>true</b> si es primo o <b>false</b> si no lo es.
+     */
+    public static boolean esPrimo(int numero){
+        return esPrimo(numero, numero-1);
+    }
+
+    /**
+     * Sirve para saber si un número es primo o no.
+     * @param num Número
+     * @param div Número por el cual se está dividiendo.
+     * @return Regresa <b>true</b> si es primo o <b>false</b> si no lo es.
+     */
+    private static boolean esPrimo(int num, int div){
+        if(div > 1){
+            if((num%div) != 0){
+                return esPrimo(num, div-1);
+            } else if((num%div) == 0){
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Sirve para saber si un número es binario o no.
+     * @param numBinario Número.
+     * @return Regresa <b>true</b> si es binario o <b>false</b> si no lo es.
+     */
+    public static boolean esBinario(long numBinario){
+        return esBinario(numBinario, 0);
+    }
+
+    /**
+     * Sirve para saber si un número es binario o no.
+     * @param numBinario Número.
+     * @param iteracion Es el carácter del número en el que se encuentra.
+     * @return Regresa <b>true</b> si es binario o <b>false</b> si no lo es.
+     */
+    private static boolean esBinario(long numBinario, int iteracion){
+        String binario = String.valueOf(numBinario);
+        if(binario.charAt(iteracion) != '1' && binario.charAt(iteracion) != '0'){
+            return false;
+        } else if(iteracion == binario.length()-1){
+            return true;
+        } else {
+            return esBinario(numBinario, iteracion+1);
+        }
+    }
+
+    /**
+     * Obtiene el máximo común divisor de dos números.
+     * @param num1 Primer número.
+     * @param num2 Segundo número.
+     * @return Regresa el máximo común divisor.
+     */
+    public static int maximoComunDivisor(int num1, int num2){
+        if(num1 > num2){
+            return maximoComunDivisor(num1-num2, num2);
+        } else if(num1 < num2){
+            return maximoComunDivisor(num1, num2 - num1);
+        } else {
+            return num1;
+        }
+    }
+
+    /**
+     * Convierte un número decimal a hexadecimal.
+     * @param numero El número que se quiere convertir a hexadecimal.
+     * @return Regresa una cadena con el número hexadecimal.
+     */
+    public static String aHexadecimal(int numero){
+        String valores = "0123456789ABCDEF";
+        if(numero > 15){
+            int div = Math.floorDiv(numero,16);
+            int residuo = numero%16;
+            return aHexadecimal(div) + valores.charAt(residuo);
+        } else {
+            return valores.charAt(numero) + "";
+        }
+    }
+
+    /**
+     * Convierte un número decimal a binario.
+     * @param numero Número que se quiere convertir a binario.
+     * @return Regresa una cadena con el número binario.
+     */
+    public static String aBinario(int numero){
+        if(numero == 1){
+            return "1";
+        } else {
+            if(numero%2==0){
+                return aBinario(numero/2) + 0;
+            } else {
+                return aBinario((numero-1)/2) + 1;
+            }
+        }
+    }
 }
