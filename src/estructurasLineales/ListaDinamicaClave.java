@@ -3,6 +3,7 @@ package estructurasLineales;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.auxiliares.NodoClave;
 import estructurasNoLineales.Matriz2;
+import utils.PalabraDiccionario;
 import utils.commons.Comparador;
 
 /**
@@ -453,5 +454,30 @@ public class ListaDinamicaClave {
             lista.agregar(null);
         }
         return lista;
+    }
+
+    /**
+     * Buscará la palabra indicada dentro de la definición de todo el diccionario e imprimirá la descripción si la palabra
+     * se encuentra dentro de esta.
+     * @param palabra Palabra a buscar.
+     */
+    public void buscarPalabraClave(String palabra){
+        buscarPalabraClave(palabra, primero);
+    }
+
+    /**
+     * Buscará la palabra indicada dentro de la definición de todo el diccionario e imprimirá la descripción si la palabra
+     * se encuentra dentro de esta.
+     * @param palabra Palabra a buscar.
+     * @param nodo Nodo en el que se encuentra.
+     */
+    private void buscarPalabraClave(String palabra, NodoClave nodo){
+        if (nodo != null){
+            String desc = ((PalabraDiccionario) nodo.getValor()).getDescripcion();
+            if(desc.toLowerCase().contains(palabra.toLowerCase())){
+                SalidaPorDefecto.terminal(desc + "\n");
+            }
+            buscarPalabraClave(palabra, nodo.getLigaDer());
+        }
     }
 }

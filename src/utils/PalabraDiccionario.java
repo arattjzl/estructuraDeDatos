@@ -1,11 +1,17 @@
 package utils;
 
+/**
+ * Clase para crear un objeto de palabra de diccinario
+ * @author Aratt
+ * @version 1.0
+ */
 public class PalabraDiccionario {
 
     public String palabra;
     public String descripcion;
     public String sinonimo;
     public String uso;
+
 
     public PalabraDiccionario(String palabra, String descripcion, String sinonimo, String uso){
         this.palabra = palabra;
