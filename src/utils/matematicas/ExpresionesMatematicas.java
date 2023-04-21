@@ -395,11 +395,15 @@ public class ExpresionesMatematicas {
      * @return Regresa una cadena con el número hexadecimal.
      */
     public static String aHexadecimal(int numero){
+        return aOtraBase(numero, 16);
+    }
+
+    private static String aOtraBase(int numero, int base){
         String valores = "0123456789ABCDEF";
-        if(numero > 15){
-            int div = Math.floorDiv(numero,16);
-            int residuo = numero%16;
-            return aHexadecimal(div) + valores.charAt(residuo);
+        if(numero > base-1){
+            int div = Math.floorDiv(numero,base);
+            int residuo = numero%base;
+            return aOtraBase(div, base) + valores.charAt(residuo);
         } else {
             return valores.charAt(numero) + "";
         }

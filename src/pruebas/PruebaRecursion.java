@@ -7,9 +7,6 @@ import utils.matematicas.ExpresionesMatematicas;
 
 public class PruebaRecursion {
     public static void main(String[] args) {
-        SalidaPorDefecto.terminal(ExpresionesMatematicas.aBinario(150) + "\n");
-        SalidaPorDefecto.terminal(ExpresionesMatematicas.aBinario(999) + "\n");
-        SalidaPorDefecto.terminal(ExpresionesMatematicas.aBinario(371) + "\n");
-        SalidaPorDefecto.terminal(ExpresionesMatematicas.aBinario(420) + "\n");
+        SalidaPorDefecto.terminal(ExpresionesMatematicas.aHexadecimal(65029) + "\n");
     }
 }
