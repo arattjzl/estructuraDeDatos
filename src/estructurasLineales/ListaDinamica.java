@@ -682,4 +682,16 @@ public class ListaDinamica implements Lista{
             }
         }
     }
+
+    public void imprimirRecursivo(){
+        imprimirRecursivo(primero);
+    }
+
+    private void imprimirRecursivo(Nodo cadaNodo){
+        SalidaPorDefecto.terminal(cadaNodo.getInfo() + " -> ");
+        if(cadaNodo != null){
+            imprimirRecursivo(cadaNodo.getApuntadorOtroNodo());
+        }
+    }
+
 }
