@@ -16,10 +16,13 @@ public class PruebABB {
         arbol.agregar(10);
         arbol.agregar(3);
         arbol.agregar(2);
-        arbol.agregar(5);
         arbol.agregar(1);
+
         arbol.innorden();
 
-        SalidaPorDefecto.terminal("\n" + arbol.buscar(10) + "");
+        arbol.eliminar(10);
+
+        SalidaPorDefecto.terminal("--------------\n");
+        arbol.innorden();
     }
 }

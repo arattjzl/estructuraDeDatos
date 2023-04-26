@@ -120,4 +120,80 @@ public class ArbolBinarioBusqueda extends ArbolBinario{
             return null;
         }
     }
+
+    public Object eliminar(Object info){
+        return eliminar(raiz, null, info);
+    }
+
+    private Object eliminar(NodoDoble subraiz, NodoDoble anterior, Object info){
+        if(subraiz != null){
+            if((int) Comparador.comparar(info, subraiz.getInfo()) < 0){
+                return eliminar(subraiz.getApuntadorAIzquierda(), subraiz, info);
+            } else {
+                if((int) Comparador.comparar(info, subraiz.getInfo()) > 0){
+                    return eliminar(subraiz.getApuntadorADerecha(), subraiz, info);
+                } else {
+                    if(subraiz.getApuntadorAIzquierda() != null
+                            && subraiz.getApuntadorADerecha() != null){
+                        NodoDoble auxiliar = subraiz.getApuntadorAIzquierda();
+                        NodoDoble nuevoAux = null;
+                        boolean bool = false;
+                        while(auxiliar.getApuntadorADerecha() != null){
+                            nuevoAux = auxiliar;
+                            auxiliar = auxiliar.getApuntadorADerecha();
+                            bool = true;
+                        }
+                        subraiz.setInfo(auxiliar.getInfo());
+                        if(bool == true){
+                            auxiliar.setApuntadorADerecha(auxiliar.getApuntadorAIzquierda());
+                        } else {
+                            subraiz.setApuntadorAIzquierda(auxiliar.getApuntadorAIzquierda());
+                        }
+                    } else {
+                        NodoDoble otroNodo = subraiz;
+                        if(otroNodo.getApuntadorADerecha() == null){
+                            if(otroNodo.getApuntadorAIzquierda() != null){
+                                otroNodo = subraiz.getApuntadorAIzquierda();
+                                if(anterior != null){
+                                    if((int) Comparador.comparar(info, anterior.getInfo()) < 0){
+                                        anterior.setApuntadorAIzquierda(otroNodo);
+                                    } else {
+                                        anterior.setApuntadorADerecha(otroNodo);
+                                    }
+                                } else {
+                                    raiz = otroNodo;
+                                }
+                            } else {
+                                if(anterior == null){
+                                    raiz = null;
+                                } else {
+                                    if((int) Comparador.comparar(info, anterior.getInfo()) < 0){
+                                        anterior.setApuntadorAIzquierda(null);
+                                    } else {
+                                        anterior.setApuntadorADerecha(null);
+                                    }
+                                }
+                            }
+                        } else {
+                            if(otroNodo.getApuntadorAIzquierda() == null){
+                                otroNodo = subraiz.getApuntadorADerecha();
+                                if(anterior != null){
+                                    if((int) Comparador.comparar(info, anterior.getInfo()) < 0){
+                                        anterior.setApuntadorAIzquierda(otroNodo);
+                                    } else {
+                                        anterior.setApuntadorADerecha(otroNodo);
+                                    }
+                                } else {
+                                    raiz = otroNodo;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            return null;
+        }
+        return null;
+    }
 }
