@@ -5,6 +5,11 @@ import estructurasLineales.ListaDinamica;
 import estructurasLineales.auxiliares.Nodo;
 import utils.commons.Comparador;
 
+/**
+ * Clase para polinomios.
+ * @author Aratt
+ * @version 1.0
+ */
 public class Polinomio {
     protected ListaDinamica polinomio;
     protected String poli;
@@ -15,6 +20,10 @@ public class Polinomio {
         separar(poli);
     }
 
+    /**
+     * Separa el polinomio en monomios y los mete a la lista dinámica.
+     * @param poli Es el polinomio.
+     */
     public void separar(String poli){
         poli = quitar(poli);
         int exp = Integer.parseInt(String.valueOf(poli.charAt(0)));
@@ -22,6 +31,11 @@ public class Polinomio {
         polinomio.agregar("1");
     }
 
+    /**
+     * Separa el polinomio en monomios y los mete a la lista dinámica.
+     * @param poli Es el polinomio.
+     * @param exp Es el exponente el que va.
+     */
     private void separar(String poli, int exp){
         if(poli.length() > 0){
             int valor = Integer.parseInt(String.valueOf(poli.charAt(0)));
@@ -41,10 +55,21 @@ public class Polinomio {
         }
     }
 
+    /**
+     * Del string polinomio, elimina todos los valores de operaciones y de "x".
+     * @param poli Es el polinomio.
+     * @return Regresa la string de polinomio sin esos valores.
+     */
     public String quitar(String poli){
         return quitar(poli, 0);
     }
 
+    /**
+     * Del string polinomio, elimina todos los valores de operaciones y de "x".
+     * @param poli Es el polinomio.
+     * @param pos Posición del arreglo.
+     * @return Regresa la string de polinomio sin esos valores.
+     */
     private String quitar(String poli, int pos){
         String car = String.valueOf(poli.charAt(pos));
         if(pos < poli.length()-1){
@@ -58,10 +83,17 @@ public class Polinomio {
         }
     }
 
+    /**
+     * Imprime la lista.
+     */
     public void imprimir(){
         imprimirRecursivo(polinomio.getPrimero());
     }
 
+    /**
+     * Imprime la lista.
+     * @param cadaNodo Nodo en el que se encuentra.
+     */
     private void imprimirRecursivo(Nodo cadaNodo){
         if(cadaNodo != null){
             SalidaPorDefecto.terminal(cadaNodo.getInfo() + " -> ");
@@ -71,10 +103,19 @@ public class Polinomio {
         }
     }
 
+    /**
+     * Convierte la lista a binario.
+     * @return Regresa el valor binario.
+     */
     public String aBinario(){
         return aBinario(polinomio.getPrimero());
     }
 
+    /**
+     * Convierte la lista a binario.
+     * @param nodo Nodo en el que se encuentra.
+     * @return egresa el valor binario.
+     */
     private String aBinario(Nodo nodo){
         if(nodo != null && nodo.getInfo() != ""){
             return 1 + aBinario(nodo.getApuntadorOtroNodo());
@@ -85,10 +126,21 @@ public class Polinomio {
         }
     }
 
+    /**
+     * Busca el valor que se indique.
+     * @param info Es el valor por buscar.
+     * @return Regresa el valor si se encontró o null si no.
+     */
     public Object buscarRecursivo(Object info){
         return buscarRecursivo(info, polinomio.getPrimero());
     }
 
+    /**
+     * Busca el valor que se indique.
+     * @param info Es el valor por buscar.
+     * @param nodo Es el nodo en el que se encuentra.
+     * @return Regresa el valor si se encontró o null si no.
+     */
     private Object buscarRecursivo(Object info, Nodo nodo){
         if(nodo != null){
             if((int) Comparador.comparar(info, nodo.getInfo()) == 0){

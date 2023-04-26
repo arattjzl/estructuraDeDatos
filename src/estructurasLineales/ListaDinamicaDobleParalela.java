@@ -5,6 +5,12 @@ import estructurasLineales.auxiliares.Nodo;
 import estructurasLineales.auxiliares.NodoDoble;
 import utils.commons.Comparador;
 
+/**
+ * Clase para el TDA Lista dinámica doble paralela.
+ * @author Aratt
+ * @version 1.0
+ */
+
 public class ListaDinamicaDobleParalela {
 
     protected NodoDoble inicio;
@@ -60,9 +66,19 @@ public class ListaDinamicaDobleParalela {
         this.numNodo = numNodo;
     }
 
+    /**
+     * Checa si la lista está vacía.
+     * @return Regresa true si está vacía o false si no.
+     */
     public boolean vacia() {
         return inicio==null;
     }
+
+    /**
+     * Agrega valores a la lista.
+     * @param info Información por agregar.
+     * @return Regresa 1 si se agregó o -1 si no se agregó.
+     */
     public int agregar(Object info){
         NodoDoble nuevoNodo = new NodoDoble(info);
         if(nuevoNodo != null){
@@ -90,6 +106,9 @@ public class ListaDinamicaDobleParalela {
         return -1;
     }
 
+    /**
+     * Imprime la lista.
+     */
     public void imprimir(){
         inicializarIterador();
         while(nodoActual != null){
@@ -106,6 +125,11 @@ public class ListaDinamicaDobleParalela {
         SalidaPorDefecto.terminal(null + "\n");
     }
 
+    /**
+     * Elimina un valor de la lista.
+     * @param info Información por eliminar.
+     * @return Regresa la información que se eliminó.
+     */
     public Object eliminar(Object info){
         ListaDinamica listaAuxiliar = new ListaDinamica();
         Object respaldo = null;
@@ -139,6 +163,10 @@ public class ListaDinamicaDobleParalela {
         return respaldo;
     }
 
+    /**
+     * Elimina el último valor de la lista.
+     * @return Regresa el la información que se eliminó.
+     */
     public Object eliminarUltimo(){
         NodoDoble anterior = (NodoDoble) buscarAnteriorArriba(finArriba.getInfo()).obtener(0);
         Object respaldo = null;
@@ -154,6 +182,11 @@ public class ListaDinamicaDobleParalela {
         return respaldo;
     }
 
+    /**
+     * Regresa el nodo anterior del que se indica.
+     * @param info Información con la cual buscará el nodo anterior.
+     * @return Regresa una lista con el nodo anterior al que se busca y el nodo que se busca.
+     */
     public ListaEstatica buscarAnteriorArriba(Object info){
         ListaEstatica lista = new ListaEstatica(2);
         NodoDoble nodoAnterior = inicio;
@@ -172,6 +205,11 @@ public class ListaDinamicaDobleParalela {
         return lista;
     }
 
+    /**
+     * Busca la información que indiquemos.
+     * @param info Información por buscar.
+     * @return Regresa la información si se encontró o null si no.
+     */
     public Object buscar(Object info){
         inicializarIterador();
         int contador = 0;
@@ -193,12 +231,19 @@ public class ListaDinamicaDobleParalela {
         return null;
     }
 
+    /**
+     * Vacía la lista.
+     */
     public void vaciar(){
         inicio = null;
         finArriba = null;
         finAbajo = null;
         numNodo = 0;
     }
+
+    /**
+     * Inicializa el iterador para poder recorrer la lista.
+     */
     public void inicializarIterador(){
         nodoActual = inicio;
     }
