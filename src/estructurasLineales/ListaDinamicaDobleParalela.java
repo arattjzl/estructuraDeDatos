@@ -8,13 +8,15 @@ import utils.commons.Comparador;
 public class ListaDinamicaDobleParalela {
 
     protected NodoDoble inicio;
-    protected NodoDoble fin;
+    protected NodoDoble finArriba;
+    protected NodoDoble finAbajo;
     protected NodoDoble nodoActual;
     protected int numNodo;
 
     public ListaDinamicaDobleParalela(){
         inicio = null;
-        fin = null;
+        finArriba = null;
+        finAbajo = null;
         numNodo = 0;
     }
 
@@ -26,12 +28,20 @@ public class ListaDinamicaDobleParalela {
         this.inicio = inicio;
     }
 
-    public NodoDoble getFin() {
-        return fin;
+    public NodoDoble getFinArriba() {
+        return finArriba;
     }
 
-    public void setFin(NodoDoble fin) {
-        this.fin = fin;
+    public void setFinArriba(NodoDoble finArriba) {
+        this.finArriba = finArriba;
+    }
+
+    public NodoDoble getFinAbajo() {
+        return finAbajo;
+    }
+
+    public void setFinAbajo(NodoDoble finAbajo) {
+        this.finAbajo = finAbajo;
     }
 
     public NodoDoble getNodoActual() {
@@ -55,20 +65,26 @@ public class ListaDinamicaDobleParalela {
     }
     public int agregar(Object info){
         NodoDoble nuevoNodo = new NodoDoble(info);
-        if(nuevoNodo!=null){
+        if(nuevoNodo != null){
             numNodo++;
             if(vacia()){
                 inicio = nuevoNodo;
+                finArriba = nuevoNodo;
             } else {
                 if(numNodo % 2 != 0){
-                    NodoDoble anterior = fin.getApuntadorAIzquierda();
-                    anterior.setApuntadorADerecha(nuevoNodo);
+                    finArriba.setApuntadorADerecha(nuevoNodo);
+                    finArriba = nuevoNodo;
                 } else {
-                    nuevoNodo.setApuntadorAIzquierda(fin);
-                    fin.setApuntadorAIzquierda(nuevoNodo);
+                    if(numNodo == 2){
+                        finAbajo = nuevoNodo;
+                    } else {
+                        finAbajo.setApuntadorADerecha(nuevoNodo);
+                    }
+                    nuevoNodo.setApuntadorAIzquierda(finArriba);
+                    finArriba.setApuntadorAIzquierda(nuevoNodo);
+                    finAbajo = nuevoNodo;
                 }
             }
-            fin = nuevoNodo;
             return 1;
         }
         return -1;
@@ -76,19 +92,18 @@ public class ListaDinamicaDobleParalela {
 
     public void imprimir(){
         inicializarIterador();
-        int contador = 0;
         while(nodoActual != null){
-            contador++;
-            if(contador % 2 != 0){
-                SalidaPorDefecto.terminal(nodoActual.getInfo() + " -> ");
-                nodoActual = nodoActual.getApuntadorAIzquierda();
-            } else {
-                SalidaPorDefecto.terminal(nodoActual.getInfo() + " -> ");
-                nodoActual = nodoActual.getApuntadorAIzquierda();
-                nodoActual = nodoActual.getApuntadorADerecha();
-            }
+            SalidaPorDefecto.terminal(nodoActual.getInfo() + " -> ");
+            nodoActual = nodoActual.getApuntadorADerecha();
         }
-        SalidaPorDefecto.terminal(null);
+        SalidaPorDefecto.terminal(null + "\n");
+        inicializarIterador();
+        nodoActual = nodoActual.getApuntadorAIzquierda();
+        while(nodoActual != null){
+            SalidaPorDefecto.terminal(nodoActual.getInfo() + " -> ");
+            nodoActual = nodoActual.getApuntadorADerecha();
+        }
+        SalidaPorDefecto.terminal(null + "\n");
     }
 
     public Object eliminar(Object info){
@@ -124,6 +139,39 @@ public class ListaDinamicaDobleParalela {
         return respaldo;
     }
 
+    public Object eliminarUltimo(){
+        NodoDoble anterior = (NodoDoble) buscarAnteriorArriba(finArriba.getInfo()).obtener(0);
+        Object respaldo = null;
+        if(finArriba.getApuntadorAIzquierda() == null){
+            respaldo = finArriba.getInfo();
+            anterior.setApuntadorADerecha(null);
+        } else {
+            respaldo = finAbajo.getInfo();
+            NodoDoble anteriorAbajo = ((NodoDoble) buscarAnteriorArriba(finArriba.getInfo()).obtener(0)).getApuntadorAIzquierda();
+            anteriorAbajo.setApuntadorADerecha(null);
+            finArriba.setApuntadorAIzquierda(null);
+        }
+        return respaldo;
+    }
+
+    public ListaEstatica buscarAnteriorArriba(Object info){
+        ListaEstatica lista = new ListaEstatica(2);
+        NodoDoble nodoAnterior = inicio;
+        NodoDoble nodoBuscar = inicio;
+        while (nodoBuscar != null && !(info.toString().equalsIgnoreCase(nodoBuscar.getInfo().toString()))){
+            nodoAnterior = nodoBuscar;
+            nodoBuscar = nodoBuscar.getApuntadorADerecha();
+        }
+        if (nodoBuscar != null){
+            lista.agregar(nodoAnterior);
+            lista.agregar(nodoBuscar);
+        } else {
+            lista.agregar(null);
+            lista.agregar(null);
+        }
+        return lista;
+    }
+
     public Object buscar(Object info){
         inicializarIterador();
         int contador = 0;
@@ -147,7 +195,8 @@ public class ListaDinamicaDobleParalela {
 
     public void vaciar(){
         inicio = null;
-        fin = null;
+        finArriba = null;
+        finAbajo = null;
         numNodo = 0;
     }
     public void inicializarIterador(){

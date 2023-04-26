@@ -15,8 +15,8 @@ public class PruebaLisDiDoPa {
         SalidaPorDefecto.terminal(lista.agregar("z") + "\n");
 
         lista.imprimir();
-        lista.eliminar("r");
         SalidaPorDefecto.terminal("\n");
+        lista.eliminar("r");
         lista.imprimir();
     }
 }

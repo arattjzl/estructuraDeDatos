@@ -25,6 +25,9 @@ public class ListaDinamica implements Lista{
         nodoActual = null;
     }
 
+    public Nodo getPrimero(){
+        return primero;
+    }
     /**
      * Este método regresa un indicador de sí la list está vacía.
      * @return regresa <b>true</b> si está vacía, <b>false</b> en caso contrario
@@ -682,16 +685,4 @@ public class ListaDinamica implements Lista{
             }
         }
     }
-
-    public void imprimirRecursivo(){
-        imprimirRecursivo(primero);
-    }
-
-    private void imprimirRecursivo(Nodo cadaNodo){
-        SalidaPorDefecto.terminal(cadaNodo.getInfo() + " -> ");
-        if(cadaNodo != null){
-            imprimirRecursivo(cadaNodo.getApuntadorOtroNodo());
-        }
-    }
-
 }
