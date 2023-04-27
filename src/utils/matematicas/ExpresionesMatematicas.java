@@ -425,4 +425,13 @@ public class ExpresionesMatematicas {
             }
         }
     }
+
+    public static boolean esNumerico(String valor){
+        try{
+            Double.parseDouble(valor);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
 }
