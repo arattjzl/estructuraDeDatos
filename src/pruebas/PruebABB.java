@@ -10,7 +10,6 @@ public class PruebABB {
 
         arbol.agregar(5);
         arbol.agregar(11);
-        arbol.agregar(1);
         arbol.agregar(4);
         arbol.agregar(9);
         arbol.agregar(10);

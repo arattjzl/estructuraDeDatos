@@ -1,10 +1,14 @@
 package estructurasNoLineales;
 
 import entradasalida.SalidaPorDefecto;
-import estructurasLineales.auxiliares.Nodo;
 import estructurasLineales.auxiliares.NodoDoble;
 import utils.commons.Comparador;
 
+/**
+ * Clase que contiene los métodos para la creación y manipulación de un Árbol Binario de Búsqueda.
+ * @author Aratt
+ * @version 1.0
+ */
 public class ArbolBinarioBusqueda extends ArbolBinario{
 
     /**
@@ -121,10 +125,22 @@ public class ArbolBinarioBusqueda extends ArbolBinario{
         }
     }
 
+    /**
+     * Elimina la información indicada del árbol.
+     * @param info Información por eliminar.
+     * @return Regresa la información si se eliminó o null si no.
+     */
     public Object eliminar(Object info){
         return eliminar(raiz, null, info);
     }
 
+    /**
+     * Elimina la información indicada del árbol.
+     * @param subraiz Es el nodo actual en el cual nos encontramos.
+     * @param anterior Es el nodo anterior del padre, o sea, el nodo abuelo.
+     * @param info Información por eliminar.
+     * @return Regresa la información si se eliminó o null si no.
+     */
     private Object eliminar(NodoDoble subraiz, NodoDoble anterior, Object info){
         if(subraiz != null){
             if((int) Comparador.comparar(info, subraiz.getInfo()) < 0){
