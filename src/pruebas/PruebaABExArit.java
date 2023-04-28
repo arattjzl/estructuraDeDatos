@@ -1,15 +1,14 @@
 package pruebas;
 
 import entradasalida.SalidaPorDefecto;
-import estructurasNoLineales.ArbolExArit;
+import estructurasNoLineales.ArbolBinario;
 
 public class PruebaABExArit {
     public static void main(String[] args) {
-        ArbolExArit arbol = new ArbolExArit();
+        ArbolBinario arbol = new ArbolBinario();
 
         arbol.crearArbol();
-        arbol.innorden();
         arbol.aListas();
-
+        arbol.arbolSinVar();
     }
 }
