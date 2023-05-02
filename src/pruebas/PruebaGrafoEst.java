@@ -1,5 +1,6 @@
 package pruebas;
 
+import entradasalida.SalidaPorDefecto;
 import estructurasNoLineales.GrafoEstatico;
 
 public class PruebaGrafoEst {
@@ -19,6 +20,27 @@ public class PruebaGrafoEst {
         grafo.agregarArista("D","B");
         grafo.agregarArista("D","C");
 
-        grafo.imprimir();
+        GrafoEstatico nuevografo = new GrafoEstatico(5,0.0);
+
+        nuevografo.agregarVertice("A");
+        nuevografo.agregarVertice("B");
+        nuevografo.agregarVertice("C");
+        nuevografo.agregarVertice("D");
+        nuevografo.agregarVertice("E");
+
+        nuevografo.agregarArista("A", "B");
+        nuevografo.agregarArista("B", "C");
+        nuevografo.agregarArista("B", "D");
+        nuevografo.agregarArista("C", "A");
+        nuevografo.agregarArista("D", "c");
+        nuevografo.agregarArista("D", "E");
+        nuevografo.agregarArista("D", "A");
+        nuevografo.agregarArista("E", "C");
+
+        nuevografo.imprimir();
+        nuevografo.recorridoProfundidad("A").imprimir();
+        SalidaPorDefecto.terminal("\n");
+        nuevografo.recorridoAnchura("A").imprimir();
+
     }
 }

@@ -295,13 +295,9 @@ public class ListaEstatica implements VectorLista {
 
     @Override
     public void rellenar(Object info, int cantidad) {
-        vaciar();
-        if(cantidad < MAXIMO){
-            for(int indice = 0; indice <= cantidad; indice++){
-                agregar(info);
-            }
-        } else {
-            for(int indice = 0; indice < getMAXIMO(); indice++){
+        if(cantidad <= MAXIMO){
+            vaciar();
+            for(int indice = tope; indice <= cantidad; indice++){
                 agregar(info);
             }
         }
