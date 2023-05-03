@@ -3,11 +3,13 @@ package estructurasNoLineales;
 import entradasalida.EntradaPorDefecto;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.*;
-import estructurasLineales.auxiliares.NodoClave;
 import estructurasLineales.auxiliares.NodoDoble;
-import utils.commons.Comparador;
-import utils.matematicas.ExpresionesMatematicas;
 
+/**
+ * Clase con métodos para el TDA árbol binario.
+ * @author Aratt
+ * @version 1.0
+ */
 public class ArbolBinario {
     protected NodoDoble raiz;
 
@@ -115,6 +117,9 @@ public class ArbolBinario {
         }
     }
 
+    /**
+     * Corrimiento en postorden sin recursividad.
+     */
     public void postordenSinRecursion(){
         PilaDinamica pila = new PilaDinamica();
         ListaDinamica lista = new ListaDinamica();
@@ -141,18 +146,21 @@ public class ArbolBinario {
     }
 
     /**
-     * Recorrido en anchura para el arbol.
+     * Recorre el árbol por niveles, y de izquierda a derecha utilizando colas.
      */
     public void recorridoAmplitud(){
         // 1. Se agrega la raíz a una “cola” de nodos por visitar
         ColaDinamica cola = new ColaDinamica();
         cola.poner(raiz);
 
-        // 2. Mientras que la cola no esté vacía, se saca el primer elemento de la cola continuamos con el paso 3; pero si la cola esté vacía, entonces nos vamos al paso 5.
+        // 2. Mientras que la cola no esté vacía, se saca el primer elemento
+        // de la cola continuamos con el paso 3; pero si la cola esté vacía,
+        // entonces nos vamos al paso 5.
         while (!cola.vacia()){
             NodoDoble nodoSacado = (NodoDoble) cola.quitar();
 
-            // 3. Se imprime el nodo procesado actualmente y se agregan todos los hijos del nodo a la cola de nodos pendientes por procesar.
+            // 3. Se imprime el nodo procesado actualmente y se agregan todos
+            // los hijos del nodo a la cola de nodos pendientes por procesar.
             SalidaPorDefecto.terminal(nodoSacado.getInfo() + " ");
             if(nodoSacado.getApuntadorAIzquierda() != null){
                 cola.poner(nodoSacado.getApuntadorAIzquierda());
@@ -163,16 +171,22 @@ public class ArbolBinario {
         }
     }
 
+    /**
+     * Recorre el árbol por niveles, y de izquierda a derecha utilizando pilas.
+     */
     public void recorridoAmplitudPila(){
-        // 1. Se agrega la raíz a una “cola” de nodos por visitar
+        // 1. Se agrega la raíz a una “pila” de nodos por visitar
         PilaDinamica pila = new PilaDinamica();
         pila.poner(raiz);
 
-        // 2. Mientras que la cola no esté vacía, se saca el primer elemento de la cola continuamos con el paso 3; pero si la cola esté vacía, entonces nos vamos al paso 5.
+        // 2. Mientras que la cola no esté vacía, se saca el primer
+        // elemento de la cola continuamos con el paso 3; pero si la
+        // pila esté vacía, entonces nos vamos al paso 5.
         while (!pila.vacia()){
             NodoDoble nodoSacado = (NodoDoble) pila.quitar();
 
-            // 3. Se imprime el nodo procesado actualmente y se agregan todos los hijos del nodo a la cola de nodos pendientes por procesar.
+            // 3. Se imprime el nodo procesado actualmente y se agregan todos
+            // los hijos del nodo a la pila de nodos pendientes por procesar.
             SalidaPorDefecto.terminal(nodoSacado.getInfo() + " ");
             if(nodoSacado.getApuntadorAIzquierda() != null){
                 pila.poner(nodoSacado.getApuntadorAIzquierda());
