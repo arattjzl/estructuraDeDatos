@@ -271,7 +271,7 @@ public class Matriz2Numerica extends Matriz2 {
      */
     public boolean matrizDiagonal(Number contenido){
         if((int)Comparador.comparar(getRenglones(), getColumnas()) == 0){
-            rellenar(0);
+            //rellenar(0);
             for(int cadaRenglon = 0; cadaRenglon < getRenglones(); cadaRenglon++){
                 for(int cadaColumna = 0; cadaColumna < getColumnas(); cadaColumna++){
                     if(cadaColumna == cadaRenglon){

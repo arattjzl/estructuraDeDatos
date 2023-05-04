@@ -6,19 +6,32 @@ import estructurasLineales.ListaDinamica;
 import estructurasLineales.ListaEstatica;
 import estructurasLineales.PilaEstatica;
 import estructurasNoLineales.auxiliares.Vertice;
+import utils.commons.TipoOrden;
 
 public class GrafoEstatico {
-    protected Matriz2 aristas;
+    protected Matriz2Numerica aristas;
     protected ListaEstatica vertices;
+    protected TipoOrden tipoOrden;
 
     public GrafoEstatico(int numVertices){
-        aristas = new Matriz2(numVertices,numVertices);
+        aristas = new Matriz2Numerica(numVertices,numVertices);
         vertices = new ListaEstatica(numVertices);
     }
 
     public GrafoEstatico(int numVeces, Object inicializador){
-        aristas = new Matriz2(numVeces,numVeces,inicializador);
-        vertices = new ListaEstatica(numVeces);
+        this(numVeces);
+        aristas.rellenar(inicializador);
+    }
+
+    public GrafoEstatico(int numVeces, TipoOrden tipoOrden){
+        this(numVeces);
+        if(tipoOrden == TipoOrden.DEC){
+            aristas.rellenar(Double.MAX_VALUE);
+        } else {
+            aristas.rellenar(Double.MIN_VALUE);
+        }
+        aristas.matrizDiagonal(0.0);
+        this.tipoOrden = tipoOrden;
     }
 
     public boolean agregarVertice(Object info){
@@ -95,6 +108,41 @@ public class GrafoEstatico {
     }
 
     public ListaDinamica recorridoAnchura(Object origen){
+        ColaEstatica cola = new ColaEstatica(vertices.cantidad());
+        ListaEstatica marcados = new ListaEstatica(vertices.cantidad());
+        ListaDinamica recorridoSalida = new ListaDinamica();
+        marcados.rellenar(false, marcados.getTope());
+        //Partir de un nodo origen, marcarlo y ponerlo en la pila
+        int indiceOrigen = (int) vertices.buscar(origen);
+        if(indiceOrigen==-1){
+            return null;
+        }
+        cola.poner(indiceOrigen);
+        marcados.rellenar(false, vertices.cantidad());
+        marcados.cambiar(indiceOrigen,true);
+
+        while(!cola.vacia()) {
+            //Mientras halla elementos en la pila sacar 1 y procesar
+            int indiceVertAct = (int) cola.quitar();
+            Vertice verticeActual = (Vertice) vertices.obtener(indiceVertAct);
+            recorridoSalida.agregar(verticeActual.getInfo());
+            //Los vertices adyacentes al nodo acabado de procesar y que no esten marcados, ponerlos en la pila y marcarlos.
+            marcarVerticeAdyacenteAnchura(indiceVertAct, marcados, cola);
+        }
+        return recorridoSalida;
+    }
+
+    private void marcarVerticeAdyacenteAnchura(int indiceVerticeOrigen, ListaEstatica marcados, ColaEstatica cola){
+        for(int cadaDestino = 0; cadaDestino < aristas.getColumnas(); cadaDestino++){
+            Double flecha = (Double) aristas.obtener(indiceVerticeOrigen, cadaDestino);
+            if (flecha != null && flecha > 0 && ((boolean) marcados.obtener(cadaDestino))== false){
+                marcados.cambiar(cadaDestino, true);
+                cola.poner(cadaDestino);
+            }
+        }
+    }
+
+    public ListaDinamica ordenacionTopologica(){
         // Ordenacion topologica
 
         ListaDinamica recorridoOrdTop = new ListaDinamica();
@@ -113,11 +161,18 @@ public class GrafoEstatico {
 
         // Paso 3. Mientras haya elementos en la cola, sacar una y procesarlo
         while (!cola.vacia()){
+            int indiceVerticeActual = (int) cola.quitar();
+            Vertice verticeActual = (Vertice) vertices.obtener(indiceVerticeActual);
+            recorridoOrdTop.agregar(verticeActual.getInfo());
+
             // Paso 4. Recalcular incidencias con base al paso 3
+            recalcularIncidenciaVertices(incidencias, indiceVerticeActual, marcados);
+
             // Paso 5. Meter en la cola los vertices con incidencias en 0, y que no esten marcados, después meterlos
+            encolarYMarcarVerticesIncidencias0(incidencias, marcados, cola);
         }
 
-       return recorridoOrdTop;
+        return recorridoOrdTop;
     }
 
     // Paso 1. Inicializar incidencias
@@ -148,6 +203,16 @@ public class GrafoEstatico {
             if((int) incidencias.obtener(cadaVertice) == 0 && !((boolean) marcados.obtener(cadaVertice))){
                 cola.poner(cadaVertice);
                 marcados.cambiar(cadaVertice, true);
+            }
+        }
+    }
+
+    private void recalcularIncidenciaVertices(ListaEstatica incidencias, int indiceOrigen, ListaEstatica marcados){
+        for(int cadaDestino = 0; cadaDestino < aristas.getColumnas(); cadaDestino++) {
+            Double flecha = (Double) aristas.obtener(indiceOrigen, cadaDestino);
+            if (flecha != null && flecha > 0 && !((boolean) marcados.obtener(cadaDestino))) { // hay adyacencia
+                int incidenciaDestino = (int) incidencias.obtener(cadaDestino);
+                incidencias.cambiar(cadaDestino, incidenciaDestino-1);
             }
         }
     }
