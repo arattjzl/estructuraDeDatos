@@ -4,6 +4,7 @@ import entradasalida.EntradaPorDefecto;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.*;
 import estructurasLineales.auxiliares.NodoDoble;
+import utils.commons.Comparador;
 
 /**
  * Clase con métodos para el TDA árbol binario.
@@ -193,6 +194,146 @@ public class ArbolBinario {
             }
             if(nodoSacado.getApuntadorADerecha() != null){
                 pila.poner(nodoSacado.getApuntadorADerecha());
+            }
+        }
+    }
+
+    /**
+     * Obtiene la altura del árbol.
+     * @return Regresa la altura del árbol.
+     */
+    public int alturaArbol(){
+        return alturaArbol(raiz);
+    }
+
+    /**
+     * Obtiene la altura del árbol.
+     * @param actual Es la subraíz en la se encuentra.
+     * @return Regresa la altura del árbol.
+     */
+    protected int alturaArbol(NodoDoble actual){
+        if(actual != null){
+            int alturaIzq = alturaArbol(actual.getApuntadorAIzquierda());
+            int alturaDer = alturaArbol(actual.getApuntadorADerecha());
+            if(alturaIzq > alturaDer){
+                return alturaIzq + 1;
+            } else {
+                return alturaDer + 1;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Obtiene el nivel en el que se encuentra la información indicada.
+     * @param info Info que se buscará.
+     */
+    public void nivelSeEncuentra(Object info){
+        nivelSeEncuentra(raiz, info, 1);
+    }
+
+    /**
+     * Obtiene el nivel en el que se encuentra la información indicada.
+     * @param actual Es el nodo actual en el que se encuentra.
+     * @param info Info que se buscará.
+     * @param nivel Es el nivel en el que se encuentra.
+     */
+    protected void nivelSeEncuentra(NodoDoble actual, Object info, int nivel){
+        if(actual != null){
+            if((int) Comparador.comparar(info, actual.getInfo()) == 0){
+                SalidaPorDefecto.terminal("La informacion " + info + " se encuentra en el nivel " + nivel + "\n");
+            } else {
+                nivelSeEncuentra(actual.getApuntadorAIzquierda(), info, nivel+1);
+                nivelSeEncuentra(actual.getApuntadorADerecha(), info, nivel+1);
+            }
+        }
+    }
+
+    /**
+     * Obtiene los elementos que hay en el nivel indicado.
+     * @param nivel Es el nivel a buscar.
+     */
+    public int elementosNivel(int nivel){
+        return elementosNivel(nivel,1,raiz);
+    }
+
+    /**
+     * Obtiene los elementos que hay en el nivel indicado.
+     * @param nivel Es el nivel a buscar.
+     * @param nivelActual Es el nivel en el que se encuentra.
+     * @param actual Es el nodo actual en el que se encuentra.
+     * @return
+     */
+    protected int elementosNivel(int nivel, int nivelActual, NodoDoble actual){
+        if(nivelActual != nivel && actual != null){
+            return elementosNivel(nivel, nivelActual+1, actual.getApuntadorAIzquierda())
+                    + elementosNivel(nivel, nivelActual+1, actual.getApuntadorADerecha());
+        } else if(nivelActual == nivel && actual == null){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * Obtiene la información del nodo que se indica.
+     * @param info Información por buscar.
+     */
+    public void queNodoEs(Object info){
+        queNodoEs(raiz, null, info);
+    }
+
+    /**
+     * Obtiene la información del nodo que se indica.
+     * @param actual Es el nodo actual.
+     * @param anterior Es el nodo padre.
+     * @param info Información por buscar.
+     */
+    protected void queNodoEs(NodoDoble actual, NodoDoble anterior, Object info){
+        if(actual != null){
+            if((int) Comparador.comparar(info, actual.getInfo()) == 0){
+                if(actual == raiz){
+                    SalidaPorDefecto.terminal("El nodo con info " + info +" es nodo raiz" + "\n");
+                } else if(actual.getApuntadorAIzquierda() != null || anterior.getApuntadorADerecha() != null){
+                    SalidaPorDefecto.terminal("El nodo con info " + info +" es nodo intermedio y su padre es " + anterior.getInfo() + "\n");
+                } else {
+                    SalidaPorDefecto.terminal("El nodo con info " + info +" es hoja y su padre es " + anterior.getInfo() + "\n");
+                }
+            } else {
+                queNodoEs(actual.getApuntadorAIzquierda(), actual, info);
+                queNodoEs(actual.getApuntadorADerecha(), actual, info);
+            }
+        }
+    }
+
+    /**
+     * Obtiene la información si hay la información tiene un nodo hermano.
+     * @param info Información por buscar.
+     */
+    public void tieneHermano(Object info){
+        tieneHermano(raiz, null, info);
+    }
+
+    /**
+     * Obtiene la información si hay la información tiene un nodo hermano.
+     * @param actual Es el nodo actual.
+     * @param anterior Es el nodo padre.
+     * @param info Información por buscar.
+     */
+    protected void tieneHermano(NodoDoble actual, NodoDoble anterior, Object info){
+        if(actual != null){
+            if((int) Comparador.comparar(info, actual.getInfo()) == 0){
+                if(anterior == null){
+                    SalidaPorDefecto.terminal("Esta en la raiz\n");
+                } else if(anterior.getApuntadorAIzquierda() != null && anterior.getApuntadorADerecha() != null){
+                    SalidaPorDefecto.terminal("Si tiene hermano\n");
+                } else {
+                    SalidaPorDefecto.terminal("No tiene hermano\n");
+                }
+            } else {
+                tieneHermano(actual.getApuntadorAIzquierda(), actual, info);
+                tieneHermano(actual.getApuntadorADerecha(), actual, info);
             }
         }
     }
