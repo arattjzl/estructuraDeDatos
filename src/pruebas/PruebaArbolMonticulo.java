@@ -8,9 +8,9 @@ public class PruebaArbolMonticulo {
     public static void main(String[] args) {
         ArbolBinarioMonticulo monticulo = new ArbolBinarioMonticulo(TipoOrden.INC);
 
-
-        monticulo.agregar(20);
         monticulo.agregar(18);
+        monticulo.agregar(20);
+        monticulo.agregar(7);
         monticulo.agregar(9);
         monticulo.agregar(8);
         monticulo.agregar(10);
@@ -20,7 +20,6 @@ public class PruebaArbolMonticulo {
         SalidaPorDefecto.terminal("\n");
 
         ArbolBinarioMonticulo otro = new ArbolBinarioMonticulo(TipoOrden.DEC);
-
 
         otro.agregar(20);
         otro.agregar(18);

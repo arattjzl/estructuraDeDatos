@@ -53,9 +53,7 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
     }
 
     private void buscarLugarInc(NodoDoble actual, NodoDoble padre){
-        if(actual != null){
-            buscarLugarInc(actual.getApuntadorADerecha(),actual);
-            buscarLugarInc(actual.getApuntadorAIzquierda(),actual);
+        if(actual != null) {
             if(actual != raiz){
                 if((int) Comparador.comparar(actual.getInfo(), padre.getInfo()) > 0){
                     if(padre == raiz){
@@ -73,7 +71,7 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
                             actual.setApuntadorADerecha(auxDer);
                         }
                         raiz = actual;
-                    } else if(obtenerPadre(padre) != null){
+                    } else {
                         NodoDoble abuelo = obtenerPadre(padre);
                         if(padre.getApuntadorADerecha() == actual){
                             NodoDoble auxizq = padre.getApuntadorAIzquierda();
@@ -101,15 +99,15 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
                     }
                 }
             }
+            buscarLugarInc(actual.getApuntadorAIzquierda(), actual);
+            buscarLugarInc(actual.getApuntadorADerecha(), actual);
         }
     }
 
     private void buscarLugarDec(NodoDoble actual, NodoDoble padre){
-        if(actual != null){
-            buscarLugarInc(actual.getApuntadorADerecha(),actual);
-            buscarLugarInc(actual.getApuntadorAIzquierda(),actual);
+        if(actual != null) {
             if(actual != raiz){
-                if((int) Comparador.comparar(actual.getInfo(), padre.getInfo()) < 0){
+                if((int) Comparador.comparar(padre.getInfo(), actual.getInfo()) > 0){
                     if(padre == raiz){
                         if(padre.getApuntadorADerecha() == actual) {
                             NodoDoble auxizq = padre.getApuntadorAIzquierda();
@@ -125,7 +123,7 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
                             actual.setApuntadorADerecha(auxDer);
                         }
                         raiz = actual;
-                    } else if(obtenerPadre(padre) != null){
+                    } else {
                         NodoDoble abuelo = obtenerPadre(padre);
                         if(padre.getApuntadorADerecha() == actual){
                             NodoDoble auxizq = padre.getApuntadorAIzquierda();
@@ -153,6 +151,8 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
                     }
                 }
             }
+            buscarLugarDec(actual.getApuntadorAIzquierda(), actual);
+            buscarLugarDec(actual.getApuntadorADerecha(), actual);
         }
     }
 
@@ -175,4 +175,6 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
         }
         return padre;
     }
+
+
 }
