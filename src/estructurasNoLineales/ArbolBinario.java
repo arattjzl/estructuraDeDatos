@@ -3,6 +3,7 @@ package estructurasNoLineales;
 import entradasalida.EntradaPorDefecto;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.*;
+import estructurasLineales.auxiliares.Nodo;
 import estructurasLineales.auxiliares.NodoDoble;
 import utils.commons.Comparador;
 

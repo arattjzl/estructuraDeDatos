@@ -47,16 +47,16 @@ public class ArbolBinarioBusqueda extends ArbolBinario{
      * @return Regresa true si se pudo agregar y false si no.
      */
     public boolean agregar(Object info){
-        if(raiz == null){
-            NodoDoble nuevoNodo = new NodoDoble(info);
-            if(nuevoNodo != null){
+        NodoDoble nuevoNodo = new NodoDoble(info);
+        if(nuevoNodo != null){
+            if(raiz == null){
                 raiz = nuevoNodo;
                 return true;
             } else {
-                return false;
+                return agregar(raiz, info);
             }
         } else {
-            return agregar(raiz, info);
+            return false;
         }
     }
 
