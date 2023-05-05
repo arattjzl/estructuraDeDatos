@@ -2,8 +2,6 @@ package estructurasNoLineales;
 
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ColaDinamica;
-import estructurasLineales.ColaEstatica;
-import estructurasLineales.ListaEstatica;
 import estructurasLineales.auxiliares.NodoDoble;
 import utils.commons.Comparador;
 import utils.commons.TipoOrden;
@@ -23,13 +21,12 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
             if(raiz == null){
                 raiz = nuevoNodo;
             } else {
+                agregar(nuevoNodo);
                 if(tipoOrden == TipoOrden.INC){
-                    agregarInc(nuevoNodo);
-                    buscarLugarInc(nuevoNodo, raiz);
-                } else {
-                    agregarDec(nuevoNodo);
+                    buscarLugarInc(raiz, null);
+                } else if(tipoOrden == TipoOrden.DEC){
+                    buscarLugarDec(raiz, null);
                 }
-
             }
             return true;
         } else {
@@ -37,25 +34,7 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
         }
     }
 
-    private void agregarInc(NodoDoble nodoNuevo){
-        ColaDinamica cola = new ColaDinamica();
-        cola.poner(raiz);
-        while (!cola.vacia()){
-            NodoDoble nodoSacado = (NodoDoble) cola.quitar();
-            if(nodoSacado.getApuntadorAIzquierda() != null && nodoSacado.getApuntadorADerecha() != null){
-                cola.poner(nodoSacado.getApuntadorAIzquierda());
-                cola.poner(nodoSacado.getApuntadorADerecha());
-            } else if(nodoSacado.getApuntadorAIzquierda() != null && nodoSacado.getApuntadorADerecha() == null){
-                nodoSacado.setApuntadorADerecha(nodoNuevo);
-                break;
-            } else {
-                nodoSacado.setApuntadorAIzquierda(nodoNuevo);
-                break;
-            }
-        }
-    }
-
-    private void agregarDec(NodoDoble nodoNuevo){
+    private void agregar(NodoDoble nodoNuevo){
         ColaDinamica cola = new ColaDinamica();
         cola.poner(raiz);
         while (!cola.vacia()){
@@ -77,44 +56,47 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
         if(actual != null){
             buscarLugarInc(actual.getApuntadorADerecha(),actual);
             buscarLugarInc(actual.getApuntadorAIzquierda(),actual);
-            if((int) Comparador.comparar(actual.getInfo(), padre.getInfo()) > 0){
-                if(padre == raiz){
-                    if(padre.getApuntadorADerecha() == actual) {
-                        NodoDoble auxDer = padre.getApuntadorADerecha();
-                        padre.setApuntadorADerecha(actual.getApuntadorADerecha());
-                        padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
-                        actual.setApuntadorAIzquierda(padre.getApuntadorAIzquierda());
-                        actual.setApuntadorADerecha(auxDer);
-                    } else if(padre.getApuntadorAIzquierda() == actual) {
-                        NodoDoble auxizq = padre.getApuntadorAIzquierda();
-                        padre.setApuntadorADerecha(actual.getApuntadorADerecha());
-                        padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
-                        actual.setApuntadorAIzquierda(auxizq);
-                        actual.setApuntadorADerecha(actual.getApuntadorADerecha());
-                    }
-                } else {
-                    NodoDoble abuelo = obtenerPadre(padre);
-                    if(padre.getApuntadorADerecha() == actual){
-                        NodoDoble auxDer = padre.getApuntadorADerecha();
-                        padre.setApuntadorADerecha(actual.getApuntadorADerecha());
-                        padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
-                        actual.setApuntadorAIzquierda(padre.getApuntadorAIzquierda());
-                        actual.setApuntadorADerecha(auxDer);
-                        if(abuelo.getApuntadorADerecha() != null && abuelo.getApuntadorADerecha() == padre){
-                            abuelo.setApuntadorADerecha(actual);
-                        } else if(abuelo.getApuntadorAIzquierda() != null && abuelo.getApuntadorAIzquierda() == padre){
-                            abuelo.setApuntadorAIzquierda(actual);
+            if(actual != raiz){
+                if((int) Comparador.comparar(actual.getInfo(), padre.getInfo()) > 0){
+                    if(padre == raiz){
+                        if(padre.getApuntadorADerecha() == actual) {
+                            NodoDoble auxizq = padre.getApuntadorAIzquierda();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(auxizq);
+                            actual.setApuntadorADerecha(padre);
+                        } else if(padre.getApuntadorAIzquierda() == actual) {
+                            NodoDoble auxDer = padre.getApuntadorADerecha();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(padre);
+                            actual.setApuntadorADerecha(auxDer);
                         }
-                    } else if(padre.getApuntadorAIzquierda() == actual){
-                        NodoDoble auxizq = padre.getApuntadorAIzquierda();
-                        padre.setApuntadorADerecha(actual.getApuntadorADerecha());
-                        padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
-                        actual.setApuntadorAIzquierda(auxizq);
-                        actual.setApuntadorADerecha(actual.getApuntadorADerecha());
-                        if(abuelo.getApuntadorADerecha() != null && abuelo.getApuntadorADerecha() == padre){
-                            abuelo.setApuntadorADerecha(actual);
-                        } else if(abuelo.getApuntadorAIzquierda() != null && abuelo.getApuntadorAIzquierda() == padre){
-                            abuelo.setApuntadorAIzquierda(actual);
+                        raiz = actual;
+                    } else if(obtenerPadre(padre) != null){
+                        NodoDoble abuelo = obtenerPadre(padre);
+                        if(padre.getApuntadorADerecha() == actual){
+                            NodoDoble auxizq = padre.getApuntadorAIzquierda();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(auxizq);
+                            actual.setApuntadorADerecha(padre);
+                            if(abuelo.getApuntadorADerecha() == padre){
+                                abuelo.setApuntadorADerecha(actual);
+                            } else if(abuelo.getApuntadorAIzquierda() == padre){
+                                abuelo.setApuntadorAIzquierda(actual);
+                            }
+                        } else if(padre.getApuntadorAIzquierda() == actual){
+                            NodoDoble auxDer = padre.getApuntadorADerecha();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(padre);
+                            actual.setApuntadorADerecha(auxDer);
+                            if(abuelo.getApuntadorADerecha() == padre){
+                                abuelo.setApuntadorADerecha(actual);
+                            } else if(abuelo.getApuntadorAIzquierda() == padre){
+                                abuelo.setApuntadorAIzquierda(actual);
+                            }
                         }
                     }
                 }
@@ -122,21 +104,75 @@ public class ArbolBinarioMonticulo extends ArbolBinario{
         }
     }
 
-    private NodoDoble obtenerPadre(NodoDoble buscando){
+    private void buscarLugarDec(NodoDoble actual, NodoDoble padre){
+        if(actual != null){
+            buscarLugarInc(actual.getApuntadorADerecha(),actual);
+            buscarLugarInc(actual.getApuntadorAIzquierda(),actual);
+            if(actual != raiz){
+                if((int) Comparador.comparar(actual.getInfo(), padre.getInfo()) < 0){
+                    if(padre == raiz){
+                        if(padre.getApuntadorADerecha() == actual) {
+                            NodoDoble auxizq = padre.getApuntadorAIzquierda();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(auxizq);
+                            actual.setApuntadorADerecha(padre);
+                        } else if(padre.getApuntadorAIzquierda() == actual) {
+                            NodoDoble auxDer = padre.getApuntadorADerecha();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(padre);
+                            actual.setApuntadorADerecha(auxDer);
+                        }
+                        raiz = actual;
+                    } else if(obtenerPadre(padre) != null){
+                        NodoDoble abuelo = obtenerPadre(padre);
+                        if(padre.getApuntadorADerecha() == actual){
+                            NodoDoble auxizq = padre.getApuntadorAIzquierda();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(auxizq);
+                            actual.setApuntadorADerecha(padre);
+                            if(abuelo.getApuntadorADerecha() == padre){
+                                abuelo.setApuntadorADerecha(actual);
+                            } else if(abuelo.getApuntadorAIzquierda() == padre){
+                                abuelo.setApuntadorAIzquierda(actual);
+                            }
+                        } else if(padre.getApuntadorAIzquierda() == actual){
+                            NodoDoble auxDer = padre.getApuntadorADerecha();
+                            padre.setApuntadorADerecha(actual.getApuntadorADerecha());
+                            padre.setApuntadorAIzquierda(actual.getApuntadorAIzquierda());
+                            actual.setApuntadorAIzquierda(padre);
+                            actual.setApuntadorADerecha(auxDer);
+                            if(abuelo.getApuntadorADerecha() == padre){
+                                abuelo.setApuntadorADerecha(actual);
+                            } else if(abuelo.getApuntadorAIzquierda() == padre){
+                                abuelo.setApuntadorAIzquierda(actual);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public NodoDoble obtenerPadre(NodoDoble buscando){
         ColaDinamica cola = new ColaDinamica();
+        NodoDoble padre = null;
         cola.poner(raiz);
         while(!cola.vacia()){
             NodoDoble quitado = (NodoDoble) cola.quitar();
-            if(quitado.getApuntadorAIzquierda() == buscando || quitado.getApuntadorADerecha() == buscando){
-                return quitado;
-            }
             if(quitado.getApuntadorAIzquierda() != null){
                 cola.poner(quitado.getApuntadorAIzquierda());
             }
             if(quitado.getApuntadorADerecha() != null){
                 cola.poner(quitado.getApuntadorADerecha());
             }
+            if((quitado.getApuntadorAIzquierda() != null && (int) Comparador.comparar(buscando, quitado.getApuntadorAIzquierda()) == 0 )||
+                    (quitado.getApuntadorADerecha() != null && (int) Comparador.comparar(buscando, quitado.getApuntadorADerecha()) == 0)){
+                padre = quitado;
+            }
         }
-        return null;
+        return padre;
     }
 }
