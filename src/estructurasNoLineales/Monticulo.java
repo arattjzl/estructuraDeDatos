@@ -183,7 +183,7 @@ public class Monticulo extends ArbolBinario{
      * @param buscando Es el nodo del cual se quiere encontrar el padre.
      * @return Regresa el nodo padre si tiene o null si no tiene.
      */
-    public NodoDoble obtenerPadre(NodoDoble buscando){
+    private NodoDoble obtenerPadre(NodoDoble buscando){
         ColaDinamica cola = new ColaDinamica();
         NodoDoble padre = null;
         cola.poner(raiz);
