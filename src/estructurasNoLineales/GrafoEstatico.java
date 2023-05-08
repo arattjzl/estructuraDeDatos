@@ -6,6 +6,7 @@ import estructurasLineales.ListaDinamica;
 import estructurasLineales.ListaEstatica;
 import estructurasLineales.PilaEstatica;
 import estructurasNoLineales.auxiliares.Vertice;
+import registros.commons.EtiquetaGrafo;
 import utils.commons.TipoOrden;
 
 public class GrafoEstatico {
@@ -215,5 +216,53 @@ public class GrafoEstatico {
                 incidencias.cambiar(cadaDestino, incidenciaDestino-1);
             }
         }
+    }
+
+    // Calculo de primero la ruta mas corta: Dijkstra
+    public ListaEstatica rutaMasCortaDijkstra(Object origen){
+        ListaEstatica etiquetasOptimas = new ListaEstatica(vertices.cantidad());
+
+        // Paso 0. Determinar si el origen existe
+        Integer indiceOrigen = (Integer) vertices.buscar(origen);
+        if(indiceOrigen == -1){
+            return null;
+        }
+
+        double infinito = 0.0;
+        if(tipoOrden == TipoOrden.DEC){
+            infinito = Double.MAX_VALUE;
+        } else {
+            infinito = Double.MIN_VALUE;
+        }
+        // Calculo de primero la ruta mas corta: Dijkstra
+        // Paso 1. Inicializar las etiquetas. Iteracion 0
+        inicializarEtiquetasOptimas(etiquetasOptimas, infinito, 0.0, -1, indiceOrigen, 0);
+        etiquetasOptimas.imprimir();
+        // Paso 2. Calcular la metica acumulada del vertice actual (el primer vertice actual es el origen) hacia cada vecino
+        // no marcado, y si la metrica es mejor, se sobreescribe
+
+        // Paso 3. Buscar el vertice con la mejor metrica, se marca y es el vertice actual
+        return etiquetasOptimas;
+    }
+
+    // Paso 1
+    private void inicializarEtiquetasOptimas(ListaEstatica etiquetasOptimas,
+                                             Double metricaVertices,
+                                             Double metricaOrigen,
+                                             int verticeAnteriorVertices,
+                                             int indiceVerticeOrigen,
+                                             int iteracionInicial){
+        for(int cadaVertice = 0; cadaVertice < etiquetasOptimas.getMAXIMO(); cadaVertice++){
+            EtiquetaGrafo etiquetaNueva = new EtiquetaGrafo();
+
+            etiquetaNueva.setIteracion(iteracionInicial);
+            etiquetaNueva.setMetricaAcumulada(metricaVertices);
+            etiquetaNueva.setVerticeAnterior(verticeAnteriorVertices);
+
+            etiquetasOptimas.agregar(etiquetaNueva);
+        }
+        // Solo al origen se le cambia los valores propios
+        EtiquetaGrafo etiquetaOrigen = (EtiquetaGrafo) etiquetasOptimas.obtener(indiceVerticeOrigen);
+        etiquetaOrigen.setMetricaAcumulada(metricaOrigen);
     }
 }
