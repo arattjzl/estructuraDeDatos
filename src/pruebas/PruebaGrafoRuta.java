@@ -1,5 +1,6 @@
 package pruebas;
 
+import entradasalida.SalidaPorDefecto;
 import estructurasNoLineales.GrafoEstatico;
 import utils.commons.TipoOrden;
 
@@ -49,7 +50,7 @@ public class PruebaGrafoRuta {
         grafo.agregarArista("M", "H",9.0);
         grafo.agregarArista("H", "M",9.0);
 
-        grafo.imprimir();
-        grafo.rutaMasCortaDijkstra("A");
+        //grafo.imprimir();
+        grafo.rutaOptima("A", "M").imprimir();
     }
 }

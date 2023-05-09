@@ -218,9 +218,37 @@ public class GrafoEstatico {
         }
     }
 
+    public Double metricaRutaOptima(Object origen, Object destino){
+        Integer indiceDestino = (Integer) vertices.buscar(destino);
+        ListaEstatica etiquetasOptimas = rutaMasCortaDijkstra(origen);
+        if(indiceDestino != -1 && etiquetasOptimas != null){
+            // destino y origen si existen
+            EtiquetaGrafo etiquetaDestinoPedido = (EtiquetaGrafo) etiquetasOptimas.obtener(indiceDestino);
+            return etiquetaDestinoPedido.getMetricaAcumulada();
+        }
+        return null;
+    }
+
+    public ListaDinamica rutaOptima(Object origen, Object destino){
+        Integer indiceDestino = (Integer) vertices.buscar(destino);
+        ListaEstatica etiquetasOptimas = rutaMasCortaDijkstra(origen);
+        ListaDinamica ruta = new ListaDinamica();
+        if(indiceDestino != -1 && etiquetasOptimas != null) {
+            int indiceActual = indiceDestino;
+            do {
+                Vertice vertice = (Vertice) vertices.obtener(indiceActual);
+                ruta.agregarPrincipio(vertice.getInfo());
+                EtiquetaGrafo etiquetaActual = (EtiquetaGrafo) etiquetasOptimas.obtener(indiceActual);
+                indiceActual = etiquetaActual.getVerticeAnterior();
+            } while (indiceActual != -1);
+        }
+        return ruta;
+    }
+
     // Calculo de primero la ruta mas corta: Dijkstra
-    public ListaEstatica rutaMasCortaDijkstra(Object origen){
+    private ListaEstatica rutaMasCortaDijkstra(Object origen){
         ListaEstatica etiquetasOptimas = new ListaEstatica(vertices.cantidad());
+        ListaEstatica marcados = new ListaEstatica(vertices.cantidad());
 
         // Paso 0. Determinar si el origen existe
         Integer indiceOrigen = (Integer) vertices.buscar(origen);
@@ -237,21 +265,28 @@ public class GrafoEstatico {
         // Calculo de primero la ruta mas corta: Dijkstra
         // Paso 1. Inicializar las etiquetas. Iteracion 0
         inicializarEtiquetasOptimas(etiquetasOptimas, infinito, 0.0, -1, indiceOrigen, 0);
-        etiquetasOptimas.imprimir();
-        // Paso 2. Calcular la metica acumulada del vertice actual (el primer vertice actual es el origen) hacia cada vecino
-        // no marcado, y si la metrica es mejor, se sobreescribe
+        marcados.rellenar(false, vertices.cantidad());
+        marcados.cambiar(indiceOrigen, true);
 
-        // Paso 3. Buscar el vertice con la mejor metrica, se marca y es el vertice actual
+        int indiceActual = indiceOrigen;
+
+        for(int iteracion = 1; iteracion < vertices.cantidad(); iteracion++){
+            // Paso 2. Calcular la metica acumulada del vertice actual (el primer vertice actual es el origen) hacia cada vecino
+            // no marcado, y si la metrica es mejor, se sobreescribe
+            calcularMetricasAcumuladasVecino(etiquetasOptimas, indiceActual, marcados, infinito, iteracion);
+
+            // Paso 3. Buscar el vertice con la mejor metrica, se marca y es el vertice actual
+            indiceActual = actualizarVerticesActual(etiquetasOptimas, marcados, infinito);
+            marcados.cambiar(indiceActual, true);
+        }
+
         return etiquetasOptimas;
     }
 
-    // Paso 1
-    private void inicializarEtiquetasOptimas(ListaEstatica etiquetasOptimas,
-                                             Double metricaVertices,
-                                             Double metricaOrigen,
-                                             int verticeAnteriorVertices,
-                                             int indiceVerticeOrigen,
-                                             int iteracionInicial){
+    // Paso 1 Ruta mas corta Dijkstra
+    private void inicializarEtiquetasOptimas(ListaEstatica etiquetasOptimas, Double metricaVertices,
+                                             Double metricaOrigen, int verticeAnteriorVertices,
+                                             int indiceVerticeOrigen, int iteracionInicial){
         for(int cadaVertice = 0; cadaVertice < etiquetasOptimas.getMAXIMO(); cadaVertice++){
             EtiquetaGrafo etiquetaNueva = new EtiquetaGrafo();
 
@@ -264,5 +299,63 @@ public class GrafoEstatico {
         // Solo al origen se le cambia los valores propios
         EtiquetaGrafo etiquetaOrigen = (EtiquetaGrafo) etiquetasOptimas.obtener(indiceVerticeOrigen);
         etiquetaOrigen.setMetricaAcumulada(metricaOrigen);
+    }
+
+    // Paso 2. Ruta mas corta Dijkstra
+    private void calcularMetricasAcumuladasVecino(ListaEstatica etiquetasOptimas, int indiceActual,
+                                                  ListaEstatica marcados, double infinito, int iteracion){
+        for(int cadaDestinoCol = 0; cadaDestinoCol < aristas.getColumnas(); cadaDestinoCol++){
+            Double flechaAdyacente = (Double) aristas.obtener(indiceActual, cadaDestinoCol);
+
+            if(flechaAdyacente != null && flechaAdyacente != 0 && flechaAdyacente != infinito && !((boolean) marcados.obtener(cadaDestinoCol))){
+                EtiquetaGrafo etiquetaVerticeActual = (EtiquetaGrafo) etiquetasOptimas.obtener(indiceActual);
+                double metricaVerticeActual = etiquetaVerticeActual.getMetricaAcumulada();
+                double metricaAcumuladaOrigenDestino = metricaVerticeActual + flechaAdyacente;
+
+                EtiquetaGrafo etiquetaDestino = (EtiquetaGrafo) etiquetasOptimas.obtener(cadaDestinoCol);
+
+                boolean banderaSubstitucion = false;
+                if(tipoOrden == TipoOrden.DEC){
+                    if(metricaAcumuladaOrigenDestino < etiquetaDestino.getMetricaAcumulada()){
+
+                        banderaSubstitucion = true;
+                    }
+                } else {
+                    if(metricaAcumuladaOrigenDestino > etiquetaDestino.getMetricaAcumulada()){
+
+                        banderaSubstitucion = true;
+                    }
+                }
+                if(banderaSubstitucion){
+                    etiquetaDestino.setMetricaAcumulada(metricaAcumuladaOrigenDestino);
+                    etiquetaDestino.setIteracion(iteracion);
+                    etiquetaDestino.setVerticeAnterior(indiceActual);
+                }
+            }
+        }
+    }
+
+    // Paso 3. Ruta mas corta dijkstra
+    private int actualizarVerticesActual(ListaEstatica etiquetasOptimas, ListaEstatica marcados, double infinito){
+        double mejor = infinito;
+        int indiceVerticeMejor = -1;
+
+        for(int cadaVerticeCandidato = 0; cadaVerticeCandidato < etiquetasOptimas.cantidad(); cadaVerticeCandidato++){
+            if(!(boolean) marcados.obtener(cadaVerticeCandidato)){
+                EtiquetaGrafo etiquetaCandidato = (EtiquetaGrafo) etiquetasOptimas.obtener(cadaVerticeCandidato);
+                if(tipoOrden == TipoOrden.DEC){// mas pequenio es mejor
+                    if(etiquetaCandidato.getMetricaAcumulada() < mejor){
+                        mejor = etiquetaCandidato.getMetricaAcumulada();
+                        indiceVerticeMejor = cadaVerticeCandidato;
+                    }
+                } else { // mas grande es mejor
+                    if(etiquetaCandidato.getMetricaAcumulada() > mejor){
+                        mejor = etiquetaCandidato.getMetricaAcumulada();
+                        indiceVerticeMejor = cadaVerticeCandidato;
+                    }
+                }
+            }
+        }
+        return indiceVerticeMejor;
     }
 }
