@@ -1,5 +1,10 @@
 package estructurasNoLineales.auxiliares;
 
+/**
+ * Nodo utilizado para guardar el índice y dirección de una base de datos.
+ * @author Aratt
+ * @version 1.0
+ */
 public class NodoBusquedaArbol {
     public Object indice;
     public long direccion;

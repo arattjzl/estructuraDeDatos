@@ -212,4 +212,9 @@ public class ArbolBinarioBusqueda extends ArbolBinario{
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return raiz.toString();
+    }
 }

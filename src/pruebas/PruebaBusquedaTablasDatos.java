@@ -12,7 +12,7 @@ public class PruebaBusquedaTablasDatos {
         arbol.primerArbolInnorden();
         SalidaPorDefecto.terminal("\n\n");
 
-        arbol.abrirArchivoArbol2("C:\\Users\\aratt\\workspace\\escuela\\datos_ordenes\\order_items.txt", 1);
+        arbol.abrirArchivoArbol2("C:\\Users\\aratt\\workspace\\escuela\\datos_ordenes\\categories_tab.txt", 3,2);
         arbol.segundoArbolInnorden();
     }
 }
