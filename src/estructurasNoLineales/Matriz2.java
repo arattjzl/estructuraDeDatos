@@ -239,10 +239,10 @@ public class Matriz2 {
      * @param arreglo Lista con valores a agregar.
      * @return Regresa <b>true</b> si se realizo el cambio.
      */
-    public boolean agregarRenglon(ListaEstatica arreglo){
+    public boolean agregarRenglon(ListaEstatica arreglo, int posCol){
         if(validarRango(arreglo.getTope(), getRenglones())){
-            for(int indiceRenglones = 0; indiceRenglones <= arreglo.getTope(); indiceRenglones++){
-                cambiar(indiceRenglones, 0, arreglo.obtener(indiceRenglones));
+            for(int indiceRenglones = 0; indiceRenglones < arreglo.getMAXIMO(); indiceRenglones++){
+                cambiar(posCol, indiceRenglones, arreglo.obtener(indiceRenglones));
             }
             return true;
         }

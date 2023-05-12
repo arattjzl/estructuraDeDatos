@@ -217,7 +217,6 @@ public class ListaEstatica implements VectorLista {
         return false;
     }
 
-    //TODO
     @Override
     public ListaEstatica buscarValores(Object info) {
         int numeroInfo = 0;
