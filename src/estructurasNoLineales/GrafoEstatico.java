@@ -7,8 +7,14 @@ import estructurasLineales.ListaEstatica;
 import estructurasLineales.PilaEstatica;
 import estructurasNoLineales.auxiliares.Vertice;
 import registros.commons.EtiquetaGrafo;
+import utils.commons.Comparador;
 import utils.commons.TipoOrden;
 
+/**
+ * Clase que contiene los métodos del TDA grafo estático.
+ * @author Aratt
+ * @version 1.0
+ */
 public class GrafoEstatico {
     protected Matriz2Numerica aristas;
     protected ListaEstatica vertices;
@@ -35,6 +41,11 @@ public class GrafoEstatico {
         this.tipoOrden = tipoOrden;
     }
 
+    /**
+     * Agrega un vértice.
+     * @param info Información que contrendrá el vértice.
+     * @return Regresa true si se agregó o false si no.
+     */
     public boolean agregarVertice(Object info){
         int pos = (int) vertices.buscar(info);
         if(pos != -1){
@@ -48,10 +59,23 @@ public class GrafoEstatico {
         }
     }
 
+    /**
+     * Agrega una arista en la posición (origen, destino).
+     * @param origen Vértice origen.
+     * @param destino Vértice destino.
+     * @return Regresa true si se agregó o false si no.
+     */
     public boolean agregarArista(Object origen, Object destino){
         return agregarArista(origen,destino,1);
     }
 
+    /**
+     * Agrega una arista en la posición (origen, destino).
+     * @param origen Vértice origen.
+     * @param destino Vértice destino.
+     * @param peso Peso que tiene la arista.
+     * @return Regresa true si se agregó o false si no.
+     */
     public boolean agregarArista(Object origen, Object destino, double peso){
         int indiceOrigen = (int) vertices.buscar(origen);
         int indiceDestino = (int) vertices.buscar(destino);
@@ -63,6 +87,9 @@ public class GrafoEstatico {
         }
     }
 
+    /**
+     * Imprime los vértices y las aristas.
+     */
     public void imprimir(){
         vertices.imprimir();
         SalidaPorDefecto.terminal("\n");
@@ -457,7 +484,11 @@ public class GrafoEstatico {
      * @return Regresa <b>true</b> si el grafo que tiene lazos o bucles o <b>false</b> si no.
      */
     public boolean esPseudografo(){
-        //todo
+        for(int cadaColReng = 0; cadaColReng < vertices.getMAXIMO(); cadaColReng++){
+            if((double) aristas.obtener(cadaColReng, cadaColReng) > 0.0){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -466,7 +497,14 @@ public class GrafoEstatico {
      * @return Regresa <b>true</b> si es verdadero o <b>false</b> si no.
      */
     public boolean esMultigrafo(){
-        //todo
+        for(int cadaReng = 0; cadaReng < vertices.getMAXIMO(); cadaReng++){
+            for(int cadaCol =0; cadaCol < vertices.getMAXIMO(); cadaCol++){
+                 if((double) aristas.obtener(cadaReng, cadaCol) > 0.0
+                         && (double) aristas.obtener(cadaCol, cadaReng) > 0.0){
+                     return true;
+                 }
+            }
+        }
         return false;
     }
 
@@ -474,17 +512,14 @@ public class GrafoEstatico {
      * Regresa el número de aristas que contiene el vértice. Si es 0, es nodo aislado.
      * @return Regresa el número de aristas.
      */
-    public Double gradoVertice(Object vertice){
+    public Integer gradoVertice(Object vertice){
         int indiceVertice = (int) vertices.buscar(vertice);
         if(indiceVertice > -1){
-            ListaEstatica lista = new ListaEstatica(vertices.getMAXIMO());
+            int sumatoria = 0;
             for(int cadaCol = 0; cadaCol < vertices.getMAXIMO(); cadaCol++){
-                lista.agregar(aristas.obtener(indiceVertice, cadaCol));
-            }
-
-            double sumatoria = 0;
-            for(int cadaIndLis = 0; cadaIndLis < vertices.getMAXIMO(); cadaIndLis++){
-                sumatoria += (double) lista.obtener(cadaIndLis);
+                if((double) aristas.obtener(indiceVertice, cadaCol) > 0){
+                    sumatoria++;
+                }
             }
             return sumatoria;
         } else {
@@ -499,8 +534,13 @@ public class GrafoEstatico {
      * @return Regresa <b>true</b> si se pudo alcanzar el destino y <b>false</b> si no.
      */
     public boolean hayRuta(Object origen, Object destino){
-        //todo
-        return false;
+        ListaDinamica ruta = rutaOptima(origen, destino);
+        if((int) Comparador.comparar(origen, ruta.getPrimero()) == 0
+                && (int) Comparador.comparar(destino, ruta.verUltimo()) == 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -543,12 +583,22 @@ public class GrafoEstatico {
     }
 
     /**
-     * Este método indica si el grafo es dirigido o no dirigido.
+     * Este método indica si el grafo es dirigido o no dirigido. Las aristas (x,y) y (y,x) no son equivalentes es grafo dirigido.
      * @return Regresa <b>true</b> si es dirigido o <b>false</b> si no.
      */
     public boolean esDirigido(){
-        //todo
-        return false;
+        for(int cadaReng = 0; cadaReng < vertices.getMAXIMO(); cadaReng++){
+            for(int cadaCol = 0; cadaCol < vertices.getMAXIMO(); cadaCol++){
+                double peso = (double) aristas.obtener(cadaReng, cadaCol);
+                double pesoInverso = (double) aristas.obtener(cadaCol, cadaReng);
+                if(peso > 0){
+                    if(peso == pesoInverso){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -556,7 +606,7 @@ public class GrafoEstatico {
      * @return Regresa <b>true</b> si es árbol o <b>false</b> si no.
      */
     public boolean esArbol(){
-        //TODO
+        //todo
         return false;
     }
 
@@ -587,7 +637,11 @@ public class GrafoEstatico {
         ListaDinamica lista = new ListaDinamica();
 
         for(int cadaCol = 0; cadaCol < vertices.getMAXIMO(); cadaCol++){
-            lista.agregar(aristas.obtener(indiceVertice, cadaCol));
+            Object verticeDestino = vertices.obtener(cadaCol);
+            double peso = (double) aristas.obtener(indiceVertice, cadaCol);
+            if(peso > 0){
+                lista.agregar("[" + vertice + "," + verticeDestino + "," + peso + "]");
+            }
         }
         return lista;
     }

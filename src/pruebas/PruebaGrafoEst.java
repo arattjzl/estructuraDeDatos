@@ -12,13 +12,13 @@ public class PruebaGrafoEst {
         grafo.agregarVertice("C");
 
         grafo.agregarArista("A","B");
-        grafo.agregarArista("A","C");
+        grafo.agregarArista("B","C");
         grafo.agregarArista("B","A");
+        grafo.agregarArista("C","B");
         grafo.agregarArista("C","A");
 
-        SalidaPorDefecto.terminal("\n");
         //grafo.imprimir();
-        SalidaPorDefecto.terminal(grafo.buscarVertice("C")
-                + " - " + grafo.buscarVertice("E"));
+        SalidaPorDefecto.terminal("\n");
+        grafo.listarVertices();
     }
 }
