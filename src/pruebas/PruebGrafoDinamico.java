@@ -12,21 +12,24 @@ public class PruebGrafoDinamico {
         grafo.agregarVertice("D");
         grafo.agregarVertice("E");
 
-        grafo.agregarArista("A", "B");
-        grafo.agregarArista("A", "C");
+        grafo.agregarArista("A", "B",1);
+        grafo.agregarArista("A", "C",3);
 
-        grafo.agregarArista("B", "A");
-        grafo.agregarArista("B", "C");
+        grafo.agregarArista("B", "A",1);
+        grafo.agregarArista("B", "C",4);
+        grafo.agregarArista("B", "D",6);
 
-        grafo.agregarArista("C", "B");
-        grafo.agregarArista("C", "E");
+        grafo.agregarArista("C", "A",3);
+        grafo.agregarArista("C", "B",4);
+        grafo.agregarArista("C", "D",4);
+        grafo.agregarArista("C", "E",2);
 
-        grafo.agregarArista("D", "A");
-        grafo.agregarArista("D", "C");
+        grafo.agregarArista("D", "B",6);
+        grafo.agregarArista("D", "C",4);
+        grafo.agregarArista("D", "E",5);
 
-        grafo.agregarArista("E", "A");
-        grafo.agregarArista("E", "C");
-        grafo.agregarArista("E", "D");
+        grafo.agregarArista("E", "C",2);
+        grafo.agregarArista("E", "D",5);
 
         grafo.imprimir();
 

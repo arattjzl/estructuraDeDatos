@@ -4,7 +4,6 @@ import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 import estructurasLineales.PilaDinamica;
 import estructurasNoLineales.auxiliares.Vertice;
-import pruebas.PruebaLisDiDoPa;
 
 public class GrafoDinamico {
     protected ListaDinamica listaAdyacencia;
@@ -65,6 +64,27 @@ public class GrafoDinamico {
             return false;
         }
     }
+
+    public boolean agregarArista(Object origen, Object destino, double peso){
+        ListaDinamica sublistaOrigen = buscarVerticeSubLista(origen);
+        ListaDinamica sublistaDestino = buscarVerticeSubLista(destino);
+
+        if(sublistaOrigen != null && sublistaDestino != null){
+            Vertice verticeDestino = (Vertice) sublistaDestino.getPrimero().getInfo();
+
+            int retorno = sublistaOrigen.agregar(verticeDestino);
+            sublistaOrigen.agregar(peso);
+
+            if(retorno == -1){
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void imprimir(){
         listaAdyacencia.inicializarIterador();
 
@@ -105,11 +125,37 @@ public class GrafoDinamico {
         sublistaOrigen.obtenerNodo();
 
         while (sublistaOrigen.hayNodo()){
-            Vertice verticDestino = (Vertice) sublistaOrigen.obtenerNodo();
-            if(marcados.buscar(verticDestino) == null){
-                pila.poner(verticDestino);
-                marcados.agregar(verticDestino);
+            Object cadaNodo = sublistaOrigen.obtenerNodo();
+            if(cadaNodo instanceof Vertice verticDestino){
+                if(marcados.buscar(verticDestino) == null){
+                    pila.poner(verticDestino);
+                    marcados.agregar(verticDestino);
+                }
             }
         }
+    }
+
+    public void algoritmoDePrim(){
+        ListaDinamica conjuntoVertices = obtenerVertices();
+        ListaDinamica conjuntoAuxiliar = new ListaDinamica();
+        conjuntoAuxiliar.agregar(conjuntoVertices.getPrimero());
+
+        while(conjuntoVertices != conjuntoAuxiliar){
+            buscarVerticeSubLista()
+        }
+    }
+
+    private ListaDinamica obtenerVertices(){
+        ListaDinamica lista = new ListaDinamica();
+        listaAdyacencia.inicializarIterador();
+        while(listaAdyacencia.hayNodo()){
+            ListaDinamica cadaSublista = (ListaDinamica) listaAdyacencia.obtenerNodo();
+            lista.agregar(cadaSublista.getPrimero());
+        }
+        return lista;
+    }
+
+    private void elegirAristaMenorCosto(){
+        listaAdyacencia.an
     }
 }
