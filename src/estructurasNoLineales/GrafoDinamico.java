@@ -3,15 +3,28 @@ package estructurasNoLineales;
 import entradasalida.SalidaPorDefecto;
 import estructurasLineales.ListaDinamica;
 import estructurasLineales.PilaDinamica;
+import estructurasLineales.auxiliares.Nodo;
 import estructurasNoLineales.auxiliares.Vertice;
+
+/**
+ * Clase con los métodos para el TDA Grafo Dinámico.
+ * @author Aratt
+ * @version 1.0
+ */
 
 public class GrafoDinamico {
     protected ListaDinamica listaAdyacencia;
+
 
     public GrafoDinamico() {
         listaAdyacencia = new ListaDinamica();
     }
 
+    /**
+     * Obtiene la sublista del vértice indicado.
+     * @param verticeBuscado Vértice por buscar.
+     * @return Regresa la sublista del vértice.
+     */
     private ListaDinamica buscarVerticeSubLista(Object verticeBuscado){
         listaAdyacencia.inicializarIterador();
         while (listaAdyacencia.hayNodo()){
@@ -24,6 +37,12 @@ public class GrafoDinamico {
         }
         return null;
     }
+
+    /**
+     * Agrega un nuevo vértice al grafo.
+     * @param info Información que contendrá el vértice.
+     * @return Regresa <b>true</b> si se agregó o <b>false</b> si no.
+     */
     public boolean agregarVertice(Object info){
         ListaDinamica sublistaVertice = buscarVerticeSubLista(info);
         if(sublistaVertice == null){ // no esta, se puede agregar
@@ -46,6 +65,13 @@ public class GrafoDinamico {
             return false;
         }
     }
+
+    /**
+     * Agrega una arista entre dos vértices.
+     * @param origen Vértice origen.
+     * @param destino Vértice destino.
+     * @return Regresa <b>true</b> si se agregó o <b>false</b> si no.
+     */
     public boolean agregarArista(Object origen, Object destino){
         ListaDinamica sublistaOrigen = buscarVerticeSubLista(origen);
         ListaDinamica sublistaDestino = buscarVerticeSubLista(destino);
@@ -65,6 +91,13 @@ public class GrafoDinamico {
         }
     }
 
+    /**
+     * Agrega una arista entre dos vértices.
+     * @param origen Vértice origen.
+     * @param destino Vértice destino.
+     * @param peso Peso que tiene la arista.
+     * @return Regresa <b>true</b> si se agregó o <b>false</b> si no.
+     */
     public boolean agregarArista(Object origen, Object destino, double peso){
         ListaDinamica sublistaOrigen = buscarVerticeSubLista(origen);
         ListaDinamica sublistaDestino = buscarVerticeSubLista(destino);
@@ -85,6 +118,9 @@ public class GrafoDinamico {
         }
     }
 
+    /**
+     * Imprime el grafo.
+     */
     public void imprimir(){
         listaAdyacencia.inicializarIterador();
 
@@ -96,6 +132,11 @@ public class GrafoDinamico {
         }
     }
 
+    /**
+     * Recorrido por profundidad del grafo.
+     * @param origen Vértice origen.
+     * @return Regresa el recorrido desde el origen.
+     */
     public ListaDinamica recorridoProfundidad(Object origen){
         PilaDinamica pila = new PilaDinamica();
         ListaDinamica marcados = new ListaDinamica();
@@ -135,27 +176,70 @@ public class GrafoDinamico {
         }
     }
 
-    public void algoritmoDePrim(){
+    /**
+     * Realiza el algoritmo de Prim para encontrar el árbol abarcador de costo mínimo de un grafo.
+     * @return Regresa una lista con los vértices mínimos.
+     */
+    public ListaDinamica algoritmoDePrim(){
         ListaDinamica conjuntoVertices = obtenerVertices();
         ListaDinamica conjuntoAuxiliar = new ListaDinamica();
         conjuntoAuxiliar.agregar(conjuntoVertices.getPrimero());
+        ListaDinamica verticesMinimos = new ListaDinamica();
+        Vertice anterior = new Vertice();
 
-        while(conjuntoVertices != conjuntoAuxiliar){
-            buscarVerticeSubLista()
+        conjuntoVertices.inicializarIterador();
+        while(conjuntoVertices.hayNodo()){
+            Vertice cadaVertice = (Vertice) conjuntoVertices.obtenerNodo();
+            if(cadaVertice!=conjuntoVertices.verUltimo()){
+                Vertice menor = elegirAristaMenorCosto(cadaVertice, anterior);
+                conjuntoAuxiliar.agregar(menor);
+                verticesMinimos.agregar("{ " + cadaVertice + " - " + menor + " }");
+                anterior = cadaVertice;
+            }
         }
+        return verticesMinimos;
     }
 
+    /**
+     * Obtiene todos los vértices del grafo.
+     * @return Regresa una lista con todos los vértices del grafo.
+     */
     private ListaDinamica obtenerVertices(){
         ListaDinamica lista = new ListaDinamica();
         listaAdyacencia.inicializarIterador();
         while(listaAdyacencia.hayNodo()){
             ListaDinamica cadaSublista = (ListaDinamica) listaAdyacencia.obtenerNodo();
-            lista.agregar(cadaSublista.getPrimero());
+            lista.agregar(cadaSublista.getPrimero().getInfo());
         }
         return lista;
     }
 
-    private void elegirAristaMenorCosto(){
-        listaAdyacencia.an
+    /**
+     * Elige la arista con menor costo de una sublista.
+     * @param origen Vértice origen en donde buscará la arista con menor costo.
+     * @param anterior Vértice anterior que se utilizó.
+     * @return Regresa el vértice con la arista de menor costo.
+     */
+    private Vertice elegirAristaMenorCosto(Vertice origen, Vertice anterior){
+        ListaDinamica listaVertices = buscarVerticeSubLista(origen);
+        if(listaVertices != null){
+            listaVertices.inicializarIterador();
+            double pesoMinimo = Double.MAX_VALUE;
+            Vertice verticeMinimo = null;
+            while(listaVertices.hayNodo()){
+                Object peso = listaVertices.obtenerNodo();
+                if(!(peso instanceof Vertice)){
+                    Vertice verticeAnteriorPeso = (Vertice) ((Nodo) listaVertices.buscarAnterior(peso).obtener(0)).getInfo();
+                    if(verticeAnteriorPeso != anterior){
+                        if((double) peso < pesoMinimo){
+                            pesoMinimo = (double) peso;
+                            verticeMinimo = verticeAnteriorPeso;
+                        }
+                    }
+                }
+            }
+            return verticeMinimo;
+        }
+        return null;
     }
 }

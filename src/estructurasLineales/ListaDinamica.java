@@ -130,7 +130,7 @@ public class ListaDinamica implements Lista{
      * Este método itera el arreglo hasta encontrar el parámetro info.
      *
      * @param info Es el valor que se buscara en el arreglo.
-     * @return Regresa la <b>posición</b> del valor que se buscara o <b>-1</b> en caso de que no se encuentre.
+     * @return Regresa el nodo o null.
      */
     @Override
     public Object buscar(Object info) {

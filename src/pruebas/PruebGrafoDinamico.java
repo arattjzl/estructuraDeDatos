@@ -1,5 +1,6 @@
 package pruebas;
 
+import entradasalida.SalidaPorDefecto;
 import estructurasNoLineales.GrafoDinamico;
 
 public class PruebGrafoDinamico {
@@ -13,14 +14,14 @@ public class PruebGrafoDinamico {
         grafo.agregarVertice("E");
 
         grafo.agregarArista("A", "B",1);
-        grafo.agregarArista("A", "C",3);
+        grafo.agregarArista("A", "C",4);
 
         grafo.agregarArista("B", "A",1);
-        grafo.agregarArista("B", "C",4);
+        grafo.agregarArista("B", "C",3);
         grafo.agregarArista("B", "D",6);
 
-        grafo.agregarArista("C", "A",3);
-        grafo.agregarArista("C", "B",4);
+        grafo.agregarArista("C", "A",4);
+        grafo.agregarArista("C", "B",3);
         grafo.agregarArista("C", "D",4);
         grafo.agregarArista("C", "E",2);
 
@@ -32,7 +33,7 @@ public class PruebGrafoDinamico {
         grafo.agregarArista("E", "D",5);
 
         grafo.imprimir();
-
-        grafo.recorridoProfundidad("A").imprimir();
+        SalidaPorDefecto.terminal("\n");
+        grafo.algoritmoDePrim().imprimir();
     }
 }
