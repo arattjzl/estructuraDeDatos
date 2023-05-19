@@ -41,6 +41,30 @@ public class GrafoEstatico {
         this.tipoOrden = tipoOrden;
     }
 
+    public Matriz2Numerica getAristas() {
+        return aristas;
+    }
+
+    public void setAristas(Matriz2Numerica aristas) {
+        this.aristas = aristas;
+    }
+
+    public ListaEstatica getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(ListaEstatica vertices) {
+        this.vertices = vertices;
+    }
+
+    public TipoOrden getTipoOrden() {
+        return tipoOrden;
+    }
+
+    public void setTipoOrden(TipoOrden tipoOrden) {
+        this.tipoOrden = tipoOrden;
+    }
+
     /**
      * Agrega un vértice.
      * @param info Información que contrendrá el vértice.
