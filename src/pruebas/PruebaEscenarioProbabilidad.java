@@ -61,7 +61,7 @@ public class PruebaEscenarioProbabilidad {
         //escenario.imprimir();
         escenario.probabilidad("PM|BDTI,MCE");
         SalidaPorDefecto.terminal("\n");
-        escenario.probabilidad("C");
+        escenario.probabilidadConjunta("DTI|BDTI-BE,MCI*CI|BCI-MEP*EP|MEP-MC");
 
     }
 }

@@ -63,7 +63,6 @@ public class EscenarioProbabilidad {
 
     public void probabilidad(String cadena){
         ListaEstatica cadenaSeparada = Separador.separar(cadena, "|");
-        cadenaSeparada.imprimir();
         ListaEstatica vertices = grafo.getVertices();
         for(int cadaVertice = 0; cadaVertice <= vertices.getTope(); cadaVertice++){
             Vertice vertice = (Vertice) vertices.obtener(cadaVertice);
@@ -91,5 +90,40 @@ public class EscenarioProbabilidad {
                 }
             }
         }
+    }
+
+    private double buscarProbabilidad(String probabilidad){
+        ListaEstatica cadenaSeparada = Separador.separar(probabilidad, "|");
+        ListaEstatica vertices = grafo.getVertices();
+        for(int cadaVertice = 0; cadaVertice <= vertices.getTope(); cadaVertice++){
+            Vertice vertice = (Vertice) vertices.obtener(cadaVertice);
+            ListaDinamica sublista = (ListaDinamica) vertice.getInfo();
+            if(sublista.getPrimero().getInfo().equals(cadenaSeparada.obtener(0))){
+                sublista.inicializarIterador();
+                sublista.obtenerNodo();
+                while(sublista.hayNodo()){
+                    VariableEstadistica cadaVariable = (VariableEstadistica) sublista.obtenerNodo();
+                    if(cadenaSeparada.obtener(1).equals(cadaVariable.getInfo())){
+                        return cadaVariable.getProbabilidad();
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    public void probabilidadConjunta(String probabilidad){
+        ListaEstatica nodos = Separador.separar(probabilidad, "*");
+        ListaDinamica probabilidades = new ListaDinamica();
+        for(int cadaNodo = 0; cadaNodo <= nodos.getTope(); cadaNodo++){
+            probabilidades.agregar(buscarProbabilidad((String) nodos.obtener(cadaNodo)));
+        }
+        double probabilidadConjunta = 1;
+        probabilidades.inicializarIterador();
+        while(probabilidades.hayNodo()){
+            double cadaProb = (double) probabilidades.obtenerNodo();
+            probabilidadConjunta *= cadaProb;
+        }
+        SalidaPorDefecto.terminal("La probabildad conjunta es de: "+ probabilidadConjunta*100 + "%");
     }
 }

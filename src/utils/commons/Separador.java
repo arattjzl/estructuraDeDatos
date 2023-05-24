@@ -1,6 +1,7 @@
 package utils.commons;
 
 
+
 import estructurasLineales.ListaEstatica;
 
 public class Separador {
