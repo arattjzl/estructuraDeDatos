@@ -6,9 +6,9 @@ import utils.commons.Comparador;
 
 public class PancakeSort {
 
-    private static int indiceMayor(ListaEstatica lista){
+    private static int indiceMayor(ListaEstatica lista, int mayor){
         int indiceMayor = 0;
-        for(int cadaIndice = 0; cadaIndice <= lista.getTope(); cadaIndice++){
+        for(int cadaIndice = 0; cadaIndice < mayor; cadaIndice++){
             if((int) Comparador.comparar(lista.obtener(cadaIndice), lista.obtener(indiceMayor)) > 0){
                 indiceMayor = cadaIndice;
             }
@@ -26,8 +26,8 @@ public class PancakeSort {
     }
 
     public static void sort(ListaEstatica lista){
-        for(int tamanio = lista.getTope(); tamanio >= 1; tamanio--){
-            int indiceMayor = indiceMayor(lista);
+        for(int tamanio = lista.getTope()+1; tamanio > 1; tamanio--){
+            int indiceMayor =  indiceMayor(lista, tamanio);
             if(indiceMayor != tamanio-1){
                 cambio(lista, indiceMayor);
                 cambio(lista, tamanio-1);
