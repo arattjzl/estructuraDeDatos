@@ -51,13 +51,23 @@ public class EscenarioProbabilidad {
         return lista;
     }
 
-    public void imprimir(){
+    public void imprimirPrimeros(){
         ListaEstatica vertices = grafo.getVertices();
         for(int cadaVertice = 0; cadaVertice <= vertices.getTope(); cadaVertice++){
             Vertice vertice = (Vertice) vertices.obtener(cadaVertice);
             ListaDinamica sublista = (ListaDinamica) vertice.getInfo();
-            sublista.imprimir();
-            SalidaPorDefecto.terminal("\n");
+            SalidaPorDefecto.terminal(sublista.getPrimero()+"\n");
+        }
+    }
+
+    public void imprimirSublista(String cadena){
+        ListaEstatica vertices = grafo.getVertices();
+        for(int cadaVertice = 0; cadaVertice <= vertices.getTope(); cadaVertice++){
+            Vertice vertice = (Vertice) vertices.obtener(cadaVertice);
+            ListaDinamica sublista = (ListaDinamica) vertice.getInfo();
+            if(sublista.getPrimero().getInfo().equals(cadena)){
+                sublista.imprimir();
+            }
         }
     }
 

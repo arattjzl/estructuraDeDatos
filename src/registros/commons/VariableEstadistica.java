@@ -28,6 +28,6 @@ public class VariableEstadistica {
 
     @Override
     public String toString() {
-        return "{ " + "("+ info + ")" + "->" + probabilidad + " }";
+        return "(" + info.toString() + ")";
     }
 }

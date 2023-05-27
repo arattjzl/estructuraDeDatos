@@ -1,5 +1,6 @@
 package pruebas;
 
+import entradasalida.EntradaPorDefecto;
 import entradasalida.SalidaPorDefecto;
 import registros.probabilidad.EscenarioProbabilidad;
 
@@ -58,10 +59,48 @@ public class PruebaEscenarioProbabilidad {
         escenario.agregarVertice("PM", "SPM-MDTI,MCE", 0.13);
         escenario.agregarVertice("PM", "NSPM-MDTI,MCE", 0.87);
 
+        SalidaPorDefecto.terminal(" Elija una opcion\n a.Probabilidad\n b.Probabilidad conjunta\n");
+        String opcion = EntradaPorDefecto.consolaCadenas();
+        switch (opcion.toLowerCase()){
+            case "a":
+                escenario.imprimirPrimeros();
+                SalidaPorDefecto.terminal(" Elija la probabilidad que quiere saber\n");
+                String prob = EntradaPorDefecto.consolaCadenas();
+                SalidaPorDefecto.terminal("\n Elija la probabilidad que quiere saber\nSolo aquellos que esta después del guión\n");
+                escenario.imprimirSublista(prob);
+                SalidaPorDefecto.terminal("\n");
+                String segProb = EntradaPorDefecto.consolaCadenas();
+                escenario.probabilidad(prob+"|"+segProb);
+                break;
+            case "b":
+                String cadena = "";
+                boolean activo = true;
+                do {
+                    escenario.imprimirPrimeros();
+                    SalidaPorDefecto.terminal(" Elija la probabilidad que quiere saber\n");
+                    String otroprob = EntradaPorDefecto.consolaCadenas();
+                    SalidaPorDefecto.terminal("\n Elija la probabilidad que quiere saber\n");
+                    escenario.imprimirSublista(otroprob);
+                    SalidaPorDefecto.terminal("\n");
+                    String otrosegProb = EntradaPorDefecto.consolaCadenas();
+                    cadena += otroprob+"|"+otrosegProb;
+                    cadena += "*";
+                    SalidaPorDefecto.terminal("\n ¿Quiere continuar? [S/N]");
+                    String seguir = EntradaPorDefecto.consolaCadenas();
+                    if(seguir.equalsIgnoreCase("n")){
+                        activo = false;
+                    }
+                } while(activo);
+                String nuevaCadena = cadena.substring(0,cadena.length()-1);
+                SalidaPorDefecto.terminal("\n"+nuevaCadena+"\n");
+                escenario.probabilidadConjunta(nuevaCadena);
+                break;
+        }
+        //escenario.probabilidad("E|MC,BEP");
         //escenario.imprimir();
-        escenario.probabilidad("PM|BDTI,MCE");
-        SalidaPorDefecto.terminal("\n");
-        escenario.probabilidadConjunta("DTI|BDTI-BE,MCI*CI|BCI-MEP*EP|MEP-MC");
+//        escenario.probabilidad("PM|BDTI,MCE");
+//        SalidaPorDefecto.terminal("\n");
+//        escenario.probabilidadConjunta("DTI|BDTI-BE,MCI*CI|BCI-MEP*EP|MEP-MC");
 
     }
 }
