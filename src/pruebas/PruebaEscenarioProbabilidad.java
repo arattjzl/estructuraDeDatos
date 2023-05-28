@@ -96,11 +96,5 @@ public class PruebaEscenarioProbabilidad {
                 escenario.probabilidadConjunta(nuevaCadena);
                 break;
         }
-        //escenario.probabilidad("E|MC,BEP");
-        //escenario.imprimir();
-//        escenario.probabilidad("PM|BDTI,MCE");
-//        SalidaPorDefecto.terminal("\n");
-//        escenario.probabilidadConjunta("DTI|BDTI-BE,MCI*CI|BCI-MEP*EP|MEP-MC");
-
     }
 }
