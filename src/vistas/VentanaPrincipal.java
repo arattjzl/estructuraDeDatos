@@ -101,6 +101,20 @@ public class VentanaPrincipal {
             }
         });
 
+        probEscIn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalcularProbabilidadUnCampo calcProb = new CalcularProbabilidadUnCampo("inicial",mom);
+            }
+        });
+
+        probSec.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CalcularProbabilidadUnCampo calcProbUnCamp = new CalcularProbabilidadUnCampo("secuencia",mom);
+            }
+        });
+
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setVisible(true);
     }

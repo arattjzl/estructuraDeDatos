@@ -58,13 +58,13 @@ public class PruebaMOM {
         mom.agregarProbabilidadEmision("Abandono", "Solicitar devolucion", 0.5);
         mom.agregarProbabilidadEmision("Abandono", "Salir", 0.5);
 
-        SalidaPorDefecto.terminal(mom.inicioEstado("Compra") + "\n");
+        //SalidaPorDefecto.terminal(mom.inicioEstado("Compra") + "\n");
 
-        SalidaPorDefecto.terminal(mom.probabilidadDeRealizarActividad("Abandono", "Salir") + "\n");
+        //SalidaPorDefecto.terminal(mom.probabilidadDeRealizarActividad("Abandono", "Salir") + "\n");
 
-        SalidaPorDefecto.terminal(mom.probabilidadCiertoEstado("Exploracion", "Compra") + "\n");
+        //SalidaPorDefecto.terminal(mom.probabilidadCiertoEstado("Exploracion", "Compra") + "\n");
 
-        SalidaPorDefecto.terminal(mom.pobabilidadDeSecuenciaDeEstados("Abandono,Compra,Abandono,Retorno,Exploracion") + "\n");
+        //SalidaPorDefecto.terminal(mom.pobabilidadDeSecuenciaDeEstados("Abandono,Compra,Abandono,Retorno,Exploracion") + "\n");
 
         VentanaPrincipal ventana = new VentanaPrincipal(mom);
     }
