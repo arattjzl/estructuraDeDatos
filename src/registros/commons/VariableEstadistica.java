@@ -1,5 +1,10 @@
 package registros.commons;
 
+/**
+ * @author aratt
+ * @author diego
+ * @version 1.0
+ */
 public class VariableEstadistica {
     protected Object info;
     protected double probabilidad;
