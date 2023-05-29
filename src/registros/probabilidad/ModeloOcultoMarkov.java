@@ -1,16 +1,20 @@
 package registros.probabilidad;
 
 import entradasalida.SalidaPorDefecto;
-import estructurasLineales.ListaDinamica;
 import estructurasLineales.ListaDinamicaClave;
 import estructurasLineales.ListaEstatica;
 import estructurasNoLineales.GrafoEstatico;
-import estructurasNoLineales.Matriz2Numerica;
 import estructurasNoLineales.auxiliares.Vertice;
 import registros.commons.AtributosMOM;
 import utils.commons.Comparador;
 import utils.commons.Separador;
 
+
+/**
+ * @author aratt
+ * @author diego
+ * @version 1.0
+ */
 public class ModeloOcultoMarkov {
     protected GrafoEstatico grafo;
 
@@ -18,6 +22,12 @@ public class ModeloOcultoMarkov {
         grafo = new GrafoEstatico(numEstados);
     }
 
+    /**
+     * Agrega un estado al MOM.
+     * @param estado Nombre del estado.
+     * @param probabilidadInicial Probabilidad inicial de este estado.
+     * @return Regresa true si se agregó o false si no.
+     */
     public boolean agregarEstado(Object estado, double probabilidadInicial){
         AtributosMOM atributos = new AtributosMOM();
         atributos.setEstado(estado.toString());
@@ -25,6 +35,13 @@ public class ModeloOcultoMarkov {
         return grafo.agregarVertice(atributos);
     }
 
+    /**
+     * Agrega una probabilidad de emisión.
+     * @param estado Nombre del estado.
+     * @param clave Nombre de la observación.
+     * @param probabilidad Probabilidad de la observación.
+     * @return Regresa true si se agregó o false si no.
+     */
     public boolean agregarProbabilidadEmision(Object estado, Object clave, double probabilidad){
         for(int cadaVertice = 0; cadaVertice<grafo.getVertices().cantidad(); cadaVertice++){
             Vertice vertice = (Vertice)grafo.getVertices().obtener(cadaVertice);
@@ -37,10 +54,20 @@ public class ModeloOcultoMarkov {
         return false;
     }
 
+    /**
+     * Agrega una probabilidad de transición entre el estado origen y el destino y su probabilidad.
+     * @param estadoOrigen Estado origen.
+     * @param estadoDestino Estado destino.
+     * @param probabilidad Probabilidad del cambio.
+     * @return Regresa true si se agregó o false si no.
+     */
     public boolean agregarProbabilidadTransicion(Object estadoOrigen, Object estadoDestino, double probabilidad){
         return grafo.agregarArista(estadoOrigen, estadoDestino, probabilidad);
     }
 
+    /**
+     * Imprime el grafo con toda su inforamción.
+     */
     public void imprimir(){
         ListaEstatica lista = grafo.getVertices();
         for(int cadaIndice = 0; cadaIndice <= lista.getTope(); cadaIndice++){
@@ -54,6 +81,11 @@ public class ModeloOcultoMarkov {
         grafo.getAristas().imprimirPorColumna();
     }
 
+    /**
+     * Regresa el estado inicial del estado que se indique.
+     * @param estado Estado.
+     * @return Regresa la probabilidad inicial del estado indicado.
+     */
     public double inicioEstado(String estado){
         ListaEstatica lista = grafo.getVertices();
         for(int cadaIndice = 0; cadaIndice <= lista.getTope(); cadaIndice++){
@@ -66,6 +98,12 @@ public class ModeloOcultoMarkov {
         return 0.0;
     }
 
+    /**
+     * Obtiene la probabilidad de que se realice una actividad dado el estado y la observación.
+     * @param estado Estado.
+     * @param observacion Observación.
+     * @return Regresa la probabilidad de que se realice.
+     */
     public double probabilidadDeRealizarActividad(String estado, String observacion){
         ListaEstatica lista = grafo.getVertices();
         for(int cadaIndice = 0; cadaIndice <= lista.getTope(); cadaIndice++){
@@ -79,6 +117,12 @@ public class ModeloOcultoMarkov {
         return 0.0;
     }
 
+    /**
+     * Obtiene la probabilidad de que se pase de cierto estado a otro estado dado por la transición.
+     * @param estado Estado inicial.
+     * @param estadoTras Estado de transición.
+     * @return Regresa la probabilidad de este suceso.
+     */
     public double probabilidadCiertoEstado(String estado, String estadoTras){
         ListaEstatica lista = grafo.getVertices();
         int indiceEstado = (int) lista.buscar(estado);
@@ -86,6 +130,11 @@ public class ModeloOcultoMarkov {
         return (double) grafo.getAristas().obtener(indiceEstado, indiceEstadoTrans);
     }
 
+    /**
+     * Obtiene la probabilidad de una secuencia de estados.
+     * @param secuencia Secuencia de estados.
+     * @return Regresa la probabilidad de este suceso.
+     */
     public double pobabilidadDeSecuenciaDeEstados(String secuencia){
         ListaEstatica listaSecuencias = Separador.separar(secuencia, ",");
         ListaEstatica listaVertices = grafo.getVertices();
