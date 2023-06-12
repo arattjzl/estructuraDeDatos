@@ -58,6 +58,22 @@ public class ListaDinamica implements Lista{
         return -1;
     }
 
+    public int agregarSinRepetir(Object info) {
+        if(buscar(info) == null){
+            Nodo nuevoNodo = new Nodo(info);
+            if(nuevoNodo != null){
+                if(vacia()){
+                    primero = nuevoNodo;
+                } else {
+                    ultimo.setApuntadorOtroNodo(nuevoNodo);
+                }
+                ultimo = nuevoNodo;
+                return 1;
+            }
+            return -1;
+        }
+        return -1;
+    }
     /**
      * Obtiene el objeto en el índice indicado.
      * @param indice Índice en el cual se buscará el valor.
@@ -92,6 +108,23 @@ public class ListaDinamica implements Lista{
             }
             primero = nuevoNodo;
             return 1;
+        }
+        return -1;
+    }
+
+    public int agregarPrincipioSinrepetir(Object info){
+        if(buscar(info)==null){
+            Nodo nuevoNodo = new Nodo(info);
+            if(nuevoNodo != null){
+                if(vacia()){
+                    ultimo = nuevoNodo;
+                } else {
+                    nuevoNodo.setApuntadorOtroNodo(primero);
+                }
+                primero = nuevoNodo;
+                return 1;
+            }
+            return -1;
         }
         return -1;
     }
